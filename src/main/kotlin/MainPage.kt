@@ -29,6 +29,16 @@ fun main() {
                         h1(fomantic.ui.inverted.header).setAttribute("style", """margin-top: 3em; font-size: 4em;""").text("Locutus")
                         h2().text("Do cool things")
                     }
+
+                    div(fomantic.ui.container) {
+                        div(fomantic.ui.input) {
+                            val input = input(type = InputType.text, placeholder = "Username")
+                        }
+                        br()
+                        button(fomantic.ui.button).text("Reserve").apply {
+
+                        }
+                    }
                 }.setAttribute("style", """min-height: 700px;""")
             }
         }.classes("pushable")
