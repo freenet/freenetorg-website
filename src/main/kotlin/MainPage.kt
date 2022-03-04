@@ -11,6 +11,21 @@ import kweb.plugins.fomanticUI.fomanticUIPlugin
 
 fun main() {
 
+    Stripe.apiKey = "sk_test_51KYyh3HSi8gwBwE3syIyEQK1jd1HAJfWftPyWOspGL4cP0xfUz8RWfpHiRUGEjaIoKHBojzNvJQ6E7t3pb6E1l8l0032ZZFgK7";
+
+
+    val productParams = ProductCreateParams.builder().setName("Donation").setId("donation_id_2").build()
+
+    val product = Product.create(productParams)
+
+    val priceParams = PriceCreateParams.builder().setProduct("donation_id_2")
+        .setLookupKey("donation_price_2")
+        .setUnitAmount(1000L)
+        .setCurrency("usd").build()
+
+    val price = Price.create(priceParams)
+
+
     Kweb(port = 1234, plugins = listOf(fomanticUIPlugin)) {
         doc.body() {
             route {
