@@ -1,17 +1,11 @@
 import com.stripe.Stripe
-import com.stripe.model.Price
-import com.stripe.model.Product
-import com.stripe.model.checkout.Session
-import com.stripe.param.PriceCreateParams
-import com.stripe.param.ProductCreateParams
-import com.stripe.param.checkout.SessionCreateParams
 import kweb.*
 import kweb.plugins.fomanticUI.fomantic
 import kweb.plugins.fomanticUI.fomanticUIPlugin
 
 fun main() {
 
-    Stripe.apiKey = "sk_test_51KYyh3HSi8gwBwE3syIyEQK1jd1HAJfWftPyWOspGL4cP0xfUz8RWfpHiRUGEjaIoKHBojzNvJQ6E7t3pb6E1l8l0032ZZFgK7";
+    Stripe.apiKey = "sk_test_51KYyh3HSi8gwBwE3syIyEQK1jd1HAJfWftPyWOspGL4cP0xfUz8RWfpHiRUGEjaIoKHBojzNvJQ6E7t3pb6E1l8l0032ZZFgK7"
 
 
     /*val productParams = ProductCreateParams.builder().setName("Donation").setId("donation_id_2").build()
@@ -27,11 +21,10 @@ fun main() {
 
     val price = Price.create(priceParams)*/
 
-
-    Kweb(port = 1234, plugins = listOf(fomanticUIPlugin)) {
+    Kweb(port = 1234, plugins = listOf(fomanticUIPlugin, StripeRoutePlugin())) {
         doc.body() {
             route {
-                path("/create-checkout-session") { params ->
+                /*path("/create-checkout-session") { params ->
                     val YOUR_DOMAIN = "http://0.0.0.0:1234"
                     val sessionParams : SessionCreateParams =
                         SessionCreateParams.builder()
@@ -48,7 +41,7 @@ fun main() {
                     val session : Session = Session.create(sessionParams)
 
                     url.value = session.url
-                }
+                }*/
 
                 path("/success") {
                     h1().text("Payment successful")
@@ -80,7 +73,9 @@ fun main() {
                                     val input = input(type = InputType.text, placeholder = "Username")
                                 }
                                 br()
-                                button(fomantic.ui.button).text("Reserve").apply {
+                                button(fomantic.ui.button).text("Reserve").on.click {
+                                    //url.value = "/failing"
+                                    url.value = "/create-checkout-session"
                                     //val client = HttpURLConnectionClient()
                                     //client.sendWithRetries()
                                 }
