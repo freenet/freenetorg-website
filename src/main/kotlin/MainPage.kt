@@ -73,6 +73,9 @@ fun main() {
                                     val input = input(type = InputType.text, placeholder = "Username")
                                 }
                                 br()
+                                button(fomantic.ui.button).text("Reserve").on.click {
+                                    url.value = "/create-checkout-session"
+                                }
                             }
                         }.setAttribute("style", """min-height: 700px;""")
                     }
