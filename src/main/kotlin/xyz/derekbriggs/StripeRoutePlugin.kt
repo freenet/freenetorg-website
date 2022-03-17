@@ -1,3 +1,5 @@
+package xyz.derekbriggs
+
 import com.stripe.model.checkout.Session
 import com.stripe.param.checkout.SessionCreateParams
 import io.ktor.application.*
