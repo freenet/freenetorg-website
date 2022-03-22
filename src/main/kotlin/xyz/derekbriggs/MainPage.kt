@@ -9,7 +9,7 @@ fun main() {
 
     Stripe.apiKey = "sk_test_51KYyh3HSi8gwBwE3syIyEQK1jd1HAJfWftPyWOspGL4cP0xfUz8RWfpHiRUGEjaIoKHBojzNvJQ6E7t3pb6E1l8l0032ZZFgK7"
 
-    Kweb(port = 8081, debug = false, plugins = listOf(fomanticUIPlugin, StripeRoutePlugin())) {
+    Kweb(port = 8080, debug = false, plugins = listOf(fomanticUIPlugin, StripeRoutePlugin())) {
         doc.body {
             route {
 

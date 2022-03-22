@@ -1,2 +1,3 @@
-runtime: java11
+env: flex
+runtime: java
 entrypoint: 'java -jar locutus-donation-site-1.1-SNAPSHOT-all.jar'
