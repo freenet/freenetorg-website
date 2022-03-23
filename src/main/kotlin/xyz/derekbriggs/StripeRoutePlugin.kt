@@ -1,6 +1,7 @@
 package xyz.derekbriggs
 
 import com.stripe.model.checkout.Session
+import com.stripe.param.InvoiceItemCreateParams
 import com.stripe.param.checkout.SessionCreateParams
 import io.ktor.application.*
 import io.ktor.response.*
@@ -14,7 +15,7 @@ class StripeRoutePlugin : KwebPlugin() {
         routeHandler.get("/failing") {
             call.respondText("Failing")
         }
-        routeHandler.get("/create-checkout-session") {
+        routeHandler.get("/checkout/") {
             val YOUR_DOMAIN = "http://0.0.0.0:1234"
             val sessionParams : SessionCreateParams =
                 SessionCreateParams.builder()
@@ -23,8 +24,14 @@ class StripeRoutePlugin : KwebPlugin() {
                     .setCancelUrl(YOUR_DOMAIN + "/cancel")
                     .addLineItem(
                         SessionCreateParams.LineItem.builder()
+                            .setPriceData(
+                                SessionCreateParams.LineItem.PriceData.builder()
+                                    .setProduct("donation_id")
+                                    .setUnitAmount(5000L)
+                                    .setCurrency("usd")
+                                    .build()
+                            )
                             .setQuantity(1L)
-                            .setPrice("price_1KZSfeHSi8gwBwE3wcitg1SP")
                             .build()
                     )
                     .build()

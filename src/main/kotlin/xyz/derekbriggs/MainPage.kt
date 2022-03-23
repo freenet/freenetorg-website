@@ -40,12 +40,16 @@ fun main() {
 
                             div(fomantic.ui.container) {
                                 div(fomantic.ui.input) {
-                                    val input = input(type = InputType.text, placeholder = "Username")
+                                    val input = input(type = InputType.text, placeholder = "Username").setAttribute("id", "usernameInput")
+                                }
+                                br()
+                                div(fomantic.ui.input) {
+                                    val priceInput = input(type = InputType.text, placeholder = "5.00")
                                 }
                                 br()
                                 a() {
                                     button(fomantic.ui.button).text("Reserve")
-                                }.setAttribute("href", "/create-checkout-session")
+                                }.setAttribute("href", "/checkout/")
                             }
                         }.setAttribute("style", """min-height: 700px;""")
                     }
