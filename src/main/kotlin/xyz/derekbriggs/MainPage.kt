@@ -1,15 +1,25 @@
 package xyz.derekbriggs
 
 import com.stripe.Stripe
+import kotlinx.serialization.json.JsonPrimitive
 import kweb.*
 import kweb.plugins.fomanticUI.fomantic
 import kweb.plugins.fomanticUI.fomanticUIPlugin
+import kweb.plugins.staticFiles.ResourceFolder
+import kweb.plugins.staticFiles.StaticFilesPlugin
 
 fun main() {
 
     Stripe.apiKey = "sk_test_51KYyh3HSi8gwBwE3syIyEQK1jd1HAJfWftPyWOspGL4cP0xfUz8RWfpHiRUGEjaIoKHBojzNvJQ6E7t3pb6E1l8l0032ZZFgK7"
 
-    Kweb(port = 8080, debug = false, plugins = listOf(fomanticUIPlugin, StripeRoutePlugin())) {
+    Kweb(port = 8080, debug = false, plugins = listOf(fomanticUIPlugin, StripeRoutePlugin(),
+        StaticFilesPlugin(ResourceFolder("static"), "/static/stripeCheckout"))) {
+        doc.head {
+            element("meta").setAttribute("content", "width=device-width, initial-scale=1").setAttribute("name", "viewport")
+            element("link").setAttribute("rel", "stylesheet").setAttribute("href", "/static/stripeCheckout/checkout.css")
+            element("script").setAttribute("src", "https://js.stripe.com/v3/")
+
+        }
         doc.body {
             route {
 
@@ -24,7 +34,6 @@ fun main() {
                 path("/") {
 
                     titleBar()
-
                     div(fomantic.pusher) {
                         div(fomantic.ui.inverted.vertical.masthead.center.aligned.segment) {
                             div(fomantic.ui.container) {
@@ -47,9 +56,17 @@ fun main() {
                                     val priceInput = input(type = InputType.text, placeholder = "5.00")
                                 }
                                 br()
-                                a() {
-                                    button(fomantic.ui.button).text("Reserve")
-                                }.setAttribute("href", "/checkout/")
+                                button(fomantic.ui.button).text("Reserve")
+                            }
+
+                            form(mapOf("id" to JsonPrimitive("payment-form"))) {
+                                div(mapOf("id" to JsonPrimitive("payment-element")))
+                                button(mapOf("id" to JsonPrimitive("submit"))) {
+                                    div(mapOf("id" to JsonPrimitive("spinner"))).classes("spinner hidden")
+                                    span(mapOf("id" to JsonPrimitive("button-text"))).text("Pay Now")
+                                    element("script").setAttribute("src", "/static/stripeCheckout/checkout.js")
+                                }
+                                div(mapOf("id" to JsonPrimitive("payment-message"))).classes("hidden")
                             }
                         }.setAttribute("style", """min-height: 700px;""")
                     }
