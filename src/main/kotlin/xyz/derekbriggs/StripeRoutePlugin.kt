@@ -4,9 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.stripe.Stripe
 import com.stripe.model.PaymentIntent
-import com.stripe.model.checkout.Session
 import com.stripe.param.PaymentIntentCreateParams
-import com.stripe.param.checkout.SessionCreateParams
 import io.ktor.application.*
 import io.ktor.request.*
 import io.ktor.response.*
