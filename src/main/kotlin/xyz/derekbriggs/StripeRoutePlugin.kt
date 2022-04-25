@@ -30,7 +30,7 @@ class StripeRoutePlugin : KwebPlugin() {
             val requestBody = call.receiveText()
             val postBody : CreatePayment = gson.fromJson(requestBody, CreatePayment::class.java)
             println("receiveText = $requestBody")
-            println(postBody)
+            println(postBody.toString())
             val params : PaymentIntentCreateParams = PaymentIntentCreateParams.builder()
                 .setAmount(5000L)
                 .setCurrency("USD")

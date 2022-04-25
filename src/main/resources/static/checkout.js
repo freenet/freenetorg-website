@@ -29,9 +29,6 @@ async function initialize() {
     document
         .querySelector("#submit")
         .addEventListener("click", handleSubmit);
-    /*document
-        .querySelector("#payment-form")
-        .addEventListener("submit", handleSubmit);*/
 }
 
 async function handleSubmit(e) {
