@@ -2,12 +2,19 @@ package xyz.derekbriggs
 
 import com.stripe.Stripe
 import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.jsonPrimitive
 import kweb.*
 import kweb.plugins.fomanticUI.fomantic
 import kweb.plugins.fomanticUI.fomanticUIPlugin
 import kweb.plugins.staticFiles.ResourceFolder
 import kweb.plugins.staticFiles.StaticFilesPlugin
-import kweb.state.render
+import kweb.state.KVar
+
+object UserInfo {
+    var emailAddress = "john@smith.com"
+    var usernameToReserve = ""
+    var donationAmount = 500L
+}
 
 fun main() {
 
@@ -49,23 +56,39 @@ fun main() {
                                 h2().text("Do cool things")
                             }
 
+                            val username = KVar("")
+                            val email = KVar("")
+                            val donationAmount = KVar("")
                             div(fomantic.ui.container) {
                                 div(fomantic.ui.input) {
-                                    val usernameInput = input(type = InputType.text, placeholder = "Username").setAttribute("id", "usernameInput")
+                                    val usernameInput = input(type = InputType.text, placeholder = "Username")//.setAttribute("id", "usernameInput")
+                                    usernameInput.on(retrieveJs = usernameInput.valueJsExpression).input { event ->
+                                        username.value = event.retrieved.jsonPrimitive.content
+                                    }
                                 }
                                 br()
                                 div(fomantic.ui.input) {
-                                    val emailInput = input(type = InputType.email, placeholder = "Email").setAttribute("id", "emailInput")
+                                    val emailInput = input(type = InputType.email, placeholder = "Email")//.setAttribute("id", "emailInput")
+                                    emailInput.on(retrieveJs = emailInput.valueJsExpression).input { event ->
+                                        email.value = event.retrieved.jsonPrimitive.content
+                                    }
                                 }
                                 br()
                                 div(fomantic.ui.input) {
-                                    val donationInput = input(type = InputType.text, placeholder = "5.00").setAttribute("id", "donationInput")
+                                    val donationInput = input(type = InputType.text, placeholder = "5.00")//.setAttribute("id", "donationInput")
+                                    donationInput.on(retrieveJs = donationInput.valueJsExpression).input { event ->
+                                        donationAmount.value = event.retrieved.jsonPrimitive.content
+                                    }
                                 }
                                 br()
                                 button(fomantic.ui.button).text("Reserve").on.click {
-                                    url.value = "/checkout/frank"
-                                    //disableElement("usernameInput")
-                                    //renderCheckout()
+                                    if (isValidEmail(email.value)) {
+                                        UserInfo.usernameToReserve = username.value
+                                        UserInfo.donationAmount = (donationAmount.value.toDouble() * 100L).toLong()
+                                        url.value = "/checkout"
+                                    } else {
+
+                                    }
                                 }
                             }
 
@@ -73,16 +96,20 @@ fun main() {
                         }.setAttribute("style", """min-height: 700px;""")
                     }
                 }
-                path("/checkout/{email}") { params ->
-                    val email = params.getValue("email").value
-                    h1().text("Hello, $email")
+                path("/checkout") {
+                    println(browser.httpRequestInfo.request.call.request)
+                    h1().text("Hello ${UserInfo.emailAddress}, you are reserving ${UserInfo.usernameToReserve} for ${UserInfo.donationAmount}")
                     renderCheckout()
                 }
             }
         }.classes("pushable")
     }
+
 }
 
+fun isValidEmail(email : String) : Boolean {
+    return true
+}
 fun ElementCreator<*>.disableElement(elementId : String) {
     val disableElementJs = """
         let elementId = {};
