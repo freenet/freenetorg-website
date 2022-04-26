@@ -28,6 +28,8 @@ dependencies {
     implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.30'
 
     implementation "com.stripe:stripe-java:20.113.0"
+
+    implementation 'com.google.cloud:google-cloud-firestore:3.0.14'
 }
 
 import com.github.jengelman.gradle.plugins.shadow.transformers.ServiceFileTransformer

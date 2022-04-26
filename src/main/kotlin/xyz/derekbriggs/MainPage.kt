@@ -1,5 +1,7 @@
 package xyz.derekbriggs
 
+import com.google.auth.oauth2.GoogleCredentials
+import com.google.cloud.firestore.FirestoreOptions
 import com.stripe.Stripe
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonPrimitive
@@ -14,7 +16,14 @@ object UserInfo {
     var emailAddress = "john@smith.com"
     var usernameToReserve = ""
     var donationAmount = 500L
+    var referer : String? = null
 }
+
+val firestoreOptions = FirestoreOptions.getDefaultInstance().toBuilder()
+    .setProjectId("freenet-site")
+    .setCredentials(GoogleCredentials.getApplicationDefault())
+    .build()
+val db = firestoreOptions.service
 
 fun main() {
 
@@ -41,6 +50,9 @@ fun main() {
                 }
 
                 path("/") {
+                    browser.httpRequestInfo.request.headers["Referer"]?.let {
+                        UserInfo.referer = it
+                    }
 
                     titleBar()
                     div(fomantic.pusher) {
@@ -91,8 +103,6 @@ fun main() {
                                     }
                                 }
                             }
-
-
                         }.setAttribute("style", """min-height: 700px;""")
                     }
                 }
