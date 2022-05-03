@@ -2,7 +2,7 @@
 const stripe = Stripe("pk_test_51KYyh3HSi8gwBwE3JwrtL8jGGnFpcqZfewOtlQFXHYkItitRf6fNgCAUKPVsHou8tbkGxbAXm03L9ZvVPtv8JOEd00y9t7YCWm");
 
 // The items the customer wants to buy
-const items = [{ id: "xl-tshirt" }];
+const userInfo = {};
 let elements;
 
 initialize();
@@ -11,10 +11,13 @@ checkStatus();
 
 // Fetches a payment intent and captures the client secret
 async function initialize() {
+    userInfo["username"] = document.querySelector("#usernameInput").value;
+    userInfo["email"] = document.querySelector("#emailInput").value;
+    userInfo["donationAmount"] = document.querySelector("#donationInput").value;
     const response = await fetch("/create-payment-intent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ items }),
+        body: JSON.stringify( userInfo ),
     });
     const { clientSecret } = await response.json();
 
