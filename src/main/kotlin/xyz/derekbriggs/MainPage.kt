@@ -73,7 +73,8 @@ fun main() {
                             val donationAmount = KVar("")
                             div(fomantic.ui.container) {
                                 div(fomantic.ui.input) {
-                                    val usernameInput = input(type = InputType.text, placeholder = "Username")//.setAttribute("id", "usernameInput")
+                                    val usernameInput = input(type = InputType.text, placeholder = "Username", attributes = mapOf("id" to "usernameInput".json))
+                                    //usernameInput.setAttribute("id", "usernameInput")
                                     usernameInput.on(retrieveJs = usernameInput.valueJsExpression).input { event ->
                                         username.value = event.retrieved.jsonPrimitive.content
                                     }
