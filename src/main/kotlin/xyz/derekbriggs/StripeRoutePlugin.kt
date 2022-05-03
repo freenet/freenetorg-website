@@ -15,26 +15,28 @@ import kweb.plugins.KwebPlugin
 
 class StripeRoutePlugin : KwebPlugin() {
 
-    companion object CreatePayment {
-        @SerializedName("items")
-        var items: Array<Any> = emptyArray()
-    }
+     data class UserInfo (
+         val username : String,
+         val email : String,
+         val donationAmount : Long,
+     )
 
     internal class CreatePaymentResponse(private val clientSecret: String)
 
     override fun appServerConfigurator(routeHandler: Routing) {
         routeHandler.post("/create-payment-intent") {
             Stripe.apiKey = "sk_test_51KYyh3HSi8gwBwE3syIyEQK1jd1HAJfWftPyWOspGL4cP0xfUz8RWfpHiRUGEjaIoKHBojzNvJQ6E7t3pb6E1l8l0032ZZFgK7"
-            val customerParams = CustomerCreateParams.builder().setEmail(UserInfo.emailAddress).build()
-            val customer = Customer.create(customerParams)
             val gson = Gson()
-            //val requestBody = call.receiveText()
-            //val postBody : CreatePayment = gson.fromJson(requestBody, CreatePayment::class.java)
+            val requestBody = call.receiveText()
+            val postBody : UserInfo = gson.fromJson(requestBody, UserInfo::class.java)
+            println(postBody)
+            val customerParams = CustomerCreateParams.builder().setEmail(postBody.email).build()
+            val customer = Customer.create(customerParams)
             val params : PaymentIntentCreateParams = PaymentIntentCreateParams.builder()
-                .setAmount(UserInfo.donationAmount)
+                .setAmount(postBody.donationAmount * 100)
                 .setCustomer(customer.id)
                 .setCurrency("USD")
-                .putMetadata("username", UserInfo.usernameToReserve)
+                .putMetadata("username", postBody.username)
                 .setAutomaticPaymentMethods(
                     PaymentIntentCreateParams.AutomaticPaymentMethods
                         .builder()
