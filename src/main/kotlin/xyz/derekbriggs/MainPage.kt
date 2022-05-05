@@ -3,6 +3,10 @@ package xyz.derekbriggs
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.firestore.FirestoreOptions
 import com.stripe.Stripe
+import com.stripe.model.Customer
+import com.stripe.model.CustomerCollection
+import com.stripe.model.PaymentIntent
+import io.ktor.util.date.*
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonPrimitive
 import kweb.*
@@ -11,13 +15,8 @@ import kweb.plugins.fomanticUI.fomanticUIPlugin
 import kweb.plugins.staticFiles.ResourceFolder
 import kweb.plugins.staticFiles.StaticFilesPlugin
 import kweb.state.KVar
-
-object UserInfo {
-    var emailAddress = "john@smith.com"
-    var usernameToReserve = ""
-    var donationAmount = 500L
-    var referer : String? = null
-}
+import kweb.state.render
+import kweb.util.json
 
 val firestoreOptions = FirestoreOptions.getDefaultInstance().toBuilder()
     .setProjectId("freenet-site")
@@ -41,7 +40,11 @@ fun main() {
             route {
 
                 path("/success") {
-                    println(browser.httpRequestInfo.request.call.parameters)
+                    //println(browser.httpRequestInfo.request.call.parameters)
+                    val payIntent = PaymentIntent.retrieve(browser.httpRequestInfo.request.call.parameters["payment_intent"])
+                    val customerEmail = saveCustomer(payIntent.charges.data[0].customer)
+                    println(payIntent)
+                    saveStripePaymentDetails(customerEmail, payIntent.metadata["username"]!!, payIntent.amount, payIntent.charges.data[0].id)
                     h1().text("Payment successful")
                 }
 
@@ -51,7 +54,7 @@ fun main() {
 
                 path("/") {
                     browser.httpRequestInfo.request.headers["Referer"]?.let {
-                        UserInfo.referer = it
+                        //UserInfo.referer = it
                     }
 
                     titleBar()
@@ -71,37 +74,49 @@ fun main() {
                             val username = KVar("")
                             val email = KVar("")
                             val donationAmount = KVar("")
+                            val inputStatus = KVar(InputStatus.None)
                             div(fomantic.ui.container) {
                                 div(fomantic.ui.input) {
                                     val usernameInput = input(type = InputType.text, placeholder = "Username", attributes = mapOf("id" to "usernameInput".json))
-                                    //usernameInput.setAttribute("id", "usernameInput")
                                     usernameInput.on(retrieveJs = usernameInput.valueJsExpression).input { event ->
                                         username.value = event.retrieved.jsonPrimitive.content
                                     }
                                 }
+                                render(inputStatus) { inputStatus ->
+                                    when(inputStatus) {
+                                        InputStatus.None -> {}
+                                        InputStatus.Available -> {
+                                            p().text("Available") // Prettify with unicode
+                                            // Possibly specify minimum-donation given username length
+                                        }
+                                        InputStatus.NotAvailable -> {
+                                            p().text("Not Available") // Prettify with unicode
+                                        }
+                                    }
+                                }
                                 br()
                                 div(fomantic.ui.input) {
-                                    val emailInput = input(type = InputType.email, placeholder = "Email")//.setAttribute("id", "emailInput")
+                                    val emailInput = input(type = InputType.email, placeholder = "Email", attributes = mapOf("id" to "emailInput".json))
                                     emailInput.on(retrieveJs = emailInput.valueJsExpression).input { event ->
                                         email.value = event.retrieved.jsonPrimitive.content
                                     }
                                 }
                                 br()
                                 div(fomantic.ui.input) {
-                                    val donationInput = input(type = InputType.text, placeholder = "5.00")//.setAttribute("id", "donationInput")
+                                    val donationInput = input(type = InputType.text, placeholder = "5.00", attributes = mapOf("id" to "donationInput".json))
                                     donationInput.on(retrieveJs = donationInput.valueJsExpression).input { event ->
                                         donationAmount.value = event.retrieved.jsonPrimitive.content
                                     }
                                 }
                                 br()
                                 button(fomantic.ui.button).text("Reserve").on.click {
-                                    if (isValidEmail(email.value)) {
-                                        UserInfo.usernameToReserve = username.value
-                                        UserInfo.donationAmount = (donationAmount.value.toDouble() * 100L).toLong()
+                                    renderCheckout()
+                                    /*if (isValidEmail(email.value)) {
+
                                         url.value = "/checkout"
                                     } else {
-
-                                    }
+                                        //TODO Alert user they have typed an invalid email address
+                                    }*/
                                 }
                             }
                         }.setAttribute("style", """min-height: 700px;""")
@@ -109,7 +124,8 @@ fun main() {
                 }
                 path("/checkout") {
                     println(browser.httpRequestInfo.request.call.request)
-                    h1().text("Hello ${UserInfo.emailAddress}, you are reserving ${UserInfo.usernameToReserve} for ${UserInfo.donationAmount}")
+                    //h1().text("Hello ${browser.httpRequestInfo.request.call.request}")
+                    //h1().text("Hello ${UserInfo.emailAddress}, you are reserving ${UserInfo.usernameToReserve} for ${UserInfo.donationAmount}")
                     renderCheckout()
                 }
             }
@@ -152,4 +168,56 @@ fun ElementCreator<*>.titleBar() {
         a(fomantic.item).text("Home")
         a(fomantic.item).text("About")
     }
+}
+
+enum class InputStatus {
+    None, Available, NotAvailable
+}
+
+fun tempReserveName(username: String) {
+    val docRef = db.collection("reservedUsernames").document(username)
+    val data = HashMap<String, Any>()
+
+    data["timeReserved"] = getTimeMillis()
+    docRef.set(data)
+}
+
+fun isNameAvailable(username: String) : Boolean {
+    val docRef = db.collection("reservedUsernames").document(username)
+    val future = docRef.get()
+
+    val document = future.get()
+    if (document.exists()) {
+        //TODO: add if statement to check if existing document was created more than X minutes ago, and has a non-null transactionID
+        return false
+    }
+    return true
+}
+
+
+//Called to finalize reserving a username, via a Stripe payment
+fun saveStripePaymentDetails(email: String, username: String, donationAmount: Long, transactionId: String) {
+    val docRef = db.collection("reservedUsernames").document(username)
+    val data = HashMap<String, Any>()
+
+    data["email"] = email
+    //data["ipAddress"] =
+    /*UserInfo.referer?.let {
+        data["referer"] = it
+    }*/
+    data["donationAmount"] = donationAmount
+    data["Stripe_transaction_id"] = transactionId
+    data["paymentMethod"] = "Stripe"
+
+    val result = docRef.set(data)
+}
+
+fun saveCustomer(stripeCustomerId: String) : String{
+    val customer = Customer.retrieve(stripeCustomerId)
+    val docRef = db.collection("Customers").document(customer.email)
+    val data = HashMap<String, Any>()
+
+    data["stripeCustomerId"] = stripeCustomerId
+    docRef.set(data)
+    return customer.email
 }
