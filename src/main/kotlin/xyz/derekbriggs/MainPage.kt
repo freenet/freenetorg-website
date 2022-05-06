@@ -18,6 +18,9 @@ import kweb.state.KVar
 import kweb.state.render
 import kweb.util.json
 
+const val usernameTableName = "reservedUsernames"
+const val timeToReserveName = 60 * 1000 * 15//15 minutes
+
 val firestoreOptions = FirestoreOptions.getDefaultInstance().toBuilder()
     .setProjectId("freenet-site")
     .setCredentials(GoogleCredentials.getApplicationDefault())
@@ -43,8 +46,7 @@ fun main() {
                     //println(browser.httpRequestInfo.request.call.parameters)
                     val payIntent = PaymentIntent.retrieve(browser.httpRequestInfo.request.call.parameters["payment_intent"])
                     val customerEmail = saveCustomer(payIntent.charges.data[0].customer)
-                    println(payIntent)
-                    saveStripePaymentDetails(customerEmail, payIntent.metadata["username"]!!, payIntent.amount, payIntent.charges.data[0].id)
+                    saveStripePaymentDetails(payIntent.toString(), customerEmail, payIntent.metadata["username"]!!, payIntent.amount, payIntent.charges.data[0].id)
                     h1().text("Payment successful")
                 }
 
@@ -80,6 +82,11 @@ fun main() {
                                     val usernameInput = input(type = InputType.text, placeholder = "Username", attributes = mapOf("id" to "usernameInput".json))
                                     usernameInput.on(retrieveJs = usernameInput.valueJsExpression).input { event ->
                                         username.value = event.retrieved.jsonPrimitive.content
+                                        if(isNameAvailable(username.value)) {
+                                            inputStatus.value = InputStatus.Available
+                                        } else {
+                                            inputStatus.value = InputStatus.NotAvailable
+                                        }
                                     }
                                 }
                                 render(inputStatus) { inputStatus ->
@@ -175,31 +182,36 @@ enum class InputStatus {
 }
 
 fun tempReserveName(username: String) {
-    val docRef = db.collection("reservedUsernames").document(username)
+    val docRef = db.collection(usernameTableName).document(username)
     val data = HashMap<String, Any>()
 
+    data["lowercaseUsername"] = username.lowercase()
     data["timeReserved"] = getTimeMillis()
     docRef.set(data)
 }
 
 fun isNameAvailable(username: String) : Boolean {
-    val docRef = db.collection("reservedUsernames").document(username)
-    val future = docRef.get()
+    val usernameCollection = db.collection(usernameTableName)
+    val query = usernameCollection.whereEqualTo("lowercaseUsername", username)
+    val querySnapshot = query.get()
 
-    val document = future.get()
-    if (document.exists()) {
-        //TODO: add if statement to check if existing document was created more than X minutes ago, and has a non-null transactionID
-        return false
+
+    for (document in querySnapshot.get().documents) {
+        //if the username in this document was reserved more than 'timeToReserveName' ago, and has a null transactionId, it is available
+        return ( getTimeMillis() - document.get("timeReserved") as Long > timeToReserveName) && (document.get("Stripe_transaction_id") == null)
     }
+
+    //the usernameToReserve does not exist in the database, and is available
     return true
 }
 
 
 //Called to finalize reserving a username, via a Stripe payment
-fun saveStripePaymentDetails(email: String, username: String, donationAmount: Long, transactionId: String) {
-    val docRef = db.collection("reservedUsernames").document(username)
+fun saveStripePaymentDetails(stripePayIntentJson: String, email: String, username: String, donationAmount: Long, transactionId: String) {
+    val docRef = db.collection(usernameTableName).document(username)
     val data = HashMap<String, Any>()
 
+    data["stripePayIntent"] = stripePayIntentJson
     data["email"] = email
     //data["ipAddress"] =
     /*UserInfo.referer?.let {
