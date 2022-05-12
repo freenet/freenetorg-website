@@ -77,61 +77,138 @@ fun main() {
                                 h1(fomantic.ui.inverted.header).setAttribute("style", """margin-top: 3em; font-size: 4em;""").text("Locutus")
                                 p().text(copyString)
                             }
+                        }
 
-                            val username = KVar("")
-                            val email = KVar("")
-                            val donationAmount = KVar("")
-                            val inputStatus = KVar(InputStatus.None)
-                            div(fomantic.ui.container) {
-                                div(fomantic.ui.input) {
-                                    val usernameInput = input(type = InputType.text, placeholder = "Username", attributes = mapOf("id" to "usernameInput".json))
-                                    usernameInput.on(retrieveJs = usernameInput.valueJsExpression).input { event ->
-                                        username.value = event.retrieved.jsonPrimitive.content
-                                        if(isNameAvailable(username.value)) {
-                                            inputStatus.value = InputStatus.Available
+                        div() {
+                            div(fomantic.ui.container.center.aligned) {
+                                val username = KVar("")
+                                val email = KVar("")
+                                val donationAmount = KVar("")
+                                val inputStatus = KVar(InputStatus.None)
+                                div(fomantic.ui.container.center.aligned) {
+                                    div(fomantic.ui.icon.input.huge) {
+                                        val usernameInput = input(type = InputType.text, placeholder = "Username", attributes = mapOf("id" to "usernameInput".json))
+                                        usernameInput.on(retrieveJs = usernameInput.valueJsExpression).input { event ->
+                                            username.value = event.retrieved.jsonPrimitive.content
+                                            if(isNameAvailable(username.value)) {
+                                                inputStatus.value = InputStatus.Available
+                                            } else {
+                                                inputStatus.value = InputStatus.NotAvailable
+                                            }
+                                        }
+                                        render(inputStatus) {
+                                            when(it) {
+                                                InputStatus.None -> {
+                                                    i(fomantic.search.circular.ui.icon)
+                                                }
+                                                InputStatus.Available -> {
+                                                    i().classes("ui checkmark icon")
+                                                }
+                                                InputStatus.NotAvailable -> {
+                                                    i().classes("ui cat icon")
+                                                }
+                                            }
+                                        }
+
+                                    }
+                                    render(inputStatus) { inputStatus ->
+                                        when(inputStatus) {
+                                            InputStatus.None -> {}
+                                            InputStatus.Available -> {
+                                                p().text("Available") // Prettify with unicode
+                                                // Possibly specify minimum-donation given username length
+                                            }
+                                            InputStatus.NotAvailable -> {
+                                                p().text("Not Available") // Prettify with unicode
+                                            }
+                                        }
+                                    }
+                                    br()
+                                    div(fomantic.ui.input.huge) {
+                                        val emailInput = input(type = InputType.email, placeholder = "Email", attributes = mapOf("id" to "emailInput".json))
+                                        emailInput.on(retrieveJs = emailInput.valueJsExpression).input { event ->
+                                            email.value = event.retrieved.jsonPrimitive.content
+                                        }
+                                    }
+                                    br()
+
+                                    val selectedDonationAmount : KVar<String?> = KVar(null)
+
+                                    div(fomantic.ui.container.center.aligned) {
+                                        div(fomantic.ui.buttons.big) {
+                                            val oneButton = button(fomantic.button.ui).text("5")
+
+                                            oneButton.setAttribute("class", selectedDonationAmount.map {
+                                                if (it == "5") {
+                                                    "ui active button"
+                                                } else {
+                                                    "ui button"
+                                                }.json
+                                            })
+
+                                            oneButton.on.click {
+                                                selectedDonationAmount.value = "5"
+                                                donationAmount.value = "5"
+                                            }
+                                            val twoButton = button(fomantic.button.ui).text("10")
+                                            twoButton.setAttribute("class", selectedDonationAmount.map {
+                                                if (it == "10") {
+                                                    "ui active button"
+                                                } else {
+                                                    "ui button"
+                                                }.json
+                                            })
+                                            twoButton.on.click {
+                                                selectedDonationAmount.value = "10"
+                                                donationAmount.value = "10"
+                                            }
+                                            val threeButton = button(fomantic.button.ui).text("20")
+                                            threeButton.on.click {
+                                                selectedDonationAmount.value = "20"
+                                                donationAmount.value = "20"
+                                            }
+                                            threeButton.setAttribute("class", selectedDonationAmount.map {
+                                                if (it == "20") {
+                                                    "ui active button"
+                                                } else {
+                                                    "ui button"
+                                                }.json
+                                            })
+                                        }
+                                    }
+
+                                    br()
+                                    div(fomantic.ui.right.labeled.input) {
+                                        val dollarSignLabel = label(fomantic.ui.label).text("$")
+                                        dollarSignLabel.setAttribute("for", "donationInput")
+                                        val donationInput = input(type = InputType.text, placeholder = "5.00",
+                                            attributes = mapOf("id" to "donationInput".json))
+                                        div(fomantic.ui.basic.label).text(".00")
+                                        donationInput.setValue(donationAmount)
+                                        donationInput.on.click {
+                                            selectedDonationAmount.value = null
+                                        }
+                                        donationInput.on(retrieveJs = donationInput.valueJsExpression).input { event ->
+                                            donationAmount.value = event.retrieved.jsonPrimitive.content
+                                        }
+                                    }
+                                    br()
+                                    button(fomantic.ui.button).text("Reserve").on.click {
+                                        println(email.value)
+                                        if (isValidEmail(email.value)) {
+                                            tempReserveName(username.value, browser.httpRequestInfo.request.headers["Referer"])
+                                            val modal = div(fomantic.ui.modal) {
+                                                renderCheckout()
+                                            }
+                                            browser.callJsFunction("$(\'#\' + {}).modal(\'show\');", modal.id.json)
+                                            println("Showing modal: ${modal.id}")
                                         } else {
-                                            inputStatus.value = InputStatus.NotAvailable
+                                            p().text("Invalid Email")
                                         }
                                     }
-                                }
-                                render(inputStatus) { inputStatus ->
-                                    when(inputStatus) {
-                                        InputStatus.None -> {}
-                                        InputStatus.Available -> {
-                                            p().text("Available") // Prettify with unicode
-                                            // Possibly specify minimum-donation given username length
-                                        }
-                                        InputStatus.NotAvailable -> {
-                                            p().text("Not Available") // Prettify with unicode
-                                        }
-                                    }
-                                }
-                                br()
-                                div(fomantic.ui.input) {
-                                    val emailInput = input(type = InputType.email, placeholder = "Email", attributes = mapOf("id" to "emailInput".json))
-                                    emailInput.on(retrieveJs = emailInput.valueJsExpression).input { event ->
-                                        email.value = event.retrieved.jsonPrimitive.content
-                                    }
-                                }
-                                br()
-                                div(fomantic.ui.input) {
-                                    val donationInput = input(type = InputType.text, placeholder = "5.00", attributes = mapOf("id" to "donationInput".json))
-                                    donationInput.on(retrieveJs = donationInput.valueJsExpression).input { event ->
-                                        donationAmount.value = event.retrieved.jsonPrimitive.content
-                                    }
-                                }
-                                br()
-                                button(fomantic.ui.button).text("Reserve").on.click {
-                                    renderCheckout()
-                                    /*if (isValidEmail(email.value)) {
-
-                                        url.value = "/checkout"
-                                    } else {
-                                        //TODO Alert user they have typed an invalid email address
-                                    }*/
                                 }
                             }
-                        }.setAttribute("style", """min-height: 700px;""")
+                        }.classes("ui stacked segment")
                     }
                 }
                 path("/checkout") {
@@ -171,6 +248,16 @@ fun ElementCreator<*>.renderCheckout() {
         }
         div(mapOf("id" to JsonPrimitive("payment-message"))).classes("hidden")
     }
+    div(fomantic.ui.actions) {
+        val cancelButton = button(fomantic.ui.button).text("cancel").on.click {
+            browser.callJsFunction("$(\'.ui.modal\').modal(\'close\');")
+        }
+        cancelButton.classes("ui cancel button")
+    }
+}
+
+fun ElementCreator<*>.renderForm() {
+
 }
 
 fun ElementCreator<*>.titleBar() {
