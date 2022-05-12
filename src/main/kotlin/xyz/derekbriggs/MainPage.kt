@@ -17,6 +17,7 @@ import kweb.plugins.staticFiles.StaticFilesPlugin
 import kweb.state.KVar
 import kweb.state.render
 import kweb.util.json
+import java.util.regex.Pattern
 
 const val usernameTableName = "reservedUsernames"
 const val timeToReserveName = 60 * 1000 * 15//15 minutes
@@ -26,6 +27,14 @@ val firestoreOptions = FirestoreOptions.getDefaultInstance().toBuilder()
     .setCredentials(GoogleCredentials.getApplicationDefault())
     .build()
 val db = firestoreOptions.service
+
+const val copyString = "The Internet has become increasingly centralized over the past 25 years, such that a handful of companies now effectively control the Internet infrastructure. This poses a threat to freedom of speech and democracy, as the public square is privately owned.\n" +
+        "\n\n" +
+        "Locutus is a software platform that makes it easy to create decentralized alternatives to today's centralized tech companies. These decentralized apps will be easy to use, scalable, and secured through cryptography. \n" +
+        "\n" +
+        "Trust and identity are critical in any decentralized system. By donating to its development, you can reserve your name on Freenet and in future may be granted \"trust tokens\" and other rewards for our early supporters. Names will be fully transferrable, similar to domain names today. \n" +
+        "\n" +
+        "So please donate now to help us create a more decentralized future!"
 
 fun main() {
 
@@ -55,10 +64,6 @@ fun main() {
                 }
 
                 path("/") {
-                    browser.httpRequestInfo.request.headers["Referer"]?.let {
-                        //UserInfo.referer = it
-                    }
-
                     titleBar()
                     div(fomantic.pusher) {
                         div(fomantic.ui.inverted.vertical.masthead.center.aligned.segment) {
@@ -70,7 +75,7 @@ fun main() {
                             }
                             div(fomantic.ui.text.container) {
                                 h1(fomantic.ui.inverted.header).setAttribute("style", """margin-top: 3em; font-size: 4em;""").text("Locutus")
-                                h2().text("Do cool things")
+                                p().text(copyString)
                             }
 
                             val username = KVar("")
@@ -142,6 +147,11 @@ fun main() {
 }
 
 fun isValidEmail(email : String) : Boolean {
+    val emailRegex = "^(.+)@(\\S+) \$."
+    //val emailRegex = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\\\.[A-Za-z0-9_-]+)*@" +
+                 //    "[^-][A-Za-z0-9-]+(\\\\.[A-Za-z0-9-]+)*(\\\\.[A-Za-z]{2,})\$"
+    //return (Pattern.compile(emailRegex)
+        //.matcher(email).matches())
     return true
 }
 fun ElementCreator<*>.disableElement(elementId : String) {
@@ -181,24 +191,29 @@ enum class InputStatus {
     None, Available, NotAvailable
 }
 
-fun tempReserveName(username: String) {
+fun tempReserveName(username: String, referer: String?) {
     val docRef = db.collection(usernameTableName).document(username)
     val data = HashMap<String, Any>()
 
     data["lowercaseUsername"] = username.lowercase()
     data["timeReserved"] = getTimeMillis()
+    referer?.let {
+        data["referer"] = it
+    }
     docRef.set(data)
 }
 
 fun isNameAvailable(username: String) : Boolean {
     val usernameCollection = db.collection(usernameTableName)
-    val query = usernameCollection.whereEqualTo("lowercaseUsername", username)
+    val query = usernameCollection.whereEqualTo("lowercaseUsername", username.lowercase())
     val querySnapshot = query.get()
 
 
     for (document in querySnapshot.get().documents) {
         //if the username in this document was reserved more than 'timeToReserveName' ago, and has a null transactionId, it is available
-        return ( getTimeMillis() - document.get("timeReserved") as Long > timeToReserveName) && (document.get("Stripe_transaction_id") == null)
+        println(document.toString())
+        return ((document.get("Stripe_transaction_id") == null) && getTimeMillis() - document.get("timeReserved") as Long > timeToReserveName)
+
     }
 
     //the usernameToReserve does not exist in the database, and is available
@@ -221,7 +236,7 @@ fun saveStripePaymentDetails(stripePayIntentJson: String, email: String, usernam
     data["Stripe_transaction_id"] = transactionId
     data["paymentMethod"] = "Stripe"
 
-    val result = docRef.set(data)
+    val result = docRef.update(data)
 }
 
 fun saveCustomer(stripeCustomerId: String) : String{
