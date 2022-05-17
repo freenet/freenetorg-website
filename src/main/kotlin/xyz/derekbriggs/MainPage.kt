@@ -28,13 +28,9 @@ val firestoreOptions = FirestoreOptions.getDefaultInstance().toBuilder()
     .build()
 val db = firestoreOptions.service
 
-const val copyString = "The Internet has become increasingly centralized over the past 25 years, such that a handful of companies now effectively control the Internet infrastructure. This poses a threat to freedom of speech and democracy, as the public square is privately owned.\n" +
-        "\n\n" +
-        "Locutus is a software platform that makes it easy to create decentralized alternatives to today's centralized tech companies. These decentralized apps will be easy to use, scalable, and secured through cryptography. \n" +
-        "\n" +
-        "Trust and identity are critical in any decentralized system. By donating to its development, you can reserve your name on Freenet and in future may be granted \"trust tokens\" and other rewards for our early supporters. Names will be fully transferrable, similar to domain names today. \n" +
-        "\n" +
-        "So please donate now to help us create a more decentralized future!"
+enum class InputStatus {
+    None, Available, NotAvailable, Invalid
+}
 
 fun main() {
 
@@ -45,7 +41,9 @@ fun main() {
         doc.head {
             element("meta").setAttribute("content", "width=device-width, initial-scale=1").setAttribute("name", "viewport")
             element("link").setAttribute("rel", "stylesheet").setAttribute("href", "/static/stripeCheckout/checkout.css")
+            element("link").setAttribute("rel", "stylesheet").setAttribute("href", "/static/stripeCheckout/homepage.css")
             element("script").setAttribute("src", "https://js.stripe.com/v3/")
+            element("script").setAttribute("src", "/static/stripeCheckout/checkout.js")
 
         }
         doc.body {
@@ -73,12 +71,20 @@ fun main() {
                                     a(fomantic.item).text("About")
                                 }
                             }
-                            div(fomantic.ui.text.container) {
-                                h1(fomantic.ui.inverted.header).setAttribute("style", """margin-top: 3em; font-size: 4em;""").text("Locutus")
-                                p().text(copyString)
-                            }
+                            h1(fomantic.ui.header).setAttribute("style", """margin-top: 3em; font-size: 4em;""").text("Locutus")
+
                         }
 
+                        div(fomantic.ui.text.container) {
+                            val copyString = "The Internet has become increasingly centralized over the past 25 years, such that a handful of companies now effectively control the Internet infrastructure. This poses a threat to freedom of speech and democracy, as the public square is privately owned." +
+                                    "Locutus is a software platform that makes it easy to create decentralized alternatives to today's centralized tech companies. These decentralized apps will be easy to use, scalable, and secured through cryptography."
+                            val copyString2 = "Trust and identity are critical in any decentralized system. By donating to its development, you can reserve your name on Freenet and in future may be granted \"trust tokens\" and other rewards for our early supporters. Names will be fully transferrable, similar to domain names today." +
+                                    "So please donate now to help us create a more decentralized future!"
+
+                            p().text(copyString).classes("headerText")
+                            p().text(copyString2).classes("headerText")
+                            br()
+                        }
                         val username = KVar("")
                         val email = KVar("")
                         val donationAmount = KVar("")
@@ -137,52 +143,58 @@ fun main() {
                                 div(fomantic.field) {
                                     label().text("Donation Amount")
                                     val selectedDonationAmount : KVar<String?> = KVar(null)
-                                    div(fomantic.ui.buttons.three) {
-                                        val oneButton = button(fomantic.ui.button).text("5")
 
-                                        oneButton.setAttribute("class", selectedDonationAmount.map {
-                                            if (it == "5") {
-                                                "ui active button"
-                                            } else {
-                                                "ui button"
-                                            }.json
-                                        })
+                                    div(fomantic.ui.segment) {
+                                        div(fomantic.column) {
+                                            val oneButton = button(fomantic.ui.button).text("10$")
 
-                                        oneButton.on.click {
-                                            selectedDonationAmount.value = "5"
-                                            donationAmount.value = "5"
+                                            oneButton.setAttribute("class", selectedDonationAmount.map {
+                                                if (it == "10$") {
+                                                    "ui active button"
+                                                } else {
+                                                    "ui button"
+                                                }.json
+                                            })
+
+                                            oneButton.on.click {
+                                                selectedDonationAmount.value = "10"
+                                                donationAmount.value = "10"
+                                            }
                                         }
-
-                                        val twoButton = button(fomantic.ui.button).text("10")
-                                        twoButton.setAttribute("class", selectedDonationAmount.map {
-                                            if (it == "10") {
-                                                "ui active button"
-                                            } else {
-                                                "ui button"
-                                            }.json
-                                        })
-                                        twoButton.on.click {
-                                            selectedDonationAmount.value = "10"
-                                            donationAmount.value = "10"
+                                        div(fomantic.column) {
+                                            val twoButton = button(fomantic.ui.button).text("20$")
+                                            twoButton.setAttribute("class", selectedDonationAmount.map {
+                                                if (it == "20$") {
+                                                    "ui active button"
+                                                } else {
+                                                    "ui button"
+                                                }.json
+                                            })
+                                            twoButton.on.click {
+                                                selectedDonationAmount.value = "20"
+                                                donationAmount.value = "20"
+                                            }
                                         }
-
-                                        val threeButton = button(fomantic.ui.button).text("20")
-                                        threeButton.on.click {
-                                            selectedDonationAmount.value = "20"
-                                            donationAmount.value = "20"
+                                        div(fomantic.column) {
+                                            val threeButton = button(fomantic.ui.button).text("40$")
+                                            threeButton.on.click {
+                                                selectedDonationAmount.value = "40"
+                                                donationAmount.value = "40"
+                                            }
+                                            threeButton.setAttribute("class", selectedDonationAmount.map {
+                                                if (it == "40$") {
+                                                    "ui active button"
+                                                } else {
+                                                    "ui button"
+                                                }.json
+                                            })
                                         }
-                                        threeButton.setAttribute("class", selectedDonationAmount.map {
-                                            if (it == "20") {
-                                                "ui active button"
-                                            } else {
-                                                "ui button"
-                                            }.json
-                                        })
-                                    }
+                                    }.classes("ui three column center aligned grid")
+
                                     div(fomantic.ui.right.labeled.input) {
                                         val dollarSignLabel = label(fomantic.ui.label).text("$")
                                         dollarSignLabel.setAttribute("for", "donationInput")
-                                        val donationInput = input(type = InputType.text, placeholder = "5.00",
+                                        val donationInput = input(type = InputType.text, placeholder = "10",
                                             attributes = mapOf("id" to "donationInput".json))
                                         div(fomantic.ui.basic.label).text(".00")
                                         donationInput.setValue(donationAmount)
@@ -274,10 +286,6 @@ fun ElementCreator<*>.titleBar() {
         a(fomantic.item).text("Home")
         a(fomantic.item).text("About")
     }
-}
-
-enum class InputStatus {
-    None, Available, NotAvailable
 }
 
 fun tempReserveName(username: String, referer: String?) {
