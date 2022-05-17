@@ -1,16 +1,14 @@
 // This is your test publishable API key.
 const stripe = Stripe("pk_test_51KYyh3HSi8gwBwE3JwrtL8jGGnFpcqZfewOtlQFXHYkItitRf6fNgCAUKPVsHou8tbkGxbAXm03L9ZvVPtv8JOEd00y9t7YCWm");
 
-// The items the customer wants to buy
-const userInfo = {};
 let elements;
 
-initialize();
 checkStatus();
 
 
 // Fetches a payment intent and captures the client secret
 async function initialize() {
+    const userInfo = {};
     userInfo["username"] = document.querySelector("#usernameInput").value;
     userInfo["email"] = document.querySelector("#emailInput").value;
     userInfo["donationAmount"] = document.querySelector("#donationInput").value;

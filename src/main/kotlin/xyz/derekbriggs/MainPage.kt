@@ -240,18 +240,19 @@ fun ElementCreator<*>.disableElement(elementId : String) {
     browser.callJsFunction(disableElementJs, JsonPrimitive(elementId))
 }
 fun ElementCreator<*>.renderCheckout() {
-    form(mapOf("id" to JsonPrimitive("payment-form"))) {
+    browser.callJsFunction("initialize()")
+    val paymentForm = form(mapOf("id" to JsonPrimitive("payment-form"))) {
         div(mapOf("id" to JsonPrimitive("payment-element")))
         button(mapOf("id" to JsonPrimitive("submit"))) {
             div(mapOf("id" to JsonPrimitive("spinner"))).classes("spinner hidden")
             span(mapOf("id" to JsonPrimitive("button-text"))).text("Pay Now")
-            element("script").setAttribute("src", "/static/stripeCheckout/checkout.js")
         }
         div(mapOf("id" to JsonPrimitive("payment-message"))).classes("hidden")
     }
     div(fomantic.ui.actions) {
         val cancelButton = button(fomantic.ui.button).text("cancel").on.click {
             browser.callJsFunction("$(\'.ui.modal\').modal(\'close\');")
+            paymentForm.deleteIfExists()
         }
         cancelButton.classes("ui cancel button")
     }
