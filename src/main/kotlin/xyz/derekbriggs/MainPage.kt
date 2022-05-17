@@ -49,6 +49,26 @@ fun main() {
 
         }
         doc.body {
+            //These various menus are for supporting mobile devices
+            div(fomantic.ui.large.top.fixed.menu.transition.hidden) {
+                div(fomantic.ui.container) {
+                    a(fomantic.item).text("Home")
+                    a(fomantic.item).text("About")
+                }
+            }
+
+            div(fomantic.ui.vertical.inverted.sidebar.menu.left) { //sidebar for mobile screens
+                a(fomantic.item).text("Home")
+                a(fomantic.item).text("About")
+            }
+            div(fomantic.ui.inverted.vertical.center.aligned.segment) {
+                div(fomantic.ui.container) {
+                    div(fomantic.ui.large.secondary.inverted.pointing.menu) {
+                        a(fomantic.item).text("Home")
+                        a(fomantic.item).text("About")
+                    }
+                }
+            }
             route {
 
                 path("/success") {
@@ -56,7 +76,11 @@ fun main() {
                     val payIntent = PaymentIntent.retrieve(browser.httpRequestInfo.request.call.parameters["payment_intent"])
                     val customerEmail = saveCustomer(payIntent.charges.data[0].customer)
                     saveStripePaymentDetails(payIntent.toString(), customerEmail, payIntent.metadata["username"]!!, payIntent.amount, payIntent.charges.data[0].id)
-                    h1().text("Payment successful")
+                    div(fomantic.ui.container.center.aligned) {
+                        p().text("Thank you for confirming the username ${payIntent.metadata["username"]!!}")
+                        p().text("You will receive payment receipt at $customerEmail")
+                        p().text("Follow Freenet on Twitter")
+                    }
                 }
 
                 path("/cancel") {
@@ -64,39 +88,30 @@ fun main() {
                 }
 
                 path("/") {
-                    titleBar()
-                    div(fomantic.pusher) {
-                        div(fomantic.ui.inverted.vertical.masthead.center.aligned.segment) {
-                            div(fomantic.ui.container) {
-                                div(fomantic.ui.large.secondary.inverted.pointing.menu) {
-                                    a(fomantic.item).text("Home")
-                                    a(fomantic.item).text("About")
-                                }
-                            }
-                        }
 
-                        div(fomantic.ui.text.center.aligned.container) {
-                            h1(fomantic.ui.header).setAttribute("style", """margin-top: 3em; font-size: 4em;""").text("Locutus")
-                        }
+                    div(fomantic.ui.text.center.aligned.container) {
+                        h1(fomantic.ui).setAttribute("style", """font-size: 4em;""").text("Locutus")
+                    }
 
-                        div(fomantic.ui.text.container) {
-                            val copyString = "The Internet has become increasingly centralized over the past 25 years, such that a handful of companies now effectively control the Internet infrastructure. This poses a threat to freedom of speech and democracy, as the public square is privately owned." +
-                                    "Locutus is a software platform that makes it easy to create decentralized alternatives to today's centralized tech companies. These decentralized apps will be easy to use, scalable, and secured through cryptography."
-                            val copyString2 = "Trust and identity are critical in any decentralized system. By donating to its development, you can reserve your name on Freenet and in future may be granted \"trust tokens\" and other rewards for our early supporters. Names will be fully transferrable, similar to domain names today." +
-                                    "So please donate now to help us create a more decentralized future!"
+                    div(fomantic.ui.text.container) {
+                        val copyString = "The Internet has become increasingly centralized over the past 25 years, such that a handful of companies now effectively control the Internet infrastructure. This poses a threat to freedom of speech and democracy, as the public square is privately owned." +
+                                "Locutus is a software platform that makes it easy to create decentralized alternatives to today's centralized tech companies. These decentralized apps will be easy to use, scalable, and secured through cryptography."
+                        val copyString2 = "Trust and identity are critical in any decentralized system. By donating to its development, you can reserve your name on Freenet and in future may be granted \"trust tokens\" and other rewards for our early supporters. Names will be fully transferrable, similar to domain names today." +
+                                "So please donate now to help us create a more decentralized future!"
 
-                            p().text(copyString).classes("headerText")
-                            p().text(copyString2).classes("headerText")
-                            br()
-                        }
-                        val username = KVar("")
-                        val email = KVar("")
-                        val donationAmount = KVar("")
-                        val inputStatus = KVar(InputStatus.None)
-                        val emailStatus = KVar(EmailStatus.Empty)
-                        div(fomantic.ui.grid.center.aligned) {
-                            form(fomantic.ui.form) {
-                                div(fomantic.field) {
+                        p().text(copyString).classes("headerText")
+                        p().text(copyString2).classes("headerText")
+                        br()
+                    }
+                    val username = KVar("")
+                    val email = KVar("")
+                    val donationAmount = KVar("")
+                    val inputStatus = KVar(InputStatus.None)
+                    val emailStatus = KVar(EmailStatus.Empty)
+                    div(fomantic.ui.grid.center.aligned) {
+                        form(fomantic.ui.form) {
+                            div(fomantic.field) {
+                                div(fomantic.ui.segment) {
                                     label().text("Username")
                                     div(fomantic.ui.icon.input.huge) {
                                         val usernameInput = input(type = InputType.text, placeholder = "Username", attributes = mapOf("id" to "usernameInput".json))
@@ -136,123 +151,116 @@ fun main() {
                                         }
                                     }
                                 }
-                                div(fomantic.field) {
-                                    label().text("Email")
-                                    div(fomantic.ui.icon.input.huge) {
-                                        val emailInput = input(type = InputType.email, placeholder = "Email", attributes = mapOf("id" to "emailInput".json))
-                                        emailInput.on(retrieveJs = emailInput.valueJsExpression).input { event ->
-                                            email.value = event.retrieved.jsonPrimitive.content
-                                            if (email.value.isEmpty()) {
-                                                emailStatus.value = EmailStatus.Empty
+                            }
+                            div(fomantic.field) {
+                                label().text("Email")
+                                div(fomantic.ui.icon.input.huge) {
+                                    val emailInput = input(type = InputType.email, placeholder = "Email", attributes = mapOf("id" to "emailInput".json))
+                                    emailInput.on(retrieveJs = emailInput.valueJsExpression).input { event ->
+                                        email.value = event.retrieved.jsonPrimitive.content
+                                        if (email.value.isEmpty()) {
+                                            emailStatus.value = EmailStatus.Empty
+                                        } else {
+                                            if (isValidEmail(email.value)) {
+                                                emailStatus.value = EmailStatus.Valid
                                             } else {
-                                                if (isValidEmail(email.value)) {
-                                                    emailStatus.value = EmailStatus.Valid
-                                                } else {
-                                                    emailStatus.value = EmailStatus.Invalid
-                                                }
-                                            }
-                                            render(emailStatus) {
-                                                when(it) {
-                                                    EmailStatus.Valid -> i().classes("ui green checkmark icon")
-                                                    EmailStatus.Invalid -> i().classes("ui red x icon")
-                                                    EmailStatus.Empty ->{}
-                                                }
+                                                emailStatus.value = EmailStatus.Invalid
                                             }
                                         }
-                                    }
-                                }
-                                div(fomantic.field) {
-                                    label().text("Donation Amount")
-                                    val selectedDonationAmount : KVar<String?> = KVar(null)
-
-                                    div(fomantic.ui.segment) {
-                                        div(fomantic.column) {
-                                            val oneButton = button(fomantic.ui.button).text("$10")
-
-                                            oneButton.setAttribute("class", selectedDonationAmount.map {
-                                                if (it == "$10") {
-                                                    "ui active button"
-                                                } else {
-                                                    "ui button"
-                                                }.json
-                                            })
-
-                                            oneButton.on.click {
-                                                selectedDonationAmount.value = "10"
-                                                donationAmount.value = "10"
+                                        render(emailStatus) {
+                                            when(it) {
+                                                EmailStatus.Valid -> i().classes("ui green checkmark icon")
+                                                EmailStatus.Invalid -> i().classes("ui red x icon")
+                                                EmailStatus.Empty ->{}
                                             }
                                         }
-                                        div(fomantic.column) {
-                                            val twoButton = button(fomantic.ui.button).text("$20")
-                                            twoButton.setAttribute("class", selectedDonationAmount.map {
-                                                if (it == "$20") {
-                                                    "ui active button"
-                                                } else {
-                                                    "ui button"
-                                                }.json
-                                            })
-                                            twoButton.on.click {
-                                                selectedDonationAmount.value = "20"
-                                                donationAmount.value = "20"
-                                            }
-                                        }
-                                        div(fomantic.column) {
-                                            val threeButton = button(fomantic.ui.button).text("$40")
-                                            threeButton.on.click {
-                                                selectedDonationAmount.value = "40"
-                                                donationAmount.value = "40"
-                                            }
-                                            threeButton.setAttribute("class", selectedDonationAmount.map {
-                                                if (it == "$40") {
-                                                    "ui active button"
-                                                } else {
-                                                    "ui button"
-                                                }.json
-                                            })
-                                        }
-                                    }.classes("ui three column center aligned grid")
-
-                                    div(fomantic.ui.right.labeled.input) {
-                                        val dollarSignLabel = label(fomantic.ui.label).text("$")
-                                        dollarSignLabel.setAttribute("for", "donationInput")
-                                        val donationInput = input(type = InputType.text, placeholder = "10",
-                                            attributes = mapOf("id" to "donationInput".json))
-                                        div(fomantic.ui.basic.label).text(".00")
-                                        donationInput.setValue(donationAmount)
-                                        donationInput.on.click {
-                                            selectedDonationAmount.value = null
-                                        }
-                                        donationInput.on(retrieveJs = donationInput.valueJsExpression).input { event ->
-                                            donationAmount.value = event.retrieved.jsonPrimitive.content
-                                        }
-                                    }
-                                }
-                                button(fomantic.ui.button).text("Reserve").on.click {
-                                    println(email.value)
-                                    if (isValidEmail(email.value)) {
-                                        tempReserveName(username.value, browser.httpRequestInfo.request.headers["Referer"])
-                                        val modal = div(fomantic.ui.modal) {
-                                            renderCheckout("You are reserving ${username.value} for $donationAmount.00")
-                                        }
-                                        browser.callJsFunction("$(\'#\' + {}).modal(\'show\');", modal.id.json)
-                                        println("Showing modal: ${modal.id}")
-                                    } else {
-                                        p().text("Invalid Email")
                                     }
                                 }
                             }
-                        }
+                            div(fomantic.field) {
+                                label().text("Donation Amount")
+                                val selectedDonationAmount : KVar<String?> = KVar(null)
 
+                                div(fomantic.ui.segment) {
+                                    div(fomantic.column) {
+                                        val oneButton = button(fomantic.ui.button).text("$10")
+
+                                        oneButton.setAttribute("class", selectedDonationAmount.map {
+                                            if (it == "$10") {
+                                                "ui active button"
+                                            } else {
+                                                "ui button"
+                                            }.json
+                                        })
+
+                                        oneButton.on.click {
+                                            selectedDonationAmount.value = "10"
+                                            donationAmount.value = "10"
+                                        }
+                                    }
+                                    div(fomantic.column) {
+                                        val twoButton = button(fomantic.ui.button).text("$20")
+                                        twoButton.setAttribute("class", selectedDonationAmount.map {
+                                            if (it == "$20") {
+                                                "ui active button"
+                                            } else {
+                                                "ui button"
+                                            }.json
+                                        })
+                                        twoButton.on.click {
+                                            selectedDonationAmount.value = "20"
+                                            donationAmount.value = "20"
+                                        }
+                                    }
+                                    div(fomantic.column) {
+                                        val threeButton = button(fomantic.ui.button).text("$40")
+                                        threeButton.on.click {
+                                            selectedDonationAmount.value = "40"
+                                            donationAmount.value = "40"
+                                        }
+                                        threeButton.setAttribute("class", selectedDonationAmount.map {
+                                            if (it == "$40") {
+                                                "ui active button"
+                                            } else {
+                                                "ui button"
+                                            }.json
+                                        })
+                                    }
+                                }.classes("ui three column center aligned grid")
+
+                                div(fomantic.ui.right.labeled.input) {
+                                    val dollarSignLabel = label(fomantic.ui.label).text("$")
+                                    dollarSignLabel.setAttribute("for", "donationInput")
+                                    val donationInput = input(type = InputType.text, placeholder = "10",
+                                        attributes = mapOf("id" to "donationInput".json))
+                                    div(fomantic.ui.basic.label).text(".00")
+                                    donationInput.setValue(donationAmount)
+                                    donationInput.on.click {
+                                        selectedDonationAmount.value = null
+                                    }
+                                    donationInput.on(retrieveJs = donationInput.valueJsExpression).input { event ->
+                                        donationAmount.value = event.retrieved.jsonPrimitive.content
+                                    }
+                                }
+                            }
+                            button(fomantic.ui.primary.button).text("Reserve Username").on.click {
+                                println(email.value)
+                                if (isValidEmail(email.value)) {
+                                    tempReserveName(username.value, browser.httpRequestInfo.request.headers["Referer"])
+                                    val modal = div(fomantic.ui.modal) {
+                                        renderCheckout("You are reserving ${username.value} for $donationAmount.00")
+                                    }
+                                    browser.callJsFunction("$(\'#\' + {}).modal(\'show\');", modal.id.json)
+                                    println("Showing modal: ${modal.id}")
+                                } else {
+                                    p().text("Invalid Email")
+                                }
+                            }
+                        }
                     }
                 }
-                path("/checkout") {
-                    println(browser.httpRequestInfo.request.call.request)
-                    //h1().text("Hello ${browser.httpRequestInfo.request.call.request}")
-                    //h1().text("Hello ${UserInfo.emailAddress}, you are reserving ${UserInfo.usernameToReserve} for ${UserInfo.donationAmount}")
-                    renderCheckout("")
-                }
             }
-        }.classes("pushable")
+        }
     }
 
 }
@@ -274,24 +282,6 @@ fun ElementCreator<*>.renderCheckout(confirmationText : String) {
             paymentForm.deleteIfExists()
         }
         cancelButton.classes("ui cancel button")
-    }
-}
-
-fun ElementCreator<*>.renderForm() {
-
-}
-
-fun ElementCreator<*>.titleBar() {
-    div(fomantic.ui.large.top.fixed.menu.transition.hidden) {
-        div(fomantic.ui.container) {
-            a(fomantic.item).text("Home")
-            a(fomantic.item).text("About")
-        }
-    }
-
-    div(fomantic.ui.vertical.inverted.sidebar.menu.left) { //sidebar for mobile screens
-        a(fomantic.item).text("Home")
-        a(fomantic.item).text("About")
     }
 }
 
@@ -347,9 +337,6 @@ fun saveStripePaymentDetails(stripePayIntentJson: String, email: String, usernam
     data["stripePayIntent"] = stripePayIntentJson
     data["email"] = email
     //data["ipAddress"] =
-    /*UserInfo.referer?.let {
-        data["referer"] = it
-    }*/
     data["donationAmount"] = donationAmount
     data["Stripe_transaction_id"] = transactionId
     data["paymentMethod"] = "Stripe"
