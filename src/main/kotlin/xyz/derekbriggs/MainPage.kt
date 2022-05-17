@@ -4,7 +4,6 @@ import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.firestore.FirestoreOptions
 import com.stripe.Stripe
 import com.stripe.model.Customer
-import com.stripe.model.CustomerCollection
 import com.stripe.model.PaymentIntent
 import io.ktor.util.date.*
 import kotlinx.serialization.json.JsonPrimitive
@@ -17,7 +16,6 @@ import kweb.plugins.staticFiles.StaticFilesPlugin
 import kweb.state.KVar
 import kweb.state.render
 import kweb.util.json
-import java.util.regex.Pattern
 
 const val usernameTableName = "reservedUsernames"
 const val timeToReserveName = 60 * 1000 * 15//15 minutes
@@ -30,6 +28,10 @@ val db = firestoreOptions.service
 
 enum class InputStatus {
     None, Available, NotAvailable, Invalid
+}
+
+enum class EmailStatus {
+    Empty, Valid, Invalid
 }
 
 fun main() {
@@ -89,6 +91,7 @@ fun main() {
                         val email = KVar("")
                         val donationAmount = KVar("")
                         val inputStatus = KVar(InputStatus.None)
+                        val emailStatus = KVar(EmailStatus.Empty)
                         div(fomantic.ui.grid.center.aligned) {
                             form(fomantic.ui.form) {
                                 div(fomantic.field) {
@@ -97,23 +100,22 @@ fun main() {
                                         val usernameInput = input(type = InputType.text, placeholder = "Username", attributes = mapOf("id" to "usernameInput".json))
                                         usernameInput.on(retrieveJs = usernameInput.valueJsExpression).input { event ->
                                             username.value = event.retrieved.jsonPrimitive.content
-                                            if(isNameAvailable(username.value)) {
-                                                inputStatus.value = InputStatus.Available
+                                            if (isUsernameValid(username.value)) {
+                                                if(isUsernameAvailable(username.value)) {
+                                                    inputStatus.value = InputStatus.Available
+                                                } else {
+                                                    inputStatus.value = InputStatus.NotAvailable
+                                                }
                                             } else {
-                                                inputStatus.value = InputStatus.NotAvailable
+                                                inputStatus.value = InputStatus.Invalid
                                             }
+
                                         }
                                         render(inputStatus) {
                                             when(it) {
-                                                InputStatus.None -> {
-                                                    i(fomantic.search.circular.ui.icon)
-                                                }
-                                                InputStatus.Available -> {
-                                                    i().classes("ui checkmark icon")
-                                                }
-                                                InputStatus.NotAvailable -> {
-                                                    i().classes("ui cat icon")
-                                                }
+                                                InputStatus.None -> {}
+                                                InputStatus.Available -> i().classes("ui checkmark icon")
+                                                InputStatus.NotAvailable, InputStatus.Invalid -> i().classes("ui x icon")
                                             }
                                         }
 
@@ -128,15 +130,32 @@ fun main() {
                                             InputStatus.NotAvailable -> {
                                                 p().text("Not Available") // Prettify with unicode
                                             }
+                                            InputStatus.Invalid -> p().text("Username invalid. May include numbers, letters, underscores, and hyphens")
                                         }
                                     }
                                 }
                                 div(fomantic.field) {
                                     label().text("Email")
-                                    div(fomantic.ui.input.huge) {
+                                    div(fomantic.ui.icon.input.huge) {
                                         val emailInput = input(type = InputType.email, placeholder = "Email", attributes = mapOf("id" to "emailInput".json))
                                         emailInput.on(retrieveJs = emailInput.valueJsExpression).input { event ->
                                             email.value = event.retrieved.jsonPrimitive.content
+                                            if (email.value.isEmpty()) {
+                                                emailStatus.value = EmailStatus.Empty
+                                            } else {
+                                                if (isValidEmail(email.value)) {
+                                                    emailStatus.value = EmailStatus.Valid
+                                                } else {
+                                                    emailStatus.value = EmailStatus.Invalid
+                                                }
+                                            }
+                                            render(emailStatus) {
+                                                when(it) {
+                                                    EmailStatus.Valid -> i().classes("ui checkmark icon")
+                                                    EmailStatus.Invalid -> i().classes("ui x icon")
+                                                    EmailStatus.Empty ->{}
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -236,21 +255,6 @@ fun main() {
 
 }
 
-fun isValidEmail(email : String) : Boolean {
-    val emailRegex = "^(.+)@(\\S+) \$."
-    //val emailRegex = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\\\.[A-Za-z0-9_-]+)*@" +
-                 //    "[^-][A-Za-z0-9-]+(\\\\.[A-Za-z0-9-]+)*(\\\\.[A-Za-z]{2,})\$"
-    //return (Pattern.compile(emailRegex)
-        //.matcher(email).matches())
-    return true
-}
-fun ElementCreator<*>.disableElement(elementId : String) {
-    val disableElementJs = """
-        let elementId = {};
-        document.querySelector("#" + elementId).disabled = true;
-    """.trimIndent()
-    browser.callJsFunction(disableElementJs, JsonPrimitive(elementId))
-}
 fun ElementCreator<*>.renderCheckout() {
     browser.callJsFunction("initialize()")
     val paymentForm = form(mapOf("id" to JsonPrimitive("payment-form"))) {
@@ -300,7 +304,21 @@ fun tempReserveName(username: String, referer: String?) {
     docRef.set(data)
 }
 
-fun isNameAvailable(username: String) : Boolean {
+fun isUsernameValid(username: String) : Boolean {
+    val usernameRegex = "^[A-Za-z][A-Za-z0-9_]{7,29}\$"
+    val isValid = username.matches(usernameRegex.toRegex())
+    println("Username $username is $isValid")
+    return isValid
+}
+
+fun isValidEmail(email : String) : Boolean {
+    val emailRegex ="""^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})${'$'}"""
+    val isValid = email.matches(emailRegex.toRegex())
+    println("email $email is $isValid")
+    return isValid
+}
+
+fun isUsernameAvailable(username: String) : Boolean {
     val usernameCollection = db.collection(usernameTableName)
     val query = usernameCollection.whereEqualTo("lowercaseUsername", username.lowercase())
     val querySnapshot = query.get()
