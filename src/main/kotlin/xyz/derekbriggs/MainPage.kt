@@ -73,8 +73,10 @@ fun main() {
                                     a(fomantic.item).text("About")
                                 }
                             }
-                            h1(fomantic.ui.header).setAttribute("style", """margin-top: 3em; font-size: 4em;""").text("Locutus")
+                        }
 
+                        div(fomantic.ui.text.center.aligned.container) {
+                            h1(fomantic.ui.header).setAttribute("style", """margin-top: 3em; font-size: 4em;""").text("Locutus")
                         }
 
                         div(fomantic.ui.text.container) {
@@ -114,8 +116,8 @@ fun main() {
                                         render(inputStatus) {
                                             when(it) {
                                                 InputStatus.None -> {}
-                                                InputStatus.Available -> i().classes("ui checkmark icon")
-                                                InputStatus.NotAvailable, InputStatus.Invalid -> i().classes("ui x icon")
+                                                InputStatus.Available -> i().classes("ui green checkmark icon")
+                                                InputStatus.NotAvailable, InputStatus.Invalid -> i().classes("ui red x icon")
                                             }
                                         }
 
@@ -151,8 +153,8 @@ fun main() {
                                             }
                                             render(emailStatus) {
                                                 when(it) {
-                                                    EmailStatus.Valid -> i().classes("ui checkmark icon")
-                                                    EmailStatus.Invalid -> i().classes("ui x icon")
+                                                    EmailStatus.Valid -> i().classes("ui green checkmark icon")
+                                                    EmailStatus.Invalid -> i().classes("ui red x icon")
                                                     EmailStatus.Empty ->{}
                                                 }
                                             }
@@ -165,10 +167,10 @@ fun main() {
 
                                     div(fomantic.ui.segment) {
                                         div(fomantic.column) {
-                                            val oneButton = button(fomantic.ui.button).text("10$")
+                                            val oneButton = button(fomantic.ui.button).text("$10")
 
                                             oneButton.setAttribute("class", selectedDonationAmount.map {
-                                                if (it == "10$") {
+                                                if (it == "$10") {
                                                     "ui active button"
                                                 } else {
                                                     "ui button"
@@ -181,9 +183,9 @@ fun main() {
                                             }
                                         }
                                         div(fomantic.column) {
-                                            val twoButton = button(fomantic.ui.button).text("20$")
+                                            val twoButton = button(fomantic.ui.button).text("$20")
                                             twoButton.setAttribute("class", selectedDonationAmount.map {
-                                                if (it == "20$") {
+                                                if (it == "$20") {
                                                     "ui active button"
                                                 } else {
                                                     "ui button"
@@ -195,13 +197,13 @@ fun main() {
                                             }
                                         }
                                         div(fomantic.column) {
-                                            val threeButton = button(fomantic.ui.button).text("40$")
+                                            val threeButton = button(fomantic.ui.button).text("$40")
                                             threeButton.on.click {
                                                 selectedDonationAmount.value = "40"
                                                 donationAmount.value = "40"
                                             }
                                             threeButton.setAttribute("class", selectedDonationAmount.map {
-                                                if (it == "40$") {
+                                                if (it == "$40") {
                                                     "ui active button"
                                                 } else {
                                                     "ui button"
@@ -230,7 +232,7 @@ fun main() {
                                     if (isValidEmail(email.value)) {
                                         tempReserveName(username.value, browser.httpRequestInfo.request.headers["Referer"])
                                         val modal = div(fomantic.ui.modal) {
-                                            renderCheckout()
+                                            renderCheckout("You are reserving ${username.value} for $donationAmount.00")
                                         }
                                         browser.callJsFunction("$(\'#\' + {}).modal(\'show\');", modal.id.json)
                                         println("Showing modal: ${modal.id}")
@@ -247,7 +249,7 @@ fun main() {
                     println(browser.httpRequestInfo.request.call.request)
                     //h1().text("Hello ${browser.httpRequestInfo.request.call.request}")
                     //h1().text("Hello ${UserInfo.emailAddress}, you are reserving ${UserInfo.usernameToReserve} for ${UserInfo.donationAmount}")
-                    renderCheckout()
+                    renderCheckout("")
                 }
             }
         }.classes("pushable")
@@ -255,8 +257,9 @@ fun main() {
 
 }
 
-fun ElementCreator<*>.renderCheckout() {
+fun ElementCreator<*>.renderCheckout(confirmationText : String) {
     browser.callJsFunction("initialize()")
+    p().text(confirmationText)
     val paymentForm = form(mapOf("id" to JsonPrimitive("payment-form"))) {
         div(mapOf("id" to JsonPrimitive("payment-element")))
         button(mapOf("id" to JsonPrimitive("submit"))) {
@@ -305,7 +308,7 @@ fun tempReserveName(username: String, referer: String?) {
 }
 
 fun isUsernameValid(username: String) : Boolean {
-    val usernameRegex = "^[A-Za-z][A-Za-z0-9_]{7,29}\$"
+    val usernameRegex = "^[A-Za-z][A-Za-z0-9_\\.]{1,29}\$"
     val isValid = username.matches(usernameRegex.toRegex())
     println("Username $username is $isValid")
     return isValid
