@@ -50,7 +50,7 @@ fun main() {
         }
         doc.body {
             //These various menus are for supporting mobile devices
-            div(fomantic.ui.large.top.fixed.menu.transition.hidden) {
+            /*div(fomantic.ui.large.top.fixed.menu.transition.hidden) {
                 div(fomantic.ui.container) {
                     a(fomantic.item).text("Home")
                     a(fomantic.item).text("About")
@@ -61,7 +61,7 @@ fun main() {
                 a(fomantic.item).text("Home")
                 a(fomantic.item).text("About")
             }
-            div(fomantic.ui.inverted.vertical.center.aligned.segment) {
+            val menuBar = div(fomantic.ui.inverted.vertical.center.aligned.segment) {
                 div(fomantic.ui.container) {
                     div(fomantic.ui.large.secondary.inverted.pointing.menu) {
                         a(fomantic.item).text("Home")
@@ -69,6 +69,7 @@ fun main() {
                     }
                 }
             }
+            menuBar.setAttribute("id", "menuBar")*/
             route {
 
                 path("/success") {
@@ -108,47 +109,52 @@ fun main() {
                     val donationAmount = KVar("")
                     val inputStatus = KVar(InputStatus.None)
                     val emailStatus = KVar(EmailStatus.Empty)
+                    var minimumDonationAmount = username.map{username ->
+                        getMinimumDonationAmount(username)
+                    }
                     div(fomantic.ui.grid.center.aligned) {
                         form(fomantic.ui.form) {
                             div(fomantic.field) {
-                                div(fomantic.ui.segment) {
-                                    label().text("Username")
-                                    div(fomantic.ui.icon.input.huge) {
-                                        val usernameInput = input(type = InputType.text, placeholder = "Username", attributes = mapOf("id" to "usernameInput".json))
-                                        usernameInput.on(retrieveJs = usernameInput.valueJsExpression).input { event ->
-                                            username.value = event.retrieved.jsonPrimitive.content
-                                            if (isUsernameValid(username.value)) {
-                                                if(isUsernameAvailable(username.value)) {
-                                                    inputStatus.value = InputStatus.Available
-                                                } else {
-                                                    inputStatus.value = InputStatus.NotAvailable
-                                                }
+                                label().text("Username")
+                                div(fomantic.ui.icon.input.huge) {
+                                    val usernameInput = input(type = InputType.text, placeholder = "Username", attributes = mapOf("id" to "usernameInput".json))
+                                    usernameInput.on(retrieveJs = usernameInput.valueJsExpression).input { event ->
+                                        username.value = event.retrieved.jsonPrimitive.content
+                                        if (isUsernameValid(username.value)) {
+                                            if(isUsernameAvailable(username.value)) {
+                                                inputStatus.value = InputStatus.Available
                                             } else {
-                                                inputStatus.value = InputStatus.Invalid
+                                                inputStatus.value = InputStatus.NotAvailable
                                             }
-
-                                        }
-                                        render(inputStatus) {
-                                            when(it) {
-                                                InputStatus.None -> {}
-                                                InputStatus.Available -> i().classes("ui green checkmark icon")
-                                                InputStatus.NotAvailable, InputStatus.Invalid -> i().classes("ui red x icon")
+                                        } else {
+                                            if (username.value.isEmpty()) {
+                                                inputStatus.value = InputStatus.None
                                             }
+                                            inputStatus.value = InputStatus.Invalid
                                         }
 
                                     }
-                                    render(inputStatus) { inputStatus ->
-                                        when(inputStatus) {
+                                    render(inputStatus) {
+                                        when(it) {
                                             InputStatus.None -> {}
-                                            InputStatus.Available -> {
-                                                p().text("Available") // Prettify with unicode
-                                                // Possibly specify minimum-donation given username length
-                                            }
-                                            InputStatus.NotAvailable -> {
-                                                p().text("Not Available") // Prettify with unicode
-                                            }
-                                            InputStatus.Invalid -> p().text("Username invalid. May include numbers, letters, underscores, and hyphens")
+                                            InputStatus.Available -> i().classes("ui green checkmark icon")
+                                            InputStatus.NotAvailable, InputStatus.Invalid -> i().classes("ui red x icon")
                                         }
+                                    }
+
+                                }
+                                render(inputStatus) { inputStatus ->
+                                    when(inputStatus) {
+                                        InputStatus.None -> {}
+                                        InputStatus.Available -> {
+                                            p().text(minimumDonationAmount.map { "Username Available. Minimum Donation Amount: " })
+                                        //p().text("Username Available. Minimum Donation Amount: \$${minimumDonationAmount.value}") // Prettify with unicode
+                                            // Possibly specify minimum-donation given username length
+                                        }
+                                        InputStatus.NotAvailable -> {
+                                            p().text("Username Not Available") // Prettify with unicode
+                                        }
+                                        InputStatus.Invalid -> p().text("Username invalid. May include numbers, letters, underscores, and hyphens")
                                     }
                                 }
                             }
@@ -187,9 +193,9 @@ fun main() {
 
                                         oneButton.setAttribute("class", selectedDonationAmount.map {
                                             if (it == "$10") {
-                                                "ui active button"
+                                                "ui active green button"
                                             } else {
-                                                "ui button"
+                                                "ui green button"
                                             }.json
                                         })
 
@@ -202,9 +208,9 @@ fun main() {
                                         val twoButton = button(fomantic.ui.button).text("$20")
                                         twoButton.setAttribute("class", selectedDonationAmount.map {
                                             if (it == "$20") {
-                                                "ui active button"
+                                                "ui active green button"
                                             } else {
-                                                "ui button"
+                                                "ui green button"
                                             }.json
                                         })
                                         twoButton.on.click {
@@ -220,16 +226,16 @@ fun main() {
                                         }
                                         threeButton.setAttribute("class", selectedDonationAmount.map {
                                             if (it == "$40") {
-                                                "ui active button"
+                                                "ui active green button"
                                             } else {
-                                                "ui button"
+                                                "ui green button"
                                             }.json
                                         })
                                     }
                                 }.classes("ui three column center aligned grid")
 
                                 div(fomantic.ui.right.labeled.input) {
-                                    val dollarSignLabel = label(fomantic.ui.label).text("$")
+                                    val dollarSignLabel = label(fomantic.ui.label.green).text("$")
                                     dollarSignLabel.setAttribute("for", "donationInput")
                                     val donationInput = input(type = InputType.text, placeholder = "10",
                                         attributes = mapOf("id" to "donationInput".json))
@@ -284,6 +290,19 @@ fun ElementCreator<*>.renderCheckout(confirmationText : String) {
         cancelButton.classes("ui cancel button")
     }
 }
+
+fun getMinimumDonationAmount(username: String) : Int{
+    return when(username.length) {
+        2 -> 200
+        3 -> 150
+        4 -> 100
+        5 -> 80
+        6 -> 60
+        7 -> 45
+        else -> 20
+    }
+}
+
 
 fun tempReserveName(username: String, referer: String?) {
     val docRef = db.collection(usernameTableName).document(username)
