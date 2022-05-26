@@ -113,13 +113,13 @@ fun main() {
                     lateinit var username : KVal<String>
                     lateinit var email : KVal<String>
                     lateinit var donationAmount : KVar<String>
-                    val usernameInputStatus: KVar<InputStatus> = KVar<InputStatus>(InputStatus.None)
 
                     div(fomantic.ui.grid.center.aligned) {
                         form(fomantic.ui.form) {
                             div(fomantic.field) {
-                                label().text("Username")
+                                val usernameInputStatus: KVar<InputStatus> = KVar<InputStatus>(InputStatus.None)
 
+                                label().text("Username")
                                 div(fomantic.ui.icon.input.huge) {
                                     val usernameInput = input(type = InputType.text, placeholder = "Username", attributes = mapOf("id" to "usernameInput".json))
                                     username = usernameInput.value
@@ -167,29 +167,30 @@ fun main() {
                             div(fomantic.field) {
                                 label().text("Email")
                                 div(fomantic.ui.icon.input.huge) {
+                                    val emailInputStatus : KVar<EmailStatus> = KVar(EmailStatus.Empty)
                                     val emailInput = input(type = InputType.email, placeholder = "Email", attributes = mapOf("id" to "emailInput".json))
-                                    val email = KVar("")
-                                    val emailStatus = KVar(EmailStatus.Empty)
-
-                                    emailInput.on(retrieveJs = emailInput.valueJsExpression).input { event ->
-                                        email.value = event.retrieved.jsonPrimitive.content
-                                        if (email.value.isEmpty()) {
-                                            emailStatus.value = EmailStatus.Empty
-                                        } else {
-                                            if (isValidEmail(email.value)) {
-                                                emailStatus.value = EmailStatus.Valid
+                                    email = emailInput.value
+                                    email.addListener { _, new ->
+                                        GlobalScope.launch {
+                                            if (new.isEmpty()) {
+                                                emailInputStatus.value = EmailStatus.Empty
                                             } else {
-                                                emailStatus.value = EmailStatus.Invalid
-                                            }
-                                        }
-                                        render(emailStatus) {
-                                            when(it) {
-                                                EmailStatus.Valid -> i().classes("ui green checkmark icon")
-                                                EmailStatus.Invalid -> i().classes("ui red x icon")
-                                                EmailStatus.Empty ->{}
+                                                if (isValidEmail(new)) {
+                                                    emailInputStatus.value = EmailStatus.Valid
+                                                } else {
+                                                    emailInputStatus.value = EmailStatus.Invalid
+                                                }
                                             }
                                         }
                                     }
+                                    render(emailInputStatus) {
+                                        when(it) {
+                                            EmailStatus.Valid -> i().classes("ui green checkmark icon")
+                                            EmailStatus.Invalid -> i().classes("ui red x icon")
+                                            EmailStatus.Empty ->{}
+                                        }
+                                    }
+
                                 }
                             }
                             /*div(fomantic.field) {
