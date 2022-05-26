@@ -40,6 +40,10 @@ enum class EmailStatus {
     Empty, Valid, Invalid
 }
 
+enum class ButtonState {
+    None, One, Two, Three
+}
+
 fun main() {
 
     Stripe.apiKey = "sk_test_51KYyh3HSi8gwBwE3syIyEQK1jd1HAJfWftPyWOspGL4cP0xfUz8RWfpHiRUGEjaIoKHBojzNvJQ6E7t3pb6E1l8l0032ZZFgK7"
@@ -112,7 +116,9 @@ fun main() {
                     }
                     lateinit var username : KVal<String>
                     lateinit var email : KVal<String>
-                    lateinit var donationAmount : KVar<String>
+                    lateinit var donationAmount : KVal<String>
+                    lateinit var donationInput : InputElement
+                    val buttonState = KVar(ButtonState.None)
 
                     div(fomantic.ui.grid.center.aligned) {
                         form(fomantic.ui.form) {
@@ -193,83 +199,81 @@ fun main() {
 
                                 }
                             }
-                            /*div(fomantic.field) {
+
+
+
+                            div(fomantic.field) {
                                 label().text("Donation Amount")
                                 val selectedDonationAmount : KVar<String?> = KVar(null)
 
                                 div(fomantic.ui.segment) {
                                     div(fomantic.column) {
-                                        val donationAmount = KVar("")
-
                                         val oneButton = button(fomantic.ui.button).text("$10")
 
-                                        oneButton.setAttribute("class", selectedDonationAmount.map {
-                                            if (it == "$10") {
-                                                "ui active green button"
+                                        oneButton.setAttribute("class", buttonState.map {
+                                            if (it == ButtonState.One) {
+                                                "ui active teal button"
                                             } else {
-                                                "ui green button"
+                                                "ui teal button"
                                             }.json
                                         })
 
                                         oneButton.on.click {
-                                            selectedDonationAmount.value = "10"
-                                            donationAmount.value = "10"
+                                            buttonState.value = ButtonState.One
+                                            donationInput.setValue("10")
                                         }
                                     }
                                     div(fomantic.column) {
                                         val twoButton = button(fomantic.ui.button).text("$20")
-                                        twoButton.setAttribute("class", selectedDonationAmount.map {
-                                            if (it == "$20") {
-                                                "ui active green button"
+                                        twoButton.setAttribute("class", buttonState.map {
+                                            if (it == ButtonState.Two) {
+                                                "ui active teal button"
                                             } else {
-                                                "ui green button"
+                                                "ui teal button"
                                             }.json
                                         })
                                         twoButton.on.click {
-                                            selectedDonationAmount.value = "20"
-                                            donationAmount.value = "20"
+                                            buttonState.value = ButtonState.Two
+                                            donationInput.setValue("20")
                                         }
                                     }
                                     div(fomantic.column) {
                                         val threeButton = button(fomantic.ui.button).text("$40")
                                         threeButton.on.click {
-                                            selectedDonationAmount.value = "40"
-                                            donationAmount.value = "40"
+                                            buttonState.value = ButtonState.Three
+                                            donationInput.setValue("40")
                                         }
-                                        threeButton.setAttribute("class", selectedDonationAmount.map {
-                                            if (it == "$40") {
-                                                "ui active green button"
+                                        threeButton.setAttribute("class", buttonState.map {
+                                            if (it == ButtonState.Three) {
+                                                "ui active teal button"
                                             } else {
-                                                "ui green button"
+                                                "ui teal button"
                                             }.json
                                         })
                                     }
                                 }.classes("ui three column center aligned grid")
 
                                 div(fomantic.ui.right.labeled.input) {
-                                    val dollarSignLabel = label(fomantic.ui.label.green).text("$")
+                                    val dollarSignLabel = label(fomantic.ui.label.teal).text("$")
                                     dollarSignLabel.setAttribute("for", "donationInput")
-                                    val donationInput = input(type = InputType.text, placeholder = "10",
+                                    donationInput = input(type = InputType.text, placeholder = "10",
                                         attributes = mapOf("id" to "donationInput".json))
                                     div(fomantic.ui.basic.label).text(".00")
-                                    donationInput.setValue(donationAmount)
-                                    donationInput.on.click {
-                                        selectedDonationAmount.value = null
-                                    }
-                                    donationInput.on(retrieveJs = donationInput.valueJsExpression).input { event ->
-                                        donationAmount.value = event.retrieved.jsonPrimitive.content
-                                    }
+                                    donationInput.on.click { buttonState.value = ButtonState.None }
+                                    donationAmount = donationInput.value
+                                    /*donationAmount.addListener { _, new ->
+
+                                    }*/
                                 }
-                            }*/
+                            }
+
                             button(fomantic.ui.primary.button).text("Reserve Username").on.click {
-                                println(email.value)
                                 if (isValidEmail(email.value)) {
                                     tempReserveName(username.value, browser.httpRequestInfo.request.headers["Referer"])
                                     val modal = div(fomantic.ui.modal) {
                                         renderCheckout("You are reserving ${username.value} for $donationAmount.00")
                                     }
                                     browser.callJsFunction("$(\'#\' + {}).modal(\'show\');", modal.id.json)
-                                    println("Showing modal: ${modal.id}")
                                 } else {
                                     p().text("Invalid Email")
                                 }
