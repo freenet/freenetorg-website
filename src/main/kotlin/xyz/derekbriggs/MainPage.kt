@@ -111,12 +111,15 @@ fun main() {
                         br()
                     }
                     lateinit var username : KVal<String>
+                    lateinit var email : KVal<String>
+                    lateinit var donationAmount : KVar<String>
                     val usernameInputStatus: KVar<InputStatus> = KVar<InputStatus>(InputStatus.None)
 
                     div(fomantic.ui.grid.center.aligned) {
                         form(fomantic.ui.form) {
                             div(fomantic.field) {
                                 label().text("Username")
+
                                 div(fomantic.ui.icon.input.huge) {
                                     val usernameInput = input(type = InputType.text, placeholder = "Username", attributes = mapOf("id" to "usernameInput".json))
                                     username = usernameInput.value
@@ -152,40 +155,6 @@ fun main() {
                                         InputStatus.None -> {}
                                         is InputStatus.Available -> {
                                             p().text(usernameInputStatus.map { "Username Available. Minimum Donation Amount: ${(it as InputStatus.Available).minDonationAmount}" })
-                                            //p().text("Username Available. Minimum Donation Amount: \$${minimumDonationAmount.value}") // Prettify with unicode
-                                            // Possibly specify minimum-donation given username length
-                                        }
-                                        InputStatus.NotAvailable -> {
-                                            p().text("Username Not Available") // Prettify with unicode
-                                        }
-                                        InputStatus.Invalid -> p().text("Username invalid. May include numbers, letters, underscores, and hyphens")
-                                    }
-                                   /* usernameInput.on(retrieveJs = usernameInput.valueJsExpression).input { event ->
-                                        username.value = event.retrieved.jsonPrimitive.content
-                                        if (isUsernameValid(username.value)) {
-                                            if(isUsernameAvailable(username.value)) {
-                                                inputStatus.value = InputStatus.Available
-                                            } else {
-                                                inputStatus.value = InputStatus.NotAvailable
-                                            }
-                                        } else {
-                                            if (username.value.isEmpty()) {
-                                                inputStatus.value = InputStatus.None
-                                            }
-                                            inputStatus.value = InputStatus.Invalid
-                                        }
-
-                                    } */
-
-
-                                }
-                                render(inputStatus) { inputStatus ->
-                                    when(inputStatus) {
-                                        InputStatus.None -> {}
-                                        InputStatus.Available -> {
-                                            p().text(minimumDonationAmount.map { "Username Available. Minimum Donation Amount: " })
-                                        //p().text("Username Available. Minimum Donation Amount: \$${minimumDonationAmount.value}") // Prettify with unicode
-                                            // Possibly specify minimum-donation given username length
                                         }
                                         InputStatus.NotAvailable -> {
                                             p().text("Username Not Available") // Prettify with unicode
@@ -193,6 +162,7 @@ fun main() {
                                         InputStatus.Invalid -> p().text("Username invalid. May include numbers, letters, underscores, and hyphens")
                                     }
                                 }
+
                             }
                             div(fomantic.field) {
                                 label().text("Email")
@@ -222,7 +192,7 @@ fun main() {
                                     }
                                 }
                             }
-                            div(fomantic.field) {
+                            /*div(fomantic.field) {
                                 label().text("Donation Amount")
                                 val selectedDonationAmount : KVar<String?> = KVar(null)
 
@@ -289,7 +259,7 @@ fun main() {
                                         donationAmount.value = event.retrieved.jsonPrimitive.content
                                     }
                                 }
-                            }
+                            }*/
                             button(fomantic.ui.primary.button).text("Reserve Username").on.click {
                                 println(email.value)
                                 if (isValidEmail(email.value)) {
@@ -360,14 +330,12 @@ fun tempReserveName(username: String, referer: String?) {
 fun isUsernameValid(username: String) : Boolean {
     val usernameRegex = "^[A-Za-z][A-Za-z0-9_\\.]{1,29}\$"
     val isValid = username.matches(usernameRegex.toRegex())
-    println("Username $username is $isValid")
     return isValid
 }
 
 fun isValidEmail(email : String) : Boolean {
     val emailRegex ="""^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})${'$'}"""
     val isValid = email.matches(emailRegex.toRegex())
-    println("email $email is $isValid")
     return isValid
 }
 
