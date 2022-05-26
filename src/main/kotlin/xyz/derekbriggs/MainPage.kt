@@ -44,6 +44,8 @@ enum class ButtonState {
     None, One, Two, Three
 }
 
+val donationPresets = KVar(listOf("10", "20", "40"))
+
 fun main() {
 
     Stripe.apiKey = "sk_test_51KYyh3HSi8gwBwE3syIyEQK1jd1HAJfWftPyWOspGL4cP0xfUz8RWfpHiRUGEjaIoKHBojzNvJQ6E7t3pb6E1l8l0032ZZFgK7"
@@ -205,52 +207,28 @@ fun main() {
                             div(fomantic.field) {
                                 label().text("Donation Amount")
                                 val selectedDonationAmount : KVar<String?> = KVar(null)
-
                                 div(fomantic.ui.segment) {
-                                    div(fomantic.column) {
-                                        val oneButton = button(fomantic.ui.button).text("$10")
+                                    render(donationPresets) { presets ->
+                                        for (preset in presets) {
+                                            div(fomantic.column) {
+                                                val button = button(fomantic.ui.button).text(preset)
 
-                                        oneButton.setAttribute("class", buttonState.map {
-                                            if (it == ButtonState.One) {
-                                                "ui active teal button"
-                                            } else {
-                                                "ui teal button"
-                                            }.json
-                                        })
+                                                button.setAttribute("class", selectedDonationAmount.map {
+                                                    if (it == preset) {
+                                                        "ui active teal button"
+                                                    } else {
+                                                        "ui teal button"
+                                                    }.json
+                                                })
 
-                                        oneButton.on.click {
-                                            buttonState.value = ButtonState.One
-                                            donationInput.setValue("10")
+                                                button.on.click {
+                                                    donationInput.setValue(preset)
+                                                    selectedDonationAmount.value = preset
+                                                }
+                                            }
                                         }
                                     }
-                                    div(fomantic.column) {
-                                        val twoButton = button(fomantic.ui.button).text("$20")
-                                        twoButton.setAttribute("class", buttonState.map {
-                                            if (it == ButtonState.Two) {
-                                                "ui active teal button"
-                                            } else {
-                                                "ui teal button"
-                                            }.json
-                                        })
-                                        twoButton.on.click {
-                                            buttonState.value = ButtonState.Two
-                                            donationInput.setValue("20")
-                                        }
-                                    }
-                                    div(fomantic.column) {
-                                        val threeButton = button(fomantic.ui.button).text("$40")
-                                        threeButton.on.click {
-                                            buttonState.value = ButtonState.Three
-                                            donationInput.setValue("40")
-                                        }
-                                        threeButton.setAttribute("class", buttonState.map {
-                                            if (it == ButtonState.Three) {
-                                                "ui active teal button"
-                                            } else {
-                                                "ui teal button"
-                                            }.json
-                                        })
-                                    }
+
                                 }.classes("ui three column center aligned grid")
 
                                 div(fomantic.ui.right.labeled.input) {
