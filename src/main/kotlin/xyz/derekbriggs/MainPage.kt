@@ -6,6 +6,8 @@ import com.stripe.Stripe
 import com.stripe.model.Customer
 import com.stripe.model.PaymentIntent
 import io.ktor.util.date.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonPrimitive
 import kweb.*
@@ -13,6 +15,7 @@ import kweb.plugins.fomanticUI.fomantic
 import kweb.plugins.fomanticUI.fomanticUIPlugin
 import kweb.plugins.staticFiles.ResourceFolder
 import kweb.plugins.staticFiles.StaticFilesPlugin
+import kweb.state.KVal
 import kweb.state.KVar
 import kweb.state.render
 import kweb.util.json
@@ -26,8 +29,11 @@ val firestoreOptions = FirestoreOptions.getDefaultInstance().toBuilder()
     .build()
 val db = firestoreOptions.service
 
-enum class InputStatus {
-    None, Available, NotAvailable, Invalid
+sealed class InputStatus {
+    object None : InputStatus()
+    class Available(val minDonationAmount : Int) : InputStatus()
+    object NotAvailable : InputStatus()
+    object Invalid : InputStatus()
 }
 
 enum class EmailStatus {
@@ -104,21 +110,57 @@ fun main() {
                         p().text(copyString2).classes("headerText")
                         br()
                     }
-                    val username = KVar("")
-                    val email = KVar("")
-                    val donationAmount = KVar("")
-                    val inputStatus = KVar(InputStatus.None)
-                    val emailStatus = KVar(EmailStatus.Empty)
-                    var minimumDonationAmount = username.map{username ->
-                        getMinimumDonationAmount(username)
-                    }
+                    lateinit var username : KVal<String>
+                    val usernameInputStatus: KVar<InputStatus> = KVar<InputStatus>(InputStatus.None)
+
                     div(fomantic.ui.grid.center.aligned) {
                         form(fomantic.ui.form) {
                             div(fomantic.field) {
                                 label().text("Username")
                                 div(fomantic.ui.icon.input.huge) {
                                     val usernameInput = input(type = InputType.text, placeholder = "Username", attributes = mapOf("id" to "usernameInput".json))
-                                    usernameInput.on(retrieveJs = usernameInput.valueJsExpression).input { event ->
+                                    username = usernameInput.value
+                                    username.addListener { old, new -> println("username $old -> $new") }
+                                    username.addListener { _, new ->
+                                        GlobalScope.launch {
+                                            if (isUsernameValid(new)) {
+                                                if (isUsernameAvailable(new)) {
+                                                    usernameInputStatus.value = InputStatus.Available(
+                                                        minDonationAmount = getMinimumDonationAmount(new)
+                                                    )
+                                                } else {
+                                                    usernameInputStatus.value = InputStatus.NotAvailable
+                                                }
+                                            } else {
+                                                usernameInputStatus.value = InputStatus.Invalid
+                                            }
+                                        }
+                                    }
+
+                                    render(usernameInputStatus) {
+                                        when(it) {
+                                            InputStatus.None -> {}
+                                            is InputStatus.Available -> i().classes("ui green checkmark icon")
+                                            InputStatus.NotAvailable, InputStatus.Invalid -> i().classes("ui red x icon")
+                                        }
+                                    }
+
+                                }
+
+                                render(usernameInputStatus) { inputStatus ->
+                                    when(inputStatus) {
+                                        InputStatus.None -> {}
+                                        is InputStatus.Available -> {
+                                            p().text(usernameInputStatus.map { "Username Available. Minimum Donation Amount: ${(it as InputStatus.Available).minDonationAmount}" })
+                                            //p().text("Username Available. Minimum Donation Amount: \$${minimumDonationAmount.value}") // Prettify with unicode
+                                            // Possibly specify minimum-donation given username length
+                                        }
+                                        InputStatus.NotAvailable -> {
+                                            p().text("Username Not Available") // Prettify with unicode
+                                        }
+                                        InputStatus.Invalid -> p().text("Username invalid. May include numbers, letters, underscores, and hyphens")
+                                    }
+                                   /* usernameInput.on(retrieveJs = usernameInput.valueJsExpression).input { event ->
                                         username.value = event.retrieved.jsonPrimitive.content
                                         if (isUsernameValid(username.value)) {
                                             if(isUsernameAvailable(username.value)) {
@@ -133,14 +175,8 @@ fun main() {
                                             inputStatus.value = InputStatus.Invalid
                                         }
 
-                                    }
-                                    render(inputStatus) {
-                                        when(it) {
-                                            InputStatus.None -> {}
-                                            InputStatus.Available -> i().classes("ui green checkmark icon")
-                                            InputStatus.NotAvailable, InputStatus.Invalid -> i().classes("ui red x icon")
-                                        }
-                                    }
+                                    } */
+
 
                                 }
                                 render(inputStatus) { inputStatus ->
@@ -162,6 +198,9 @@ fun main() {
                                 label().text("Email")
                                 div(fomantic.ui.icon.input.huge) {
                                     val emailInput = input(type = InputType.email, placeholder = "Email", attributes = mapOf("id" to "emailInput".json))
+                                    val email = KVar("")
+                                    val emailStatus = KVar(EmailStatus.Empty)
+
                                     emailInput.on(retrieveJs = emailInput.valueJsExpression).input { event ->
                                         email.value = event.retrieved.jsonPrimitive.content
                                         if (email.value.isEmpty()) {
@@ -189,6 +228,8 @@ fun main() {
 
                                 div(fomantic.ui.segment) {
                                     div(fomantic.column) {
+                                        val donationAmount = KVar("")
+
                                         val oneButton = button(fomantic.ui.button).text("$10")
 
                                         oneButton.setAttribute("class", selectedDonationAmount.map {
