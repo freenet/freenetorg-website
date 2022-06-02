@@ -224,13 +224,18 @@ fun main() {
                                         div(fomantic.ui.labeled.tiny.input.fluid) {
                                             val dollarSignLabel = label(fomantic.ui.label.teal).text("$")
                                             dollarSignLabel.setAttribute("for", "donationInput")
-                                            donationInput = input(type= InputType.number, placeholder = "Custom",
+                                            donationInput = input(type= InputType.text, placeholder = "Custom",
                                                 attributes = mapOf("id" to "donationInput".json))
                                             donationInput.on.click { selectedDonationAmount.value = "" }
                                             donationAmount = donationInput.value
                                             /*donationAmount.addListener { _, new ->
 
                                             }*/
+                                        }
+                                        span() {
+                                            render(donationAmount) {
+                                                p().text("DonationAmount: ${donationAmount.value}")
+                                            }
                                         }
                                     }
 
@@ -241,7 +246,7 @@ fun main() {
                                 if (isValidEmail(email.value)) {
                                     tempReserveName(username.value, browser.httpRequestInfo.request.headers["Referer"])
                                     val modal = div(fomantic.ui.modal) {
-                                        renderCheckout("You are reserving ${username.value} for $donationAmount.00")
+                                        renderCheckout("You are reserving the username \"${username.value}\" for \$${donationAmount.value}.00")
                                     }
                                     browser.callJsFunction("$(\'#\' + {}).modal(\'show\');", modal.id.json)
                                 } else {
@@ -259,14 +264,22 @@ fun main() {
 
 fun ElementCreator<*>.renderCheckout(confirmationText : String) {
     browser.callJsFunction("initialize()")
-    p().text(confirmationText)
-    val paymentForm = form(mapOf("id" to JsonPrimitive("payment-form"))) {
-        div(mapOf("id" to JsonPrimitive("payment-element")))
-        button(mapOf("id" to JsonPrimitive("submit"))) {
-            div(mapOf("id" to JsonPrimitive("spinner"))).classes("spinner hidden")
-            span(mapOf("id" to JsonPrimitive("button-text"))).text("Pay Now")
+    lateinit var paymentForm : FormElement
+    div(fomantic.ui.segment.center.aligned) {
+        p().text(confirmationText)
+    }
+    div(fomantic.ui.grid.center.aligned) {
+        paymentForm = form(mapOf("id" to JsonPrimitive("payment-form"))) {
+            div(mapOf("id" to JsonPrimitive("payment-element")))
+            button(mapOf("id" to JsonPrimitive("submit"))) {
+                div(mapOf("id" to JsonPrimitive("spinner"))).classes("spinner hidden")
+                span(mapOf("id" to JsonPrimitive("button-text"))).text("Pay Now")
+            }
+            div(mapOf("id" to JsonPrimitive("payment-message"))).classes("hidden")
         }
-        div(mapOf("id" to JsonPrimitive("payment-message"))).classes("hidden")
+    }
+    div(fomantic.ui.container.center.aligned) {
+        p().text("Some text explaining that this is a secure transaction through stripe and not to worry about their credit card details")
     }
     div(fomantic.ui.actions) {
         val cancelButton = button(fomantic.ui.button).text("cancel").on.click {
