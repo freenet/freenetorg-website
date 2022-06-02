@@ -1,6 +1,6 @@
-body {
+/*body {
     background-color: #f2f2f2;
-}
+}*/
 
 .headerText {
     text-indent: 5%;
@@ -16,6 +16,10 @@ body {
     background-color: #658832;
 }
 
-.donationButtons {
-    background-color: #8a9a87 !important;
+.donationButton {
+
+}
+
+.rMStart {
+    display: none;
 }

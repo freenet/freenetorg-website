@@ -40,10 +40,6 @@ enum class EmailStatus {
     Empty, Valid, Invalid
 }
 
-enum class ButtonState {
-    None, One, Two, Three
-}
-
 val donationPresets = KVar(listOf("10", "20", "40"))
 
 fun main() {
@@ -120,7 +116,6 @@ fun main() {
                     lateinit var email : KVal<String>
                     lateinit var donationAmount : KVal<String>
                     lateinit var donationInput : InputElement
-                    val buttonState = KVar(ButtonState.None)
 
                     div(fomantic.ui.grid.center.aligned) {
                         form(fomantic.ui.form) {
@@ -131,7 +126,6 @@ fun main() {
                                 div(fomantic.ui.icon.input.huge) {
                                     val usernameInput = input(type = InputType.text, placeholder = "Username", attributes = mapOf("id" to "usernameInput".json))
                                     username = usernameInput.value
-                                    username.addListener { old, new -> println("username $old -> $new") }
                                     username.addListener { _, new ->
                                         GlobalScope.launch {
                                             if (isUsernameValid(new)) {
@@ -165,7 +159,7 @@ fun main() {
                                             p().text(usernameInputStatus.map { "Username Available. Minimum Donation Amount: ${(it as InputStatus.Available).minDonationAmount}" })
                                         }
                                         InputStatus.NotAvailable -> {
-                                            p().text("Username Not Available") // Prettify with unicode
+                                            p().text("Username Not Available")
                                         }
                                         InputStatus.Invalid -> p().text("Username invalid. May include numbers, letters, underscores, and hyphens")
                                     }
@@ -202,22 +196,20 @@ fun main() {
                                 }
                             }
 
-
-
                             div(fomantic.field) {
                                 label().text("Donation Amount")
                                 val selectedDonationAmount : KVar<String?> = KVar(null)
-                                div(fomantic.ui.segment) {
+                                div(fomantic.ui.grid.container) {
                                     render(donationPresets) { presets ->
                                         for (preset in presets) {
-                                            div(fomantic.column) {
-                                                val button = button(fomantic.ui.button).text(preset)
+                                            div(fomantic.four.wide.column) {
+                                                val button = button().text("\$$preset")
 
                                                 button.setAttribute("class", selectedDonationAmount.map {
                                                     if (it == preset) {
-                                                        "ui active teal button"
+                                                        "ui active teal tiny fluid basic button donationButton"
                                                     } else {
-                                                        "ui teal button"
+                                                        "ui teal tiny fluid basic button donationButton"
                                                     }.json
                                                 })
 
@@ -228,21 +220,21 @@ fun main() {
                                             }
                                         }
                                     }
+                                    div(fomantic.four.wide.column) {
+                                        div(fomantic.ui.labeled.tiny.input.fluid) {
+                                            val dollarSignLabel = label(fomantic.ui.label.teal).text("$")
+                                            dollarSignLabel.setAttribute("for", "donationInput")
+                                            donationInput = input(type= InputType.number, placeholder = "Custom",
+                                                attributes = mapOf("id" to "donationInput".json))
+                                            donationInput.on.click { selectedDonationAmount.value = "" }
+                                            donationAmount = donationInput.value
+                                            /*donationAmount.addListener { _, new ->
 
-                                }.classes("ui three column center aligned grid")
+                                            }*/
+                                        }
+                                    }
 
-                                div(fomantic.ui.right.labeled.input) {
-                                    val dollarSignLabel = label(fomantic.ui.label.teal).text("$")
-                                    dollarSignLabel.setAttribute("for", "donationInput")
-                                    donationInput = input(type = InputType.text, placeholder = "10",
-                                        attributes = mapOf("id" to "donationInput".json))
-                                    div(fomantic.ui.basic.label).text(".00")
-                                    donationInput.on.click { buttonState.value = ButtonState.None }
-                                    donationAmount = donationInput.value
-                                    /*donationAmount.addListener { _, new ->
-
-                                    }*/
-                                }
+                                }.classes("ui four column center aligned grid")
                             }
 
                             button(fomantic.ui.primary.button).text("Reserve Username").on.click {
