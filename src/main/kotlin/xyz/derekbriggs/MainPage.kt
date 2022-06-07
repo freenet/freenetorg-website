@@ -9,7 +9,6 @@ import io.ktor.util.date.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.JsonPrimitive
-import kotlinx.serialization.json.jsonPrimitive
 import kweb.*
 import kweb.plugins.fomanticUI.fomantic
 import kweb.plugins.fomanticUI.fomanticUIPlugin
@@ -114,7 +113,7 @@ fun main() {
                     }
                     lateinit var username : KVal<String>
                     lateinit var email : KVal<String>
-                    val selectedDonationAmount : KVar<String?> = KVar(null)
+                    var selectedDonationAmount : KVar<String> = KVar("")
                     lateinit var donationInput : InputElement
 
                     div(fomantic.ui.grid.center.aligned) {
@@ -225,11 +224,7 @@ fun main() {
                                             dollarSignLabel.setAttribute("for", "donationInput")
                                             donationInput = input(type= InputType.text, placeholder = "Custom",
                                                 attributes = mapOf("id" to "donationInput".json))
-                                            donationInput.on.click { selectedDonationAmount.value = "" }
-                                            donationAmount = donationInput.value
-                                            /*donationAmount.addListener { _, new ->
-
-                                            }*/
+                                            selectedDonationAmount = donationInput.value
                                         }
                                         span() {
                                             render(selectedDonationAmount) {
