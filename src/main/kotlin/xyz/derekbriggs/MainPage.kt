@@ -204,15 +204,15 @@ fun main() {
                                     render(donationPresets) { presets ->
                                         for (preset in presets) {
                                             div(fomantic.four.wide.column) {
-                                                val button = button().text("\$$preset")
+                                                val button = button(fomantic.ui.tiny.fluid.button).text("\$$preset")
 
-                                                button.setAttribute("class", selectedDonationAmount.map {
+                                                /*button.setAttribute("class", selectedDonationAmount.map {
                                                     if (it == preset) {
-                                                        "ui active teal tiny fluid basic button donationButton"
+                                                        "ui active tiny fluid basic button donationButton"
                                                     } else {
-                                                        "ui teal tiny fluid basic button donationButton"
+                                                        "ui tiny fluid basic button donationButton"
                                                     }.json
-                                                })
+                                                })*/
 
                                                 button.on.click {
                                                     donationInput.setValue(preset)
@@ -223,16 +223,11 @@ fun main() {
                                     }
                                     div(fomantic.four.wide.column) {
                                         div(fomantic.ui.labeled.tiny.input.fluid) {
-                                            val dollarSignLabel = label(fomantic.ui.label.teal).text("$")
+                                            val dollarSignLabel = label(fomantic.ui.label).text("$")
                                             dollarSignLabel.setAttribute("for", "donationInput")
                                             donationInput = input(type= InputType.text, placeholder = "Custom",
                                                 attributes = mapOf("id" to "donationInput".json))
                                             selectedDonationAmount = donationInput.value
-                                        }
-                                        span() {
-                                            render(selectedDonationAmount) {
-                                                p().text("DonationAmount: ${selectedDonationAmount.value}")
-                                            }
                                         }
                                     }
 
