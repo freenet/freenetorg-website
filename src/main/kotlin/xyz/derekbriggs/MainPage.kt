@@ -114,7 +114,7 @@ fun main() {
                     }
                     lateinit var username : KVal<String>
                     lateinit var email : KVal<String>
-                    lateinit var donationAmount : KVal<String>
+                    val selectedDonationAmount : KVar<String?> = KVar(null)
                     lateinit var donationInput : InputElement
 
                     div(fomantic.ui.grid.center.aligned) {
@@ -198,7 +198,6 @@ fun main() {
 
                             div(fomantic.field) {
                                 label().text("Donation Amount")
-                                val selectedDonationAmount : KVar<String?> = KVar(null)
                                 div(fomantic.ui.grid.container) {
                                     render(donationPresets) { presets ->
                                         for (preset in presets) {
@@ -233,8 +232,8 @@ fun main() {
                                             }*/
                                         }
                                         span() {
-                                            render(donationAmount) {
-                                                p().text("DonationAmount: ${donationAmount.value}")
+                                            render(selectedDonationAmount) {
+                                                p().text("DonationAmount: ${selectedDonationAmount.value}")
                                             }
                                         }
                                     }
@@ -246,7 +245,7 @@ fun main() {
                                 if (isValidEmail(email.value)) {
                                     tempReserveName(username.value, browser.httpRequestInfo.request.headers["Referer"])
                                     val modal = div(fomantic.ui.modal) {
-                                        renderCheckout("You are reserving the username \"${username.value}\" for \$${donationAmount.value}.00")
+                                        renderCheckout("You are reserving the username \"${username.value}\" for \$${selectedDonationAmount.value}.00")
                                     }
                                     browser.callJsFunction("$(\'#\' + {}).modal(\'show\');", modal.id.json)
                                 } else {
