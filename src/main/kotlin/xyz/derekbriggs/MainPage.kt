@@ -111,6 +111,8 @@ fun main() {
                         p().text(copyString2).classes("headerText")
                         br()
                     }
+                    val usernameInputStatus: KVar<InputStatus> = KVar(InputStatus.None)
+                    val emailInputStatus : KVar<EmailStatus> = KVar(EmailStatus.Empty)
                     lateinit var username : KVal<String>
                     lateinit var email : KVal<String>
                     var selectedDonationAmount : KVar<String> = KVar("")
@@ -119,8 +121,6 @@ fun main() {
                     div(fomantic.ui.grid.center.aligned) {
                         form(fomantic.ui.form) {
                             div(fomantic.field) {
-                                val usernameInputStatus: KVar<InputStatus> = KVar<InputStatus>(InputStatus.None)
-
                                 label().text("Username")
                                 div(fomantic.ui.icon.input.huge) {
                                     val usernameInput = input(type = InputType.text, placeholder = "Username", attributes = mapOf("id" to "usernameInput".json))
@@ -168,7 +168,6 @@ fun main() {
                             div(fomantic.field) {
                                 label().text("Email")
                                 div(fomantic.ui.icon.input.huge) {
-                                    val emailInputStatus : KVar<EmailStatus> = KVar(EmailStatus.Empty)
                                     val emailInput = input(type = InputType.email, placeholder = "Email", attributes = mapOf("id" to "emailInput".json))
                                     email = emailInput.value
                                     email.addListener { _, new ->
@@ -237,14 +236,28 @@ fun main() {
                             }
 
                             button(fomantic.ui.primary.button).text("Reserve Username").on.click {
-                                if (isValidEmail(email.value)) {
-                                    tempReserveName(username.value, browser.httpRequestInfo.request.headers["Referer"])
-                                    val modal = div(fomantic.ui.modal) {
-                                        renderCheckout("You are reserving the username \"${username.value}\" for \$${selectedDonationAmount.value}.00")
+                                println("Doing button stuff with usernameInputStatus.value = to ${usernameInputStatus.value}")
+                                when(usernameInputStatus.value) {
+                                    is InputStatus.Available -> {
+                                        if(emailInputStatus.value == EmailStatus.Valid) {
+                                            tempReserveName(username.value, browser.httpRequestInfo.request.headers["Referer"])
+                                            val modal = div(fomantic.ui.modal) {
+                                                renderCheckout("You are reserving the username \"${username.value}\" for \$${selectedDonationAmount.value}.00")
+                                            }
+                                            browser.callJsFunction("$(\'#\' + {}).modal(\'show\');", modal.id.json)
+                                        } else {
+                                            //TODO: Show toast that user has entered an invalid email
+                                            println("Invalid Email")
+                                        }
                                     }
-                                    browser.callJsFunction("$(\'#\' + {}).modal(\'show\');", modal.id.json)
-                                } else {
-                                    p().text("Invalid Email")
+                                    InputStatus.NotAvailable -> {
+                                        //TODO: Show toast that they are trying to reserve an unavailable username
+                                        println("Username not available")
+                                    }
+                                    InputStatus.Invalid, InputStatus.None -> {
+                                        //TODO: Show toast that they are trying to reserve an invalid username
+                                        println("Username invalid")
+                                    }
                                 }
                             }
                         }
