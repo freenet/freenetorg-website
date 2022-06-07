@@ -7,7 +7,9 @@ import com.stripe.model.Customer
 import com.stripe.model.PaymentIntent
 import io.ktor.util.date.*
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.JsonPrimitive
 import kweb.*
 import kweb.plugins.fomanticUI.fomantic
@@ -30,7 +32,7 @@ val db = firestoreOptions.service
 
 sealed class InputStatus {
     object None : InputStatus()
-    class Available(val minDonationAmount : Int) : InputStatus()
+    class Available(val minDonationAmount : Double) : InputStatus()
     object NotAvailable : InputStatus()
     object Invalid : InputStatus()
 }
@@ -113,6 +115,7 @@ fun main() {
                     }
                     val usernameInputStatus: KVar<InputStatus> = KVar(InputStatus.None)
                     val emailInputStatus : KVar<EmailStatus> = KVar(EmailStatus.Empty)
+                    val minimumDonationAmount : KVar<Double> = KVar(0.0)
                     lateinit var username : KVal<String>
                     lateinit var email : KVal<String>
                     var selectedDonationAmount : KVar<String> = KVar("")
@@ -132,6 +135,7 @@ fun main() {
                                                     usernameInputStatus.value = InputStatus.Available(
                                                         minDonationAmount = getMinimumDonationAmount(new)
                                                     )
+                                                    minimumDonationAmount.value = getMinimumDonationAmount(new)
                                                 } else {
                                                     usernameInputStatus.value = InputStatus.NotAvailable
                                                 }
@@ -238,13 +242,18 @@ fun main() {
                             button(fomantic.ui.primary.button).text("Reserve Username").on.click {
                                 println("Doing button stuff with usernameInputStatus.value = to ${usernameInputStatus.value}")
                                 when(usernameInputStatus.value) {
-                                    is InputStatus.Available -> {
+                                    is InputStatus.Available -> { it
                                         if(emailInputStatus.value == EmailStatus.Valid) {
-                                            tempReserveName(username.value, browser.httpRequestInfo.request.headers["Referer"])
-                                            val modal = div(fomantic.ui.modal) {
-                                                renderCheckout("You are reserving the username \"${username.value}\" for \$${selectedDonationAmount.value}.00")
+                                            if(isDonationAmountHighEnough(selectedDonationAmount.value, minimumDonationAmount.value)) {
+                                                tempReserveName(username.value, browser.httpRequestInfo.request.headers["Referer"])
+                                                val modal = div(fomantic.ui.modal) {
+                                                    renderCheckout("You are reserving the username \"${username.value}\" for \$${selectedDonationAmount.value}.00")
+                                                }
+                                                browser.callJsFunction("$(\'#\' + {}).modal(\'show\');", modal.id.json)
+                                            } else {
+                                                //TODO(): Show toast saying donation is not high enough
+                                                println("Donation Too low")
                                             }
-                                            browser.callJsFunction("$(\'#\' + {}).modal(\'show\');", modal.id.json)
                                         } else {
                                             //TODO: Show toast that user has entered an invalid email
                                             println("Invalid Email")
@@ -267,6 +276,10 @@ fun main() {
         }
     }
 
+}
+
+fun isDonationAmountHighEnough(userDonationInput: String, minDonationAmount: Double) : Boolean{
+    return userDonationInput.toDouble() >= minDonationAmount
 }
 
 fun ElementCreator<*>.renderCheckout(confirmationText : String) {
@@ -297,15 +310,15 @@ fun ElementCreator<*>.renderCheckout(confirmationText : String) {
     }
 }
 
-fun getMinimumDonationAmount(username: String) : Int{
+fun getMinimumDonationAmount(username: String) : Double{
     return when(username.length) {
-        2 -> 200
-        3 -> 150
-        4 -> 100
-        5 -> 80
-        6 -> 60
-        7 -> 45
-        else -> 20
+        2 -> 200.0
+        3 -> 150.0
+        4 -> 100.0
+        5 -> 80.0
+        6 -> 60.0
+        7 -> 45.0
+        else -> 20.0
     }
 }
 
@@ -323,13 +336,13 @@ fun tempReserveName(username: String, referer: String?) {
 }
 
 fun isUsernameValid(username: String) : Boolean {
-    val usernameRegex = "^[A-Za-z][A-Za-z0-9_\\.]{1,29}\$"
+    val usernameRegex = "^[A-Za-z][A-Za-z0-9_.]{1,29}\$"
     val isValid = username.matches(usernameRegex.toRegex())
     return isValid
 }
 
 fun isValidEmail(email : String) : Boolean {
-    val emailRegex ="""^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})${'$'}"""
+    val emailRegex ="""^([a-zA-Z0-9_\-.]+)@([a-zA-Z0-9 \-.]+)\.([a-zA-Z]{2,5})${'$'}"""
     val isValid = email.matches(emailRegex.toRegex())
     return isValid
 }
