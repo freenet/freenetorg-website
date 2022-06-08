@@ -55,9 +55,12 @@ fun main() {
             element("link").setAttribute("rel", "stylesheet").setAttribute("href", "/static/stripeCheckout/homepage.css")
             element("script").setAttribute("src", "https://js.stripe.com/v3/")
             element("script").setAttribute("src", "/static/stripeCheckout/checkout.js")
+            element("link").setAttribute("rel", "stylesheet").setAttribute("href", "https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css")
 
         }
         doc.body {
+            element("script")
+                .setAttribute("src", "https://cdn.jsdelivr.net/npm/toastify-js")
             //These various menus are for supporting mobile devices
             /*div(fomantic.ui.large.top.fixed.menu.transition.hidden) {
                 div(fomantic.ui.container) {
@@ -199,20 +202,12 @@ fun main() {
                             }
 
                             div(fomantic.field) {
-                                label().text("Donation Amount")
-                                div(fomantic.ui.grid.container) {
+                                label().text("Pay What You Can")
+                                div(fomantic.ui.center.aligned.stackable.grid) {
                                     render(donationPresets) { presets ->
                                         for (preset in presets) {
-                                            div(fomantic.four.wide.column) {
+                                            div(fomantic.three.wide.column) {
                                                 val button = button(fomantic.ui.tiny.fluid.button).text("\$$preset")
-
-                                                /*button.setAttribute("class", selectedDonationAmount.map {
-                                                    if (it == preset) {
-                                                        "ui active tiny fluid basic button donationButton"
-                                                    } else {
-                                                        "ui tiny fluid basic button donationButton"
-                                                    }.json
-                                                })*/
 
                                                 button.on.click {
                                                     donationInput.setValue(preset)
@@ -221,7 +216,7 @@ fun main() {
                                             }
                                         }
                                     }
-                                    div(fomantic.four.wide.column) {
+                                    div(fomantic.three.wide.column) {
                                         div(fomantic.ui.labeled.tiny.input.fluid) {
                                             val dollarSignLabel = label(fomantic.ui.label).text("$")
                                             dollarSignLabel.setAttribute("for", "donationInput")
@@ -231,7 +226,7 @@ fun main() {
                                         }
                                     }
 
-                                }.classes("ui four column center aligned grid")
+                                }
                             }
 
                             button(fomantic.ui.primary.button).text("Reserve Username").on.click {
@@ -246,21 +241,17 @@ fun main() {
                                                 }
                                                 browser.callJsFunction("$(\'#\' + {}).modal(\'show\');", modal.id.json)
                                             } else {
-                                                //TODO(): Show toast saying donation is not high enough
-                                                println("Donation Too low")
+                                                showToast(browser, "Donation Too Low")
                                             }
                                         } else {
-                                            //TODO: Show toast that user has entered an invalid email
-                                            println("Invalid Email")
+                                            showToast(browser, "Invalid Email")
                                         }
                                     }
                                     InputStatus.NotAvailable -> {
-                                        //TODO: Show toast that they are trying to reserve an unavailable username
-                                        println("Username not available")
+                                        showToast(browser, "Username not available")
                                     }
                                     InputStatus.Invalid, InputStatus.None -> {
-                                        //TODO: Show toast that they are trying to reserve an invalid username
-                                        println("Username invalid")
+                                        showToast(browser, "Username invalid")
                                     }
                                 }
                             }
@@ -383,4 +374,21 @@ fun saveCustomer(stripeCustomerId: String) : String{
     data["stripeCustomerId"] = stripeCustomerId
     docRef.set(data)
     return customer.email
+}
+
+fun showToast(webBrowser: WebBrowser, message: String) {
+    webBrowser.callJsFunction(""" 
+        Toastify({
+            text: {},
+            duration: 5000,
+            close: false,
+            gravity: "bottom",
+            position: "center",
+            stopOnFocus: false,
+            style: {
+                color: "#ff0033",
+                background: "white"
+            }
+        }).showToast();
+    """.trimIndent(), message.json)
 }
