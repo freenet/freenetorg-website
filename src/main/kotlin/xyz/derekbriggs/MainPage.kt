@@ -58,27 +58,6 @@ fun main() {
 
         }
         doc.body {
-            //These various menus are for supporting mobile devices
-            /*div(fomantic.ui.large.top.fixed.menu.transition.hidden) {
-                div(fomantic.ui.container) {
-                    a(fomantic.item).text("Home")
-                    a(fomantic.item).text("About")
-                }
-            }
-
-            div(fomantic.ui.vertical.inverted.sidebar.menu.left) { //sidebar for mobile screens
-                a(fomantic.item).text("Home")
-                a(fomantic.item).text("About")
-            }
-            val menuBar = div(fomantic.ui.inverted.vertical.center.aligned.segment) {
-                div(fomantic.ui.container) {
-                    div(fomantic.ui.large.secondary.inverted.pointing.menu) {
-                        a(fomantic.item).text("Home")
-                        a(fomantic.item).text("About")
-                    }
-                }
-            }
-            menuBar.setAttribute("id", "menuBar")*/
             route {
 
                 path("/success") {
@@ -118,8 +97,7 @@ fun main() {
                     val minimumDonationAmount : KVar<Double> = KVar(0.0)
                     lateinit var username : KVal<String>
                     lateinit var email : KVal<String>
-                    var selectedDonationAmount : KVar<String> = KVar("")
-                    lateinit var donationInput : InputElement
+                    val selectedDonationAmount : KVar<String> = KVar("")
 
                     div(fomantic.ui.grid.center.aligned) {
                         form(fomantic.ui.form) {
@@ -200,31 +178,17 @@ fun main() {
 
                             div(fomantic.field) {
                                 label().text("Pay What You Can")
-                                div(fomantic.ui.center.aligned.stackable.grid) {
-                                    render(donationPresets) { presets ->
-                                        for (preset in presets) {
-                                            div(fomantic.three.wide.column) {
-                                                val button = button(fomantic.ui.tiny.fluid.button).text("\$$preset")
-
-                                                button.on.click {
-                                                    donationInput.setValue(preset)
-                                                    selectedDonationAmount.value = preset
-                                                }
-                                            }
-                                        }
+                                val donationSelection = select(attributes = mapOf("id" to "donationSelection".json)) {
+                                    val presetDonationValues = arrayOf("10", "20", "40", "80", "160")
+                                    for(preset in presetDonationValues) {
+                                        option(fomantic.item).text(preset).setAttribute("value", preset)
                                     }
-                                    div(fomantic.three.wide.column) {
-                                        div(fomantic.ui.labeled.tiny.input.fluid) {
-                                            val dollarSignLabel = label(fomantic.ui.label).text("$")
-                                            dollarSignLabel.setAttribute("for", "donationInput")
-                                            donationInput = input(type= InputType.text, placeholder = "Custom",
-                                                attributes = mapOf("id" to "donationInput".json))
-                                            selectedDonationAmount = donationInput.value
-                                        }
-                                    }
-
-                                }*/
-                            //}
+                                }
+                                donationSelection.setAttribute("class", "ui selection dropdown")
+                                donationSelection.value.addListener { old, new ->
+                                    selectedDonationAmount.value = new
+                                }
+                            }
 
                             button(fomantic.ui.primary.button).text("Reserve Username").on.click {
                                 println("Doing button stuff with usernameInputStatus.value = to ${usernameInputStatus.value}")

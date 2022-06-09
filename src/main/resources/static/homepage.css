@@ -25,6 +25,10 @@
     display: none;
 }
 
+.donationButton {
+    background-color: #0000ff;
+}
+
 .form {
     width: 35vw;
 }

@@ -11,7 +11,9 @@ async function initialize() {
     const userInfo = {};
     userInfo["username"] = document.querySelector("#usernameInput").value;
     userInfo["email"] = document.querySelector("#emailInput").value;
-    userInfo["donationAmount"] = document.querySelector("#donationInput").value;
+    //userInfo["donationAmount"] = document.querySelector("#donationAmountValue").value;
+    let donationSelection = document.getElementById("donationSelection");
+    userInfo["donationAmount"] = donationSelection.options[donationSelection.selectedIndex].text;
     const response = await fetch("/create-payment-intent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
