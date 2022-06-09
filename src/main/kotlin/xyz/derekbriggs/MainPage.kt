@@ -55,12 +55,9 @@ fun main() {
             element("link").setAttribute("rel", "stylesheet").setAttribute("href", "/static/stripeCheckout/homepage.css")
             element("script").setAttribute("src", "https://js.stripe.com/v3/")
             element("script").setAttribute("src", "/static/stripeCheckout/checkout.js")
-            element("link").setAttribute("rel", "stylesheet").setAttribute("href", "https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css")
 
         }
         doc.body {
-            element("script")
-                .setAttribute("src", "https://cdn.jsdelivr.net/npm/toastify-js")
             //These various menus are for supporting mobile devices
             /*div(fomantic.ui.large.top.fixed.menu.transition.hidden) {
                 div(fomantic.ui.container) {
@@ -226,32 +223,29 @@ fun main() {
                                         }
                                     }
 
-                                }
-                            }
+                                }*/
+                            //}
 
                             button(fomantic.ui.primary.button).text("Reserve Username").on.click {
                                 println("Doing button stuff with usernameInputStatus.value = to ${usernameInputStatus.value}")
                                 when(usernameInputStatus.value) {
                                     is InputStatus.Available -> { it
                                         if(emailInputStatus.value == EmailStatus.Valid) {
-                                            if(isDonationAmountHighEnough(selectedDonationAmount.value, minimumDonationAmount.value)) {
-                                                tempReserveName(username.value, browser.httpRequestInfo.request.headers["Referer"])
-                                                val modal = div(fomantic.ui.modal) {
-                                                    renderCheckout("You are reserving the username \"${username.value}\" for \$${selectedDonationAmount.value}.00")
-                                                }
-                                                browser.callJsFunction("$(\'#\' + {}).modal(\'show\');", modal.id.json)
-                                            } else {
-                                                showToast(browser, "Donation Too Low")
+                                            tempReserveName(username.value, browser.httpRequestInfo.request.headers["Referer"])
+                                            val modal = div(fomantic.ui.modal) {
+                                                renderCheckout("You are reserving the username \"${username.value}\" for \$${selectedDonationAmount.value}.00")
                                             }
+                                            browser.callJsFunction("$(\'#\' + {}).modal(\'show\');", modal.id.json)
+                                            //if(isDonationAmountHighEnough(selectedDonationAmount.value, minimumDonationAmount.value)) {
+
+                                            /*} else {
+                                            }*/
                                         } else {
-                                            showToast(browser, "Invalid Email")
                                         }
                                     }
                                     InputStatus.NotAvailable -> {
-                                        showToast(browser, "Username not available")
                                     }
                                     InputStatus.Invalid, InputStatus.None -> {
-                                        showToast(browser, "Username invalid")
                                     }
                                 }
                             }
@@ -264,9 +258,11 @@ fun main() {
 
 }
 
+/*
 fun isDonationAmountHighEnough(userDonationInput: String, minDonationAmount: Double) : Boolean{
     return userDonationInput.toDouble() >= minDonationAmount
 }
+*/
 
 fun ElementCreator<*>.renderCheckout(confirmationText : String) {
     browser.callJsFunction("initialize()")
