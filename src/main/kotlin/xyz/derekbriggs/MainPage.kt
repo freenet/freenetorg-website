@@ -284,6 +284,7 @@ fun tempReserveName(username: String, referer: String?) {
 }
 
 fun isUsernameValid(username: String) : Boolean {
+    //allows a 2-30 character alphanumeric username that may contain an underscore or period
     val usernameRegex = "^[A-Za-z][A-Za-z0-9_.]{1,29}\$"
     val isValid = username.matches(usernameRegex.toRegex())
     return isValid

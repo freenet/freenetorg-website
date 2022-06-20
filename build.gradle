@@ -30,6 +30,13 @@ dependencies {
     implementation "com.stripe:stripe-java:20.113.0"
 
     implementation 'com.google.cloud:google-cloud-firestore:3.0.14'
+
+    testImplementation(platform("org.junit:junit-bom:5.8.2"))
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
 }
 
 import com.github.jengelman.gradle.plugins.shadow.transformers.ServiceFileTransformer
