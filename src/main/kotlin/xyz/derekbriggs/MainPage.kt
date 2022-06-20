@@ -29,6 +29,7 @@ val firestoreOptions = FirestoreOptions.getDefaultInstance().toBuilder()
     .setCredentials(GoogleCredentials.getApplicationDefault())
     .build()
 val db = firestoreOptions.service
+val presetDonationValues = KVar(arrayOf("10", "20", "40", "80", "160"))
 
 sealed class InputStatus {
     object None : InputStatus()
@@ -40,8 +41,6 @@ sealed class InputStatus {
 enum class EmailStatus {
     Empty, Valid, Invalid
 }
-
-val donationPresets = KVar(listOf("10", "20", "40"))
 
 fun main() {
 
@@ -114,6 +113,7 @@ fun main() {
                                                         minDonationAmount = getMinimumDonationAmount(new)
                                                     )
                                                     minimumDonationAmount.value = getMinimumDonationAmount(new)
+                                                    presetDonationValues.value = arrayOf(minimumDonationAmount.value.toString(), "${minimumDonationAmount.value * 2}", "${minimumDonationAmount.value * 3}")
                                                 } else {
                                                     usernameInputStatus.value = InputStatus.NotAvailable
                                                 }
@@ -179,9 +179,11 @@ fun main() {
                             div(fomantic.field) {
                                 label().text("Pay What You Can")
                                 val donationSelection = select(attributes = mapOf("id" to "donationSelection".json)) {
-                                    val presetDonationValues = arrayOf("10", "20", "40", "80", "160")
-                                    for(preset in presetDonationValues) {
-                                        option(fomantic.item).text(preset).setAttribute("value", preset)
+                                    render(presetDonationValues) {
+                                        println(presetDonationValues.value.get(0))
+                                        for(preset in presetDonationValues.value) {
+                                            option(fomantic.item).text(preset).setAttribute("value", preset)
+                                        }
                                     }
                                 }
                                 donationSelection.setAttribute("class", "ui selection dropdown")
