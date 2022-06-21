@@ -190,6 +190,7 @@ fun main() {
                                 donationSelection.value.addListener { old, new ->
                                     selectedDonationAmount.value = new
                                 }
+                                browser.callJsFunction("$('.ui.dropdown').dropdown();")
                             }
 
                             button(fomantic.ui.primary.button).text("Reserve Username").on.click {
