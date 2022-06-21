@@ -96,7 +96,8 @@ fun main() {
                     val minimumDonationAmount : KVar<Double> = KVar(0.0)
                     lateinit var username : KVal<String>
                     lateinit var email : KVal<String>
-                    val selectedDonationAmount : KVar<String> = KVar("")
+                    var selectedDonationAmount : KVar<String> = KVar("")
+                    lateinit var donationInput : InputElement
 
                     div(fomantic.ui.grid.center.aligned) {
                         form(fomantic.ui.form) {
@@ -177,18 +178,43 @@ fun main() {
                             }
 
                             div(fomantic.field) {
-                                label().text("Pay What You Can")
-                                val donationSelection = select(attributes = mapOf("id" to "donationSelection".json)) {
+                                div(fomantic.ui.grouped.fields) {
+                                    label().text("Pay What You Can")
                                     render(presetDonationValues) {
-                                        println(presetDonationValues.value.get(0))
-                                        for(preset in presetDonationValues.value) {
-                                            option(fomantic.item).text(preset).setAttribute("value", preset)
+                                        div(fomantic.field) {
+                                            for (preset in presetDonationValues.value) {
+                                                div(fomantic.ui.radio.checkbox) {
+                                                    input().setAttribute("type", "radio")
+                                                        .setAttribute("name", "donationPresetRadio")
+                                                        .setAttribute("value", preset)
+                                                        .setAttribute("tabindex", "0")
+                                                    label().text("\$$preset")
+                                                }
+                                                br()
+                                            }
                                         }
                                     }
-                                }
-                                donationSelection.setAttribute("class", "ui selection dropdown")
-                                donationSelection.value.addListener { old, new ->
-                                    selectedDonationAmount.value = new
+                                    div(fomantic.field.container.vertical.aligned) {
+                                        div(fomantic.ui.radio.checkbox) {
+                                            input {
+                                                //input()
+                                                label().text("Custom")
+                                                div(fomantic.ui.input.tiny.labeled) {
+                                                    val dollarSignLabel = label(fomantic.ui.label).text("$")
+                                                    dollarSignLabel.setAttribute("for", "donationInput")
+                                                    donationInput = input(type= InputType.text, placeholder = "Custom",
+                                                        attributes = mapOf("id" to "donationInput".json))
+                                                    selectedDonationAmount = donationInput.value
+                                                }
+                                            }.setAttribute("type", "radio")
+                                                .setAttribute("tabindex", "0")
+                                                .setAttribute("name", "donationPresetRadio")
+                                                .setAttribute("checked", "checked")
+                                            /*donationInput = input(type= InputType.text, placeholder = "Custom",
+                                                attributes = mapOf("id" to "donationInput".json))
+                                            selectedDonationAmount = donationInput.value*/
+                                        }
+                                    }
                                 }
                             }
 
