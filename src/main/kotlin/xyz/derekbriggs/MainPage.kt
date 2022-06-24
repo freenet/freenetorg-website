@@ -138,7 +138,7 @@ fun main() {
                                     when(inputStatus) {
                                         InputStatus.None -> {}
                                         is InputStatus.Available -> {
-                                            p().text(usernameInputStatus.map { "Username Available. Minimum Donation Amount: ${(it as InputStatus.Available).minDonationAmount}" })
+                                            p().text("Username Available. Minimum Donation Amount: ${inputStatus.minDonationAmount}" )
                                         }
                                         InputStatus.NotAvailable -> {
                                             p().text("Username Not Available")
