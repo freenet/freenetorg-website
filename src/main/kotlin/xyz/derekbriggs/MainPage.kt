@@ -29,7 +29,7 @@ val firestoreOptions = FirestoreOptions.getDefaultInstance().toBuilder()
     .setCredentials(GoogleCredentials.getApplicationDefault())
     .build()
 val db = firestoreOptions.service
-val presetDonationValues = KVar(arrayOf("10", "20", "40", "80", "160"))
+val presetDonationValues = KVar(arrayOf("10", "20", "40"))
 
 sealed class InputStatus {
     object None : InputStatus()
@@ -137,13 +137,13 @@ fun main() {
                                 render(usernameInputStatus) { inputStatus ->
                                     when(inputStatus) {
                                         InputStatus.None -> {}
-                                        is InputStatus.Available -> {
-                                            p().text("Username Available. Minimum Donation Amount: ${inputStatus.minDonationAmount}" )
-                                        }
                                         InputStatus.NotAvailable -> {
                                             p().text("Username Not Available")
                                         }
                                         InputStatus.Invalid -> p().text("Username invalid. May include numbers, letters, underscores, and hyphens")
+                                        is InputStatus.Available -> {
+                                            p().text("Username Available. Minimum Donation Amount: ${inputStatus.minDonationAmount}" )
+                                        }
                                     }
                                 }
 
@@ -180,39 +180,34 @@ fun main() {
                             div(fomantic.field) {
                                 div(fomantic.ui.grouped.fields) {
                                     label().text("Pay What You Can")
-                                    render(presetDonationValues) {
-                                        div(fomantic.field) {
+                                    div(fomantic.ui.center.aligned.stackable.grid) {
+                                        render(presetDonationValues) {
                                             for (preset in presetDonationValues.value) {
-                                                div(fomantic.ui.radio.checkbox) {
-                                                    input().setAttribute("type", "radio")
-                                                        .setAttribute("name", "donationPresetRadio")
-                                                        .setAttribute("value", preset)
-                                                        .setAttribute("tabindex", "0")
-                                                    label().text("\$$preset")
+                                                div(fomantic.field.two.wide.column) {
+                                                    div(fomantic.ui.radio.checkbox) {
+                                                        input().setAttribute("type", "radio")
+                                                            .setAttribute("name", "donationPresetRadio")
+                                                            .setAttribute("value", preset)
+                                                            .setAttribute("tabindex", "0")
+                                                        label().text("\$$preset")
+                                                    }
                                                 }
-                                                br()
                                             }
                                         }
-                                    }
-                                    div(fomantic.field.container.vertical.aligned) {
-                                        div(fomantic.ui.radio.checkbox) {
-                                            input {
-                                                //input()
-                                                label().text("Custom")
-                                                div(fomantic.ui.input.tiny.labeled) {
-                                                    val dollarSignLabel = label(fomantic.ui.label).text("$")
-                                                    dollarSignLabel.setAttribute("for", "donationInput")
-                                                    donationInput = input(type= InputType.text, placeholder = "Custom",
-                                                        attributes = mapOf("id" to "donationInput".json))
-                                                    selectedDonationAmount = donationInput.value
+                                        div(fomantic.field.six.wide.column) {
+                                            div(fomantic.ui.radio.checkbox.fluid) {
+                                                input().setAttribute("type", "radio")
+                                                    .setAttribute("name", "donationPresetRadio")
+                                                    .setAttribute("value", selectedDonationAmount.value)
+                                                    .setAttribute("tabindex", "0")
+                                                label {
+                                                    div(fomantic.ui.input.fluid) {
+                                                        donationInput = input(type= InputType.text, placeholder = "Custom",
+                                                            attributes = mapOf("id" to "donationInput".json))
+                                                        selectedDonationAmount = donationInput.value
+                                                    }
                                                 }
-                                            }.setAttribute("type", "radio")
-                                                .setAttribute("tabindex", "0")
-                                                .setAttribute("name", "donationPresetRadio")
-                                                .setAttribute("checked", "checked")
-                                            /*donationInput = input(type= InputType.text, placeholder = "Custom",
-                                                attributes = mapOf("id" to "donationInput".json))
-                                            selectedDonationAmount = donationInput.value*/
+                                            }
                                         }
                                     }
                                 }
