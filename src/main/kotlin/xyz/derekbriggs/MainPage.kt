@@ -33,7 +33,7 @@ val presetDonationValues = KVar(arrayOf("10", "20", "40"))
 
 sealed class InputStatus {
     object None : InputStatus()
-    class Available(val minDonationAmount : Double) : InputStatus()
+    class Available(val minDonationAmount : Long) : InputStatus()
     object NotAvailable : InputStatus()
     object Invalid : InputStatus()
 }
@@ -68,6 +68,7 @@ fun main() {
                         p().text("Thank you for confirming the username ${payIntent.metadata["username"]!!}")
                         p().text("You will receive payment receipt at $customerEmail")
                         p().text("Follow Freenet on Twitter")
+
                     }
                 }
 
@@ -93,7 +94,7 @@ fun main() {
                     }
                     val usernameInputStatus: KVar<InputStatus> = KVar(InputStatus.None)
                     val emailInputStatus : KVar<EmailStatus> = KVar(EmailStatus.Empty)
-                    val minimumDonationAmount : KVar<Double> = KVar(0.0)
+                    val minimumDonationAmount : KVar<Long> = KVar(0L)
                     lateinit var username : KVal<String>
                     lateinit var email : KVal<String>
                     var selectedDonationAmount : KVar<String> = KVar("")
@@ -185,26 +186,37 @@ fun main() {
                                             for (preset in presetDonationValues.value) {
                                                 div(fomantic.field.two.wide.column) {
                                                     div(fomantic.ui.radio.checkbox) {
-                                                        input().setAttribute("type", "radio")
+                                                        val radioButton = input().setAttribute("type", "radio")
                                                             .setAttribute("name", "donationPresetRadio")
                                                             .setAttribute("value", preset)
                                                             .setAttribute("tabindex", "0")
+                                                        radioButton.on.click {
+                                                            selectedDonationAmount.value = preset
+                                                            println(selectedDonationAmount.value)
+                                                        }
                                                         label().text("\$$preset")
                                                     }
                                                 }
                                             }
                                         }
-                                        div(fomantic.field.six.wide.column) {
-                                            div(fomantic.ui.radio.checkbox.fluid) {
-                                                input().setAttribute("type", "radio")
+                                        div(fomantic.field.six.wide.column.left.aligned) {
+                                            div(fomantic.ui.radio.checkbox) {
+                                                val customDonationField = input(attributes = mapOf("id" to "donationRadioCustomField".json,
+                                                "class" to "ui input".json)).setAttribute("type", "radio")
                                                     .setAttribute("name", "donationPresetRadio")
-                                                    .setAttribute("value", selectedDonationAmount.value)
                                                     .setAttribute("tabindex", "0")
+                                                customDonationField.on.click {
+                                                    println("selectedDonationAmount on customClick: ${selectedDonationAmount.value}")
+                                                    selectedDonationAmount = donationInput.value
+                                                    println("selectedDonationAmount on customClick again: ${selectedDonationAmount.value}")
+                                                }
                                                 label {
-                                                    div(fomantic.ui.input.fluid) {
-                                                        donationInput = input(type= InputType.text, placeholder = "Custom",
-                                                            attributes = mapOf("id" to "donationInput".json))
-                                                        selectedDonationAmount = donationInput.value
+                                                    donationInput = input(type= InputType.text, placeholder = "Custom",
+                                                        attributes = mapOf("id" to "donationInput".json))
+                                                    donationInput.setAttribute("class", "fluid").setAttribute("width", "6em")
+                                                    selectedDonationAmount = donationInput.value
+                                                    donationInput.on.input {
+                                                        println(selectedDonationAmount.value)
                                                     }
                                                 }
                                             }
@@ -223,10 +235,6 @@ fun main() {
                                                 renderCheckout("You are reserving the username \"${username.value}\" for \$${selectedDonationAmount.value}.00")
                                             }
                                             browser.callJsFunction("$(\'#\' + {}).modal(\'show\');", modal.id.json)
-                                            //if(isDonationAmountHighEnough(selectedDonationAmount.value, minimumDonationAmount.value)) {
-
-                                            /*} else {
-                                            }*/
                                         } else {
                                         }
                                     }
@@ -279,15 +287,15 @@ fun ElementCreator<*>.renderCheckout(confirmationText : String) {
     }
 }
 
-fun getMinimumDonationAmount(username: String) : Double{
+fun getMinimumDonationAmount(username: String) : Long{
     return when(username.length) {
-        2 -> 200.0
-        3 -> 150.0
-        4 -> 100.0
-        5 -> 80.0
-        6 -> 60.0
-        7 -> 45.0
-        else -> 20.0
+        2 -> 200
+        3 -> 150
+        4 -> 100
+        5 -> 80
+        6 -> 60
+        7 -> 45
+        else -> 20
     }
 }
 
