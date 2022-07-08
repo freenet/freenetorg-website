@@ -11,9 +11,12 @@ async function initialize() {
     const userInfo = {};
     userInfo["username"] = document.querySelector("#usernameInput").value;
     userInfo["email"] = document.querySelector("#emailInput").value;
-    //userInfo["donationAmount"] = document.querySelector("#donationAmountValue").value;
-    let donationSelection = document.getElementById("donationSelection");
-    userInfo["donationAmount"] = donationSelection.options[donationSelection.selectedIndex].text;
+    let selectedDonationRadioButton = document.querySelector('input[name="donationPresetRadio"]:checked').id;
+    if (selectedDonationRadioButton === "donationRadioCustomField") {
+        userInfo["donationAmount"] = document.querySelector("#donationInput").value;
+    } else {
+        userInfo["donationAmount"] = document.querySelector('input[name="donationPresetRadio"]:checked').value;
+    }
     const response = await fetch("/create-payment-intent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
