@@ -1,6 +1,2 @@
 runtime: java11
 entrypoint: 'java -jar locutus-donation-site-1.1-SNAPSHOT-all.jar'
-network:
-  session_affinity: true
-  forwarded_ports:
-    - 8081
