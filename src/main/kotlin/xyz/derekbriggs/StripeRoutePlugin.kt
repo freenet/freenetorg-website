@@ -35,6 +35,8 @@ class StripeRoutePlugin : KwebPlugin() {
             val params : PaymentIntentCreateParams = PaymentIntentCreateParams.builder()
                 .setAmount(postBody.donationAmount * 100)
                 .setCustomer(customer.id)
+                .setReceiptEmail(customer.email)
+                .setDescription("Reservation for ${postBody.username}")
                 .setCurrency("USD")
                 .putMetadata("username", postBody.username)
                 .setAutomaticPaymentMethods(
