@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'org.example'
-version '1.1-SNAPSHOT'
+version '1.2-SNAPSHOT'
 
 application {
     mainClass = 'xyz.derekbriggs.MainPageKt'
@@ -19,7 +19,7 @@ repositories {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
-    implementation 'com.google.appengine:appengine-api-1.0-sdk:2.0.4'
+    implementation 'com.google.appengine:appengine-api-1.0-sdk:2.0.5'
 
     implementation "com.google.guava:guava:31.1-jre"
     implementation 'com.google.code.gson:gson:2.9.0'
@@ -29,7 +29,7 @@ dependencies {
 
     implementation "com.stripe:stripe-java:20.113.0"
 
-    implementation 'com.google.cloud:google-cloud-firestore:3.0.14'
+    implementation 'com.google.cloud:google-cloud-firestore:3.2.0'
 
     testImplementation(platform("org.junit:junit-bom:5.8.2"))
     testImplementation 'org.junit.jupiter:junit-jupiter'
@@ -49,7 +49,7 @@ shadowJar {
 
 appengine {
     stage {
-        artifact = "build/libs/locutus-donation-site-1.1-SNAPSHOT-all.jar"
+        artifact = "build/libs/locutus-donation-site-1.2-SNAPSHOT-all.jar"
     }
     deploy {
         version = "GCLOUD_CONFIG"
