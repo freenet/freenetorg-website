@@ -5,11 +5,10 @@ import com.google.cloud.firestore.FirestoreOptions
 import com.stripe.Stripe
 import com.stripe.model.Customer
 import com.stripe.model.PaymentIntent
+import io.ktor.features.*
 import io.ktor.util.date.*
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.JsonPrimitive
 import kweb.*
 import kweb.plugins.fomanticUI.fomantic
@@ -25,7 +24,7 @@ const val usernameTableName = "reservedUsernames"
 const val timeToReserveName = 60 * 1000 * 15//15 minutes
 
 val firestoreOptions = FirestoreOptions.getDefaultInstance().toBuilder()
-    .setProjectId("freenet-site")
+    .setProjectId("freenet-353920")
     .setCredentials(GoogleCredentials.getApplicationDefault())
     .build()
 val db = firestoreOptions.service
@@ -60,7 +59,6 @@ fun main() {
             route {
 
                 path("/success") {
-                    //println(browser.httpRequestInfo.request.call.parameters)
                     val payIntent = PaymentIntent.retrieve(browser.httpRequestInfo.request.call.parameters["payment_intent"])
                     val customerEmail = saveCustomer(payIntent.charges.data[0].customer)
                     saveStripePaymentDetails(payIntent.toString(), customerEmail, payIntent.metadata["username"]!!, payIntent.amount, payIntent.charges.data[0].id)
@@ -78,6 +76,8 @@ fun main() {
 
                 path("/") {
 
+                    val ipAddress = browser.httpRequestInfo.request.call.request.origin.remoteHost
+                    println("IPADDRESS Hit: $ipAddress")
                     div(fomantic.ui.text.center.aligned.container) {
                         h1(fomantic.ui).setAttribute("style", """font-size: 4em;""").text("Locutus")
                     }
@@ -192,7 +192,6 @@ fun main() {
                                                             .setAttribute("tabindex", "0")
                                                         radioButton.on.click {
                                                             selectedDonationAmount.value = preset
-                                                            println(selectedDonationAmount.value)
                                                         }
                                                         label().text("\$$preset")
                                                     }
@@ -216,7 +215,6 @@ fun main() {
                                                     donationInput.setAttribute("class", "fluid").setAttribute("width", "6em")
                                                     selectedDonationAmount = donationInput.value
                                                     donationInput.on.input {
-                                                        println(selectedDonationAmount.value)
                                                     }
                                                 }
                                             }
@@ -226,11 +224,11 @@ fun main() {
                             }
 
                             button(fomantic.ui.primary.button).text("Reserve Username").on.click {
-                                println("Doing button stuff with usernameInputStatus.value = to ${usernameInputStatus.value}")
                                 when(usernameInputStatus.value) {
                                     is InputStatus.Available -> { it
                                         if(emailInputStatus.value == EmailStatus.Valid) {
-                                            tempReserveName(username.value, browser.httpRequestInfo.request.headers["Referer"])
+
+                                            tempReserveName(username.value, ipAddress, browser.httpRequestInfo.request.headers["Referer"])
                                             val modal = div(fomantic.ui.modal) {
                                                 renderCheckout("You are reserving the username \"${username.value}\" for \$${selectedDonationAmount.value}.00")
                                             }
@@ -300,12 +298,13 @@ fun getMinimumDonationAmount(username: String) : Long{
 }
 
 
-fun tempReserveName(username: String, referer: String?) {
+fun tempReserveName(username: String,  ipAddress: String, referer: String? = null) {
     val docRef = db.collection(usernameTableName).document(username)
     val data = HashMap<String, Any>()
 
     data["lowercaseUsername"] = username.lowercase()
     data["timeReserved"] = getTimeMillis()
+    data["ipAddress"] = ""
     referer?.let {
         data["referer"] = it
     }
@@ -350,7 +349,6 @@ fun saveStripePaymentDetails(stripePayIntentJson: String, email: String, usernam
 
     data["stripePayIntent"] = stripePayIntentJson
     data["email"] = email
-    //data["ipAddress"] =
     data["donationAmount"] = donationAmount
     data["Stripe_transaction_id"] = transactionId
     data["paymentMethod"] = "Stripe"
