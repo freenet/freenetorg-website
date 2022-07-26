@@ -43,7 +43,7 @@ enum class EmailStatus {
 
 fun main() {
 
-    Stripe.apiKey = "sk_test_51KYyh3HSi8gwBwE3syIyEQK1jd1HAJfWftPyWOspGL4cP0xfUz8RWfpHiRUGEjaIoKHBojzNvJQ6E7t3pb6E1l8l0032ZZFgK7"
+    Stripe.apiKey = System.getenv("STRIPE_SECRET_KEY")
 
     Kweb(port = 8080, debug = false, plugins = listOf(fomanticUIPlugin, StripeRoutePlugin(),
         StaticFilesPlugin(ResourceFolder("static"), "/static/stripeCheckout"))) {
@@ -77,7 +77,6 @@ fun main() {
                 path("/") {
 
                     val ipAddress = browser.httpRequestInfo.request.call.request.origin.remoteHost
-                    println("IPADDRESS Hit: $ipAddress")
                     div(fomantic.ui.text.center.aligned.container) {
                         h1(fomantic.ui).setAttribute("style", """font-size: 4em;""").text("Locutus")
                     }
