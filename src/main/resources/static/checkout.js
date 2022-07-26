@@ -1,5 +1,5 @@
-// This is your test publishable API key.
-const stripe = Stripe("pk_test_51KYyh3HSi8gwBwE3JwrtL8jGGnFpcqZfewOtlQFXHYkItitRf6fNgCAUKPVsHou8tbkGxbAXm03L9ZvVPtv8JOEd00y9t7YCWm");
+///This key can be publicly-accessible and does not need to be hidden.
+const stripe = Stripe("pk_test_51KVKDLAIWUhNLMbdcgFrq0f8t5Rm07SEt6ZqXn46fZ7AQbz3mxoMF2cFvW7qRfI3kZN6NyPG95nzN7CrcHBHRWGD00VAifbJEy");
 
 let elements;
 
