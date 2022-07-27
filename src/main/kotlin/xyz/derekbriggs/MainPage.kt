@@ -63,10 +63,12 @@ fun main() {
                     val customerEmail = saveCustomer(payIntent.charges.data[0].customer)
                     saveStripePaymentDetails(payIntent.toString(), customerEmail, payIntent.metadata["username"]!!, payIntent.amount, payIntent.charges.data[0].id)
                     div(fomantic.ui.container.center.aligned) {
-                        p().text("Thank you for confirming the username ${payIntent.metadata["username"]!!}")
-                        p().text("You will receive payment receipt at $customerEmail")
-                        p().text("Follow Freenet on Twitter")
-
+                        val successCopy = "Thank you for confirming the username ${payIntent.metadata["username"]!!}"
+                        val successCopy2 = "You will receive payment receipt at $customerEmail"
+                        val successCopy3 = "Follow Freenet on Twitter"
+                        p().text(successCopy)
+                        p().text(successCopy2)
+                        p().text(successCopy3)
                     }
                 }
 
@@ -134,15 +136,17 @@ fun main() {
 
                                 }
 
+                                val usernameInvalidString = "Username invalid. May include numbers, letters, underscores, and hyphens"
                                 render(usernameInputStatus) { inputStatus ->
                                     when(inputStatus) {
                                         InputStatus.None -> {}
                                         InputStatus.NotAvailable -> {
                                             p().text("Username Not Available")
                                         }
-                                        InputStatus.Invalid -> p().text("Username invalid. May include numbers, letters, underscores, and hyphens")
+                                        InputStatus.Invalid -> p().text(usernameInvalidString)
                                         is InputStatus.Available -> {
-                                            p().text("Username Available. Minimum Donation Amount: ${inputStatus.minDonationAmount}" )
+                                            val usernameAvailableString = "Username Available. Minimum Donation Amount: ${inputStatus.minDonationAmount}"
+                                            p().text(usernameAvailableString )
                                         }
                                     }
                                 }
@@ -229,7 +233,8 @@ fun main() {
 
                                             tempReserveName(username.value, ipAddress, browser.httpRequestInfo.request.headers["Referer"])
                                             val modal = div(fomantic.ui.modal) {
-                                                renderCheckout("You are reserving the username \"${username.value}\" for \$${selectedDonationAmount.value}.00")
+                                                val reservationConfirmationString = "You are reserving the username \"${username.value}\" for \$${selectedDonationAmount.value}.00"
+                                                renderCheckout(reservationConfirmationString)
                                             }
                                             browser.callJsFunction("$(\'#\' + {}).modal(\'show\');", modal.id.json)
                                         } else {
@@ -273,7 +278,8 @@ fun ElementCreator<*>.renderCheckout(confirmationText : String) {
         }
     }
     div(fomantic.ui.container.center.aligned) {
-        p().text("Some text explaining that this is a secure transaction through stripe and not to worry about their credit card details")
+        val secureTransactionNoticeString = "Some text explaining that this is a secure transaction through stripe and not to worry about their credit card details"
+        p().text(secureTransactionNoticeString)
     }
     div(fomantic.ui.actions) {
         val cancelButton = button(fomantic.ui.button).text("cancel").on.click {
