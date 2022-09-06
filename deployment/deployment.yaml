@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reservations-gke
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reservations
+  template:
+    metadata:
+      labels:
+        app: reservations
+    spec:
+      containers:
+        - name: reservations-app
+          image: us-east1-docker.pkg.dev/freenet-353920/reservations-docker-repo/quickstart-image
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SECRETED
+              valueFrom:
+                secretKeyRef:
+                  name: secreted
+                  key: SECRETED
+      serviceAccountName: google-service-acct
