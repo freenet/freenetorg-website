@@ -4,5 +4,5 @@ metadata:
   name: managed-cert
 spec:
   domains:
-    - www.names.freenet.org
-    - names.freenet.org
+    - www.staging.freenet.org
+    - staging.freenet.org
