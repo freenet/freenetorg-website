@@ -4,5 +4,5 @@ metadata:
   name: managed-cert
 spec:
   domains:
-    - www.reservation.freenet.org
-    - reservation.freenet.org
+    - www.names.freenet.org
+    - names.freenet.org
