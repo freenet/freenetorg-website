@@ -3,9 +3,10 @@ kind: Service
 metadata:
   name: reservations
 spec:
-  type: LoadBalancer
   selector:
     app: reservations
   ports:
-    - port: 80
+    - port: 8080
+      protocol: TCP
       targetPort: 8080
+  type: NodePort

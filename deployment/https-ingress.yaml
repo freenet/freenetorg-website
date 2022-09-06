@@ -1,0 +1,13 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: https-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: "reservations-static-ip"
+spec:
+  defaultBackend:
+    service:
+      name: reservations
+      port:
+        number:
+          8080
