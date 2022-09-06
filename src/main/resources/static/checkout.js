@@ -46,7 +46,7 @@ async function handleSubmit(e) {
         elements,
         confirmParams: {
             // Make sure to change this to your payment completion page
-            return_url: "http://34.148.27.109/success",
+            return_url: "https://34.74.186.232/success",
         },
     });
 
