@@ -25,7 +25,7 @@ class StripeRoutePlugin : KwebPlugin() {
 
     override fun appServerConfigurator(routeHandler: Routing) {
         routeHandler.post("/create-payment-intent") {
-            Stripe.apiKey = "sk_test_51KVKDLAIWUhNLMbdpF3S5u1pVzsaECJKWktcdajr9kRtQtG2v8TasyafgJl1yStKZWMQlZQRB0UcTsTCVVj4WMjj00hozMFQGA"
+            Stripe.apiKey = System.getenv("STRIPE_SECRET_KEY")
             val gson = Gson()
             val requestBody = call.receiveText()
             val postBody : UserInfo = gson.fromJson(requestBody, UserInfo::class.java)

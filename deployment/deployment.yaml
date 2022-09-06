@@ -18,9 +18,9 @@ spec:
           ports:
             - containerPort: 8080
           env:
-            - name: SECRETED
+            - name: STRIPE_SECRET_KEY
               valueFrom:
                 secretKeyRef:
-                  name: secreted
-                  key: SECRETED
+                  name: stripe-key
+                  key: STRIPE_SECRET_KEY
       serviceAccountName: google-service-acct
