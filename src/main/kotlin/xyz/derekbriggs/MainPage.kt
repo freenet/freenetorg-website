@@ -23,6 +23,7 @@ import kweb.util.json
 const val usernameTableName = "reservedUsernames"
 const val timeToReserveName = 60 * 1000 * 15//15 minutes
 
+//TODO Google Authentication can fail in the first few seconds of a pod existing. Need to add check to make sure this succeeds, and call it again on fail
 val firestoreOptions = FirestoreOptions.getDefaultInstance().toBuilder()
     .setProjectId("freenet-353920")
     .setCredentials(GoogleCredentials.getApplicationDefault())
@@ -42,8 +43,6 @@ enum class EmailStatus {
 }
 
 fun main() {
-
-    Stripe.apiKey = System.getenv("STRIPE_SECRET_KEY")
 
     Kweb(port = 8080, debug = false, plugins = listOf(fomanticUIPlugin, StripeRoutePlugin(),
         StaticFilesPlugin(ResourceFolder("static"), "/static/stripeCheckout"))) {
