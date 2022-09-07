@@ -1,1 +1,1 @@
-# locutus-donation-site
+# Freenet Org Website
