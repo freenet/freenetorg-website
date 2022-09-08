@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: freenet-org-east1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: freenet-org-stage
+  template:
+    metadata:
+      labels:
+        app: freenet-org-stage
+    spec:
+      containers:
+        - name: freenet-org-stage-app
+          image: us-east1-docker.pkg.dev/freenet-353920/freenet-repo/freenet-org-staging
+          ports:
+            - containerPort: 8080
+          env:
+            - name: STRIPE_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: stripe-key
+                  key: STRIPE_SECRET_KEY
+      serviceAccountName: google-service-acct

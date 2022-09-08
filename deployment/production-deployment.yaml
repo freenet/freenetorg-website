@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: reservations-gke
+  name: freenet-org-east1
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: reservations
+      app: freenet-org-prod
   template:
     metadata:
       labels:
-        app: reservations
+        app: freenet-org-prod
     spec:
       containers:
-        - name: reservations-app
-          image: us-east1-docker.pkg.dev/freenet-353920/reservations-docker-repo/quickstart-image
+        - name: freenet-org-prod-app
+          image: us-east1-docker.pkg.dev/freenet-353920/freenet-repo/freenet-org-production
           ports:
             - containerPort: 8080
           env:
