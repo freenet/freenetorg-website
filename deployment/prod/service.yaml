@@ -1,10 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: reservations
+  name: freenet-org-prod
+  namespace: freenet-prod
 spec:
   selector:
-    app: reservations
+    app: freenet-org-prod
   ports:
     - port: 8080
       protocol: TCP

@@ -2,14 +2,15 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: https-ingress
+  namespace: freenet-prod
   annotations:
-    kubernetes.io/ingress.global-static-ip-name: "reservations-static-ip"
+    kubernetes.io/ingress.global-static-ip-name: "freenet-org-prod-static"
     networking.gke.io/managed-certificates: managed-cert
     kubernetes.io/ingress.class: "gce"
 spec:
   defaultBackend:
     service:
-      name: reservations
+      name: freenet-org-prod
       port:
         number:
           8080
