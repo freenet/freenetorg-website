@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: staging-https-ingress
+  namespace: freenet-prod
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: "freenet-org-staging-static"
+    networking.gke.io/managed-certificates: staging-managed-cert
+    kubernetes.io/ingress.class: "gce"
+spec:
+  defaultBackend:
+    service:
+      name: freenet-org-staging
+      port:
+        number:
+          8080
