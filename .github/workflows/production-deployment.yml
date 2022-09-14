@@ -14,16 +14,16 @@ name: Build and Deploy to GKE
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "production" ]
 
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
-  GAR_LOCATION: us-central1 # TODO: update region of the Artifact Registry
-  GKE_CLUSTER: cluster-1    # TODO: update to cluster name
-  GKE_ZONE: us-central1-c   # TODO: update to cluster zone
-  DEPLOYMENT_NAME: gke-test # TODO: update to deployment name
-  REPOSITORY: samples # TODO: update to Artifact Registry docker repository
-  IMAGE: static-site
+  GAR_LOCATION: us-east1 # TODO: update region of the Artifact Registry
+  GKE_CLUSTER: freenet-org-east1    # TODO: update to cluster name
+  GKE_ZONE: us-east1-b   # TODO: update to cluster zone
+  DEPLOYMENT_NAME: freenet-org-production # TODO: update to deployment name
+  REPOSITORY: freenet-repo # TODO: update to Artifact Registry docker repository
+  IMAGE: freenet-org-production
 
 jobs:
   setup-build-publish-deploy:
@@ -62,7 +62,7 @@ jobs:
       uses: google-github-actions/get-gke-credentials@v0
       with:
         cluster_name: ${{ env.GKE_CLUSTER }}
-        location: ${{ env.GKE_ZONE }}
+        location: ${{ env.GAR_LOCATION }}
 
     # Build the Docker image
     - name: Build
