@@ -64,6 +64,9 @@ jobs:
         cluster_name: ${{ env.GKE_CLUSTER }}
         location: ${{ env.GAR_LOCATION }}
 
+    - name: Echo
+      run: |-
+        echo $PROJECT_ID
     # Build the Docker image
     - name: Build
       run: |-
