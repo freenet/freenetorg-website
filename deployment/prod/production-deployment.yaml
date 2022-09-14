@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: freenet-org-prod
-  namespace: freenet-prod
+  namespace: freenetorg
 spec:
   replicas: 1
   selector:
@@ -24,4 +24,4 @@ spec:
                 secretKeyRef:
                   name: stripe-key
                   key: STRIPE_SECRET_KEY
-      serviceAccountName: prod-service-account
+      serviceAccountName: freenet-service-account

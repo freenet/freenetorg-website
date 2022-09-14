@@ -2,16 +2,16 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: freenet-org-staging
-  namespace: freenet-prod
+  namespace: freenetorg
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: freenet-org-stage
+      app: freenet-org-staging
   template:
     metadata:
       labels:
-        app: freenet-org-stage
+        app: freenet-org-staging
     spec:
       containers:
         - name: freenet-org-stage-app
@@ -24,4 +24,4 @@ spec:
                 secretKeyRef:
                   name: stripe-key
                   key: STRIPE_SECRET_KEY
-      serviceAccountName: prod-service-account
+      serviceAccountName: freenet-service-account
