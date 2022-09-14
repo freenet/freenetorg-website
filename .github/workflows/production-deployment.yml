@@ -17,7 +17,8 @@ on:
     branches: [ "production" ]
 
 env:
-  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  #PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  PROJECT_ID: freenet-353920
   GAR_LOCATION: us-east1 # TODO: update region of the Artifact Registry
   GKE_CLUSTER: freenet-org-east1    # TODO: update to cluster name
   GKE_ZONE: us-east1-b   # TODO: update to cluster zone
