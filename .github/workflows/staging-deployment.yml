@@ -17,7 +17,8 @@ on:
     branches: [ "staging" ]
 
 env:
-  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  #PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  PROJECT_ID: freenet-353920
   GAR_LOCATION: us-east1
   GKE_CLUSTER: freenet-org-east1
   GKE_ZONE: us-east1-b
@@ -56,7 +57,7 @@ jobs:
       uses: google-github-actions/get-gke-credentials@v0
       with:
         cluster_name: ${{ env.GKE_CLUSTER }}
-        location: ${{ env.GKE_ZONE }}
+        location: ${{ env.GAR_LOCATION }}
 
     # Build the Docker image
     - name: Build
