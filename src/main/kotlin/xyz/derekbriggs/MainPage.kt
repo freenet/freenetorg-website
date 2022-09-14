@@ -5,6 +5,7 @@ import com.google.cloud.firestore.FirestoreOptions
 import com.stripe.Stripe
 import com.stripe.model.Customer
 import com.stripe.model.PaymentIntent
+import homePage
 import io.ktor.features.*
 import io.ktor.util.date.*
 import kotlinx.coroutines.GlobalScope
@@ -75,7 +76,11 @@ fun main() {
                     h1().text("Payment cancelled")
                 }
 
-                path("/") {
+                path("") {
+                    homePage()
+                }
+
+                path("/names") {
 
                     val ipAddress = browser.httpRequestInfo.request.call.request.origin.remoteHost
                     div(fomantic.ui.text.center.aligned.container) {
