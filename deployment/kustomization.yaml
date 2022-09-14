@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- prod/backend-config.yaml
+- prod/https-ingress.yaml
+- prod/managed-cert.yaml
+- prod/production-deployment.yaml
+- prod/service.yaml
+- staging/staging-backend-config.yaml
+- staging/staging-deployment.yaml
+- staging/staging-https-ingress.yaml
+- staging/staging-managed-cert.yaml
+- staging/staging-service.yaml
