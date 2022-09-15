@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: freenetorg
+resources:
+- deployment.yaml
+- https-ingress.yaml
+- managed-cert.yaml
+- service.yaml
+- backend-config.yaml

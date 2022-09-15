@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: freenet-org-prod
+  name: freenet-org
   namespace: freenetorg
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: freenet-org-prod
+      app: freenet-org
   template:
     metadata:
       labels:
-        app: freenet-org-prod
+        app: freenet-org
     spec:
       containers:
-        - name: freenet-org-prod-app
-          image: us-east1-docker.pkg.dev/freenet-353920/freenet-repo/freenet-org-production
+        - name: freenet-org-app
+          image: us-east1-docker.pkg.dev/freenet-353920/freenet-repo/freenet-org
           ports:
             - containerPort: 8080
           env:

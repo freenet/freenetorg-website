@@ -1,7 +1,7 @@
 apiVersion: networking.gke.io/v1
 kind: ManagedCertificate
 metadata:
-  name: staging-managed-cert
+  name: managed-cert
   namespace: freenetorg
 spec:
   domains:

@@ -1,9 +1,6 @@
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-namespace: freenetorg
 resources:
-- prod-backend-config.yaml
-- prod-https-ingress.yaml
-- prod-managed-cert.yaml
-- prod-production-deployment.yaml
-- prod-service.yaml
+  - ../base/
+nameSuffix: -prod
+patchesStrategicMerge:
+  - set_static_ip.yaml
+  - attach_backend_config.yaml
