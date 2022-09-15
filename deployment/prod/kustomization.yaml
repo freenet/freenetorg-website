@@ -4,3 +4,4 @@ nameSuffix: -prod
 patchesStrategicMerge:
   - set_static_ip.yaml
   - attach_backend_config.yaml
+  - attach_service_to_ingress.yaml

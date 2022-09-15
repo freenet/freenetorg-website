@@ -1,0 +1,9 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: https-ingress
+  namespace: freenetorg
+spec:
+  defaultBackend:
+    service:
+      name: freenet-org-staging
