@@ -9,7 +9,7 @@ group 'org.example'
 version '1.2-SNAPSHOT'
 
 application {
-    mainClass = 'xyz.derekbriggs.MainPageKt'
+    mainClass = 'org.freenet.MainPageKt'
 }
 
 repositories {
