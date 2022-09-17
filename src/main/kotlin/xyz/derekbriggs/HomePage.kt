@@ -51,9 +51,6 @@ fun ElementCreator<*>.homePage(db: Firestore) {
                         parent.innerHTML("""
                             <B>${newsItem.date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate()}:</B> ${newsItem.description}
                         """.trimIndent())
-                        span {
-                            this.parent.innerHTML(newsItem.description)
-                        }
                     }
                 }
             }
