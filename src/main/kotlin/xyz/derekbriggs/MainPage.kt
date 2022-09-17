@@ -1,8 +1,8 @@
 package xyz.derekbriggs
 
 import com.google.auth.oauth2.GoogleCredentials
+import com.google.cloud.firestore.Firestore
 import com.google.cloud.firestore.FirestoreOptions
-import com.stripe.Stripe
 import com.stripe.model.Customer
 import com.stripe.model.PaymentIntent
 import homePage
@@ -29,7 +29,7 @@ val firestoreOptions = FirestoreOptions.getDefaultInstance().toBuilder()
     .setProjectId("freenet-353920")
     .setCredentials(GoogleCredentials.getApplicationDefault())
     .build()
-val db = firestoreOptions.service
+val db: Firestore = firestoreOptions.service
 val presetDonationValues = KVar(arrayOf("10", "20", "40"))
 
 sealed class InputStatus {
@@ -77,7 +77,7 @@ fun main() {
                 }
 
                 path("") {
-                    homePage()
+                    homePage(db)
                 }
 
                 path("/names") {

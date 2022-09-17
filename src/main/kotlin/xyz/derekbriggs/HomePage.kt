@@ -1,7 +1,33 @@
+import com.google.cloud.firestore.Firestore
+import com.google.cloud.firestore.Query
 import kweb.*
 import kweb.plugins.fomanticUI.fomantic
+import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.util.*
 
-fun ElementCreator<*>.homePage() {
+const val MAX_NEWS_ITEMS = 7
+
+fun ElementCreator<*>.homePage(db: Firestore) {
+    val newsCollection = db.collection("news-items")
+
+    val newsDocuments = newsCollection.orderBy("date", Query.Direction.DESCENDING).limit(50).get().get().documents
+
+    data class NewsItem(val date: Date, val description : String, val important : Boolean)
+
+    val newsItems = newsDocuments.map { doc ->
+        val date = doc.getTimestamp("date")?.toDate() ?: error("Unable to retrieve date from document")
+        val description = doc.getString("description") ?: error("Unable to retrieve description from document")
+        val important = doc.getBoolean("important") ?: error("Unable to retrieve important from document")
+        NewsItem(date, description, important)
+    }.sortedByDescending { it.date }
+
+    val newsItemList = ArrayList<NewsItem>()
+
+    newsItems.filter { it.important }.take(MAX_NEWS_ITEMS).forEach { newsItemList.add(it) }
+    newsItems.filter { !it.important }.take(MAX_NEWS_ITEMS - newsItemList.size).forEach { newsItemList.add(it) }
+
     div(fomantic.ui.text.center.aligned.container) {
         div(fomantic.ui.text.left.aligned.container) {
             div() {
@@ -20,13 +46,17 @@ fun ElementCreator<*>.homePage() {
 
             h2(fomantic.ui.text).text("Locutus News")
             div(fomantic.ui.bulleted.list) {
-                div(fomantic.ui.item).text("5th September, 2022: Ian gave an interview (YouTube) to Louis Rossmann about Locutus")
-                div(fomantic.ui.item).text("16th July, 2022: Ian gave a talk (YouTube) on Decentralized Reputation and Trust in Locutus")
-                div(fomantic.ui.item).text("7th July, 2022: Ian gave an introductory talk (Youtube, Vimeo) on Locutus")
-                div(fomantic.ui.item).text("6th July, 2022: Locutus makes the front page of the r/cryptocurrency subreddit")
-                div(fomantic.ui.item).text("18th April, 2022: Locutus makes the front page of the r/programming subreddit")
-                div(fomantic.ui.item).text("10th April, 2022: Locutus makes the front page of Hacker News")
-                div(fomantic.ui.item).text("27th March, 2022: Locutus makes the front page of the r/privacy subreddit")
+                for (newsItem in newsItemList) {
+                    div(fomantic.item) {
+                        element("b").new {
+                            // Pretty-print date
+                            text(newsItem.date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate().toString())
+                        }
+                        span {
+                            this.parent.innerHTML(newsItem.description)
+                        }
+                    }
+                }
             }
 
             h2(fomantic.ui.text).text("Software")
