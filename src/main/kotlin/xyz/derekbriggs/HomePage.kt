@@ -48,8 +48,10 @@ fun ElementCreator<*>.homePage(db: Firestore) {
             div(fomantic.ui.bulleted.list) {
                 for (newsItem in newsItemList) {
                     div(fomantic.item) {
+                        val prettyDate = humanize.Humanize.formatDate(newsItem.date,"MMMM d, yyyy")
+
                         parent.innerHTML("""
-                            <B>${newsItem.date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate()}:</B> ${newsItem.description}
+                            <B>${prettyDate}:</B> ${newsItem.description}
                         """.trimIndent())
                     }
                 }
