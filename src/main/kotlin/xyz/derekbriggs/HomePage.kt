@@ -2,9 +2,6 @@ import com.google.cloud.firestore.Firestore
 import com.google.cloud.firestore.Query
 import kweb.*
 import kweb.plugins.fomanticUI.fomantic
-import java.time.Instant
-import java.time.LocalDate
-import java.time.LocalDateTime
 import java.util.*
 
 const val MAX_NEWS_ITEMS = 7
