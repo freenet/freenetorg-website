@@ -6,7 +6,7 @@ import com.google.cloud.firestore.FirestoreOptions
 import com.stripe.model.Customer
 import com.stripe.model.PaymentIntent
 import homePage
-import io.ktor.features.*
+import io.ktor.server.plugins.*
 import io.ktor.util.date.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
