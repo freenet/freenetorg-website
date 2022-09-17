@@ -48,10 +48,9 @@ fun ElementCreator<*>.homePage(db: Firestore) {
             div(fomantic.ui.bulleted.list) {
                 for (newsItem in newsItemList) {
                     div(fomantic.item) {
-                        element("b").new {
-                            // Pretty-print date
-                            text(newsItem.date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate().toString())
-                        }
+                        parent.innerHTML("""
+                            <B>${newsItem.date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate()}:</B> ${newsItem.description}
+                        """.trimIndent())
                         span {
                             this.parent.innerHTML(newsItem.description)
                         }
