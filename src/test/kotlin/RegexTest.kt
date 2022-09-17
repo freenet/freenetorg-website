@@ -1,7 +1,7 @@
+import org.freenet.isUsernameValid
+import org.freenet.isValidEmail
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
-import xyz.derekbriggs.isUsernameValid
-import xyz.derekbriggs.isValidEmail
 
 class RegexTest {
     @Test
