@@ -1,3 +1,5 @@
+package org.freenet
+
 import com.google.cloud.firestore.Firestore
 import com.google.cloud.firestore.Query
 import kweb.*
