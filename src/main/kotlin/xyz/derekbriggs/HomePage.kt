@@ -28,13 +28,13 @@ fun ElementCreator<*>.homePage(db: Firestore) {
     div(fomantic.ui.text.center.aligned.container) {
         div(fomantic.ui.text.left.aligned.container) {
             div() {
-                h1(fomantic.ui.text).text("Freenet.org")
+                h1(fomantic.ui.text).text("Freenet")
                 h2(fomantic.ui.text).text("Declare your digital independence")
             }
 
             br()
 
-            h2(fomantic.ui.text).text("Freenet")
+            h2(fomantic.ui.text).text("Introduction")
             p(fomantic.ui.text).text("23 years ago we created the original Freenet, the first distributed, decentralized peer-to-peer network. It pioneered " +
                     "technologies like cryptographic contracts and small-world networks, and is still under active development.\n" +
                     "\n")
