@@ -19,6 +19,7 @@ import kweb.state.KVal
 import kweb.state.KVar
 import kweb.state.render
 import kweb.util.json
+import org.freenet.util.StripeRoutePlugin
 
 const val usernameTableName = "reservedUsernames"
 const val timeToReserveName = 60 * 1000 * 15//15 minutes
@@ -76,7 +77,7 @@ fun main() {
                 }
 
                 path("") {
-                    homePage(db)
+                    landingPage(db)
                 }
 
                 path("/names") {

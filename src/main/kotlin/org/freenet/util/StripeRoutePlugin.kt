@@ -1,4 +1,4 @@
-package org.freenet
+package org.freenet.util
 
 import com.google.gson.Gson
 import com.stripe.Stripe

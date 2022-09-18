@@ -8,7 +8,7 @@ import java.util.*
 
 const val MAX_NEWS_ITEMS = 7
 
-fun ElementCreator<*>.homePage(db: Firestore) {
+fun ElementCreator<*>.landingPage(db: Firestore) {
     val newsCollection = db.collection("news-items")
 
     val newsDocuments = newsCollection.orderBy("date", Query.Direction.DESCENDING).limit(50).get().get().documents
