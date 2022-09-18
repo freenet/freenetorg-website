@@ -1,3 +1,13 @@
+body{
+    font-family:'Helvetica Neue', Helvetica, Arial, serif;
+    font-size:1em;
+    line-height:1.5;
+    color:#6d6d6d;
+    text-shadow:0 1px 0 rgba(255,255,255,0.8);
+    background: rgb(221,217,217);
+    background: radial-gradient(circle, rgba(221,217,217,1) 0%, rgba(255,255,255,1) 35%, rgba(225,230,231,1) 100%);
+}
+
 .headerText {
     text-indent: 5%;
     font-size: large;
@@ -23,4 +33,9 @@
 
 .donationButton {
     background-color: #0000ff;
+}
+
+p {
+    margin-bottom: 20px;
+    font-weight: 300;
 }
