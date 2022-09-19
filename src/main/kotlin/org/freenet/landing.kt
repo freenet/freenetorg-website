@@ -57,25 +57,25 @@ fun ElementCreator<*>.landingPage(db: Firestore) {
 
             h2(fomantic.ui.text).text("Software")
             div(fomantic.ui.bulleted.list) {
-                div(fomantic.ui.item).text("Fred - The original Freenet software, first released in March 2000 and continuously developed since")
-                div(fomantic.ui.item).text("Locutus - A decentralized application layer for the Internet, first release expected September 2022")
+                div(fomantic.ui.item).innerHTML("<a href=\"https://freenetproject.org/\">Fred</a> - The original Freenet software, first released in March 2000 and continuously developed since")
+                div(fomantic.ui.item).innerHTML("<a href=\"https://github.com/freenet/locutus\">Locutus</a> - A decentralized application layer for the Internet, first release expected September 2022")
             }
 
             h2(fomantic.ui.text).text("Community")
             div(fomantic.ui.bulleted.list) {
-                div(fomantic.ui.item).text("r/freenet on Reddit")
+                div(fomantic.ui.item).innerHTML("<a href=\"https://reddit.com/r/freenet\">r/freenet</a> on Reddit")
                 div(fomantic.ui.item) {
                     p().text("Locutus")
                     div(fomantic.ui.bulleted.list) {
-                        div(fomantic.ui.item).text("Follow @freenetorg on Twitter for updates")
-                        div(fomantic.ui.item).text("Chat with us on Matrix")
+                        div(fomantic.ui.item).innerHTML("Follow <a href=\"https://twitter.com/freenetorg\">@freenetorg</a> on Twitter for updates")
+                        div(fomantic.ui.item).innerHTML("Chat with us on <a href=\"https://matrix.to/#/#freenet-locutus:matrix.org\">Matrix</a>")
                     }
                 }
                 div(fomantic.ui.item) {
                     p().text("Fred")
                     div(fomantic.ui.bulleted.list) {
-                        div(fomantic.ui.item).text("Follow @freenetproject")
-                        div(fomantic.ui.item).text("IRC: #freenet on libera")
+                        div(fomantic.ui.item).innerHTML("Follow <a href=\"https://freenetproject.org\">@freenetproject</a>")
+                        div(fomantic.ui.item).innerHTML("IRC: <a href=\"https://web.libera.chat/?nick=FollowRabbit%7C?#freenet\">#freenet on libera</a>")
                     }
                 }
             }
@@ -85,7 +85,7 @@ fun ElementCreator<*>.landingPage(db: Firestore) {
                 div(fomantic.ui.item).text("Bitcoin: 3M3fbA7RDYdvYeaoR69cDCtVJqEodo9vth")
                 div(fomantic.ui.item).text("Zcash: t1VHw1PHgzvMqEEd31ZBt3Vyy2UrG4J8utB")
                 div(fomantic.ui.item).text("Ethereum: 0x79158A5Dbd9C0737CB27411817BD2759f5b9a9Ae")
-                div(fomantic.ui.item).text("Paypal & others: link")
+                div(fomantic.ui.item).innerHTML("<a href=\"https://freenetproject.org/pages/donate.html\">Paypal & others</a>")
             }
 
         }
