@@ -46,6 +46,8 @@ body {
 }
 
 .engraved {
+    font-size: 100px;
+    font-family: Futura;
     background-color: #666666;
     -webkit-background-clip: text;
     -moz-background-clip: text;
