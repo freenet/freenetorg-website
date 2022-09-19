@@ -41,6 +41,6 @@ p {
 }
 
 body {
-    background: rgb(221, 217, 217);
-    background: radial-gradient(circle, rgba(221, 217, 217, 1) 0%, rgba(223, 236, 255, 1) 35%, rgba(225, 230, 231, 1) 100%);
+    background: rgb(207,207,207);
+    background: linear-gradient(90deg, rgba(207,207,207,1) 0%, rgba(242,242,242,1) 34%, rgba(217,217,217,1) 70%);
 }
