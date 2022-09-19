@@ -24,7 +24,7 @@ env:
   GKE_ZONE: us-east1-b
   DEPLOYMENT_NAME: freenet-org-staging
   REPOSITORY: freenet-repo
-  IMAGE: freenet-org-staging
+  IMAGE: freenet-org
   NAMESPACE: freenetorg
 
 jobs:
