@@ -36,7 +36,6 @@ fun ElementCreator<*>.landingPage(db: Firestore) {
 
             br()
 
-            h2(fomantic.ui.text).text("Freenet")
             p(fomantic.ui.text).text("23 years ago we created the original Freenet, the first distributed, decentralized peer-to-peer network. It pioneered " +
                     "technologies like cryptographic contracts and small-world networks, and is still under active development.\n" +
                     "\n")
