@@ -55,23 +55,3 @@ h1 {
     color: transparent;
     text-shadow: rgba(245,245,245,0.5) 3px 5px 1px;
 }
-
-h2 {
-    font-family: Futura;
-    background-color: #666666;
-    -webkit-background-clip: text;
-    -moz-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    text-shadow: rgba(245,245,245,0.5) 1.5px 2.5px 0.5px;
-}
-
-h3 {
-    font-family: Futura;
-    background-color: #666666;
-    -webkit-background-clip: text;
-    -moz-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    text-shadow: rgba(245,245,245,0.5) 1px 2px 0.3px;
-}
