@@ -63,7 +63,7 @@ h2 {
     -moz-background-clip: text;
     background-clip: text;
     color: transparent;
-    text-shadow: rgba(245,245,245,0.5) 3px 5px 1px;
+    text-shadow: rgba(245,245,245,0.5) 1.5px 2.5px 0.5px;
 }
 
 h3 {
@@ -73,5 +73,5 @@ h3 {
     -moz-background-clip: text;
     background-clip: text;
     color: transparent;
-    text-shadow: rgba(245,245,245,0.5) 3px 5px 1px;
+    text-shadow: rgba(245,245,245,0.5) 1px 2px 0.3px;
 }
