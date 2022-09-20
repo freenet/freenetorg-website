@@ -30,8 +30,8 @@ fun ElementCreator<*>.landingPage(db: Firestore) {
     div(fomantic.ui.text.center.aligned.container) {
         div(fomantic.ui.text.left.aligned.container) {
             div() {
-                h1(fomantic.ui.text).addClasses("engraved").text("Freenet")
-                h2(fomantic.ui.text).text("Declare your digital independence")
+                h1(fomantic.ui.header).addClasses("engraved").text("Freenet")
+                h2(fomantic.ui.header).addClasses("subtitle").text("Declare your digital independence")
             }
 
             br()

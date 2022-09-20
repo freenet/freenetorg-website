@@ -24,7 +24,8 @@ import org.freenet.util.StripeRoutePlugin
 const val usernameTableName = "reservedUsernames"
 const val timeToReserveName = 60 * 1000 * 15//15 minutes
 
-//TODO Google Authentication can fail in the first few seconds of a pod existing. Need to add check to make sure this succeeds, and call it again on fail
+//TODO Google Authentication can fail in the first few seconds of a pod existing. Need to add check to
+//TODO make sure this succeeds, and call it again on fail
 val firestoreOptions = FirestoreOptions.getDefaultInstance().toBuilder()
     .setProjectId("freenet-353920")
     .setCredentials(GoogleCredentials.getApplicationDefault())
