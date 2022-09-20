@@ -5,5 +5,5 @@ metadata:
   namespace: freenetorg
   annotations:
     kubernetes.io/ingress.global-static-ip-name: "freenet-org-prod-static"
-    networking.gke.io/managed-certificates: managed-cert
+    networking.gke.io/managed-certificates: managed-cert-prod
     kubernetes.io/ingress.class: "gce"
