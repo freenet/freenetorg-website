@@ -32,9 +32,13 @@ jobs:
           workload_identity_provider: 'projects/516912345376/locations/global/workloadIdentityPools/freenetorg-pool/providers/github'
           service_account: 'gke-service-acct@freenet-353920.iam.gserviceaccount.com'
 
-      - name: Docker configuration
-        run: |-
-          echo ${{steps.auth.outputs.access_token}} | docker login -u oauth2accesstoken --password-stdin https://$GAR_LOCATION-docker.pkg.dev
+      - name: Login to Google Artifact Registry
+        uses: docker/login-action@v2
+        with:
+          registry: us-east1-docker.pkg.dev
+          username: oauth2accesstoken
+          password: ${{ steps.auth.outputs.access_token }}
+
 
       - name: Clean Artifact Registry
         uses: 'docker://us-docker.pkg.dev/gcr-cleaner/gcr-cleaner/gcr-cleaner-cli'
