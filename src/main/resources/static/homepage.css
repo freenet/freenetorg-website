@@ -41,8 +41,7 @@ p {
 }
 
 body {
-    background: rgb(207,207,207);
-    background: linear-gradient(90deg, rgba(207,207,207,1) 0%, rgba(242,242,242,1) 34%, rgba(217,217,217,1) 70%);
+    background: url("/static/freenet-logo.svg"), linear-gradient(90deg, rgba(207,207,207,1) 0%, rgba(242,242,242,1) 34%, rgba(217,217,217,1) 70%);
 }
 
 h1.title {
