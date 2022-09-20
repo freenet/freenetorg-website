@@ -38,7 +38,7 @@ jobs:
           args: >-
             -repo=$IMAGE_PATH1
             -repo=$IMAGE_PATH2
-            -grace=24H
+            -grace=24h
             -keep=3
             -dry_run=true
             
