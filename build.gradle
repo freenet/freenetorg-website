@@ -1,5 +1,5 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.6.10'
+    id 'org.jetbrains.kotlin.jvm' version '1.7.10'
     id 'application'
     id 'com.github.johnrengelman.shadow' version '7.0.0'
     id 'com.google.cloud.tools.appengine' version '2.4.2'
@@ -9,7 +9,7 @@ group 'org.example'
 version '1.2-SNAPSHOT'
 
 application {
-    mainClass = 'xyz.derekbriggs.MainPageKt'
+    mainClass = 'org.freenet.MainKt'
 }
 
 repositories {
@@ -24,12 +24,14 @@ dependencies {
     implementation "com.google.guava:guava:31.1-jre"
     implementation 'com.google.code.gson:gson:2.9.0'
 
-    implementation "com.github.kwebio:kweb-core:0.12.1"
+    implementation "com.github.kwebio:kweb-core:0.12.2"
     implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.30'
 
     implementation "com.stripe:stripe-java:20.113.0"
 
     implementation 'com.google.cloud:google-cloud-firestore:3.2.0'
+
+    implementation 'com.github.mfornos:humanize-slim:1.2.2'
 
     testImplementation(platform("org.junit:junit-bom:5.8.2"))
     testImplementation 'org.junit.jupiter:junit-jupiter'

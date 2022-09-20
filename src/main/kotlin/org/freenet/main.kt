@@ -1,10 +1,10 @@
 package org.freenet
 
 import com.google.auth.oauth2.GoogleCredentials
+import com.google.cloud.firestore.Firestore
 import com.google.cloud.firestore.FirestoreOptions
 import com.stripe.model.Customer
 import com.stripe.model.PaymentIntent
-import homePage
 import io.ktor.server.plugins.*
 import io.ktor.util.date.*
 import kotlinx.coroutines.GlobalScope
@@ -19,6 +19,7 @@ import kweb.state.KVal
 import kweb.state.KVar
 import kweb.state.render
 import kweb.util.json
+import org.freenet.util.StripeRoutePlugin
 
 const val usernameTableName = "reservedUsernames"
 const val timeToReserveName = 60 * 1000 * 15//15 minutes
@@ -28,7 +29,7 @@ val firestoreOptions = FirestoreOptions.getDefaultInstance().toBuilder()
     .setProjectId("freenet-353920")
     .setCredentials(GoogleCredentials.getApplicationDefault())
     .build()
-val db = firestoreOptions.service
+val db: Firestore = firestoreOptions.service
 val presetDonationValues = KVar(arrayOf("10", "20", "40"))
 
 sealed class InputStatus {
@@ -76,7 +77,7 @@ fun main() {
                 }
 
                 path("") {
-                    homePage()
+                    landingPage(db)
                 }
 
                 path("/names") {

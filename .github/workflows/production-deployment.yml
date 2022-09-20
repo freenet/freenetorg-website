@@ -24,7 +24,7 @@ env:
   GKE_ZONE: us-east1-b
   DEPLOYMENT_NAME: freenet-org-prod
   REPOSITORY: freenet-repo
-  IMAGE: freenet-org-prod
+  IMAGE: freenet-org-production
   NAMESPACE: freenetorg
 
 jobs:
