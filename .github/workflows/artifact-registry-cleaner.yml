@@ -45,10 +45,7 @@ jobs:
         with:
           args: >-
             -repo=us-east1-docker.pkg.dev/freenet-353920/freenet-repo
-            -repo=/freenet-353920/freenet-repo
-            -repo=/freenet-353920/freenet-repo/freenet-org-staging
-            -repo=/freenet-repo
-            -repo=/freenet-repo/freenet-org-staging
+            -repo=us-east1-docker.pkg.dev/freenet-353920/freenet-repo/freenet-org-staging
             -dry-run=true
             -grace=24h
             -keep=3
