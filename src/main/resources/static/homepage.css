@@ -35,11 +35,6 @@ body{
     background-color: #0000ff;
 }
 
-p {
-    margin-bottom: 20px;
-    font-weight: 300;
-}
-
 body {
     background: url("/static/rabbit-logo.svg"), linear-gradient(90deg, rgba(207,207,207,1) 0%, rgba(242,242,242,1) 34%, rgba(217,217,217,1) 70%);
     background-repeat: no-repeat;
