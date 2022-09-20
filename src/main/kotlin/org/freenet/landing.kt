@@ -6,26 +6,8 @@ import kweb.*
 import kweb.plugins.fomanticUI.fomantic
 import java.util.*
 
-const val MAX_NEWS_ITEMS = 7
-
 fun ElementCreator<*>.landingPage(db: Firestore) {
-    val newsCollection = db.collection("news-items")
-
-    val newsDocuments = newsCollection.orderBy("date", Query.Direction.DESCENDING).limit(50).get().get().documents
-
-    data class NewsItem(val date: Date, val description : String, val important : Boolean)
-
-    val newsItems = newsDocuments.map { doc ->
-        val date = doc.getTimestamp("date")?.toDate() ?: error("Unable to retrieve date from document")
-        val description = doc.getString("description") ?: error("Unable to retrieve description from document")
-        val important = doc.getBoolean("important") ?: error("Unable to retrieve important from document")
-        NewsItem(date, description, important)
-    }.sortedByDescending { it.date }
-
-    val newsItemList = ArrayList<NewsItem>()
-
-    newsItems.filter { it.important }.take(MAX_NEWS_ITEMS).forEach { newsItemList.add(it) }
-    newsItems.filter { !it.important }.take(MAX_NEWS_ITEMS - newsItemList.size).forEach { newsItemList.add(it) }
+    val news = getNews(db)
 
     div(fomantic.ui.text.center.aligned.container) {
         div(fomantic.ui.text.left.aligned.container) {
@@ -44,7 +26,7 @@ fun ElementCreator<*>.landingPage(db: Firestore) {
 
             h2(fomantic.ui.text).text("Locutus News")
             div(fomantic.ui.bulleted.list) {
-                for (newsItem in newsItemList) {
+                for (newsItem in news) {
                     div(fomantic.item) {
                         val prettyDate = humanize.Humanize.formatDate(newsItem.date,"MMMM d, yyyy")
 
@@ -94,4 +76,29 @@ fun ElementCreator<*>.landingPage(db: Firestore) {
 
 
     }.setAttribute("background-color", "e8e8e8")
+}
+
+data class NewsItem(val date: Date, val description : String, val important : Boolean)
+
+fun getNews(db: Firestore, maxNewsItems : Int = 6): List<NewsItem> {
+    val newsCollection = db.collection("news-items")
+
+    val newsDocuments = newsCollection.orderBy("date", Query.Direction.DESCENDING).limit(50).get().get().documents
+
+
+    val newsItems = newsDocuments.map { doc ->
+        val date = doc.getTimestamp("date")?.toDate() ?: error("Unable to retrieve date from document")
+        val description = doc.getString("description") ?: error("Unable to retrieve description from document")
+        val important = doc.getBoolean("important") ?: error("Unable to retrieve important from document")
+        NewsItem(date, description, important)
+    }.sortedByDescending { it.date }
+
+    val newsItemList = ArrayList<NewsItem>()
+
+    newsItems.filter { it.important }.take(maxNewsItems / 2).forEach { newsItemList.add(it) }
+    newsItems.filter { !it.important }.take(maxNewsItems - newsItemList.size).forEach { newsItemList.add(it) }
+
+    newsItems.sortedBy { it.date }
+
+    return newsItemList;
 }
