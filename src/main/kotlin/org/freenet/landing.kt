@@ -4,27 +4,18 @@ import com.google.cloud.firestore.Firestore
 import com.google.cloud.firestore.Query
 import kweb.*
 import kweb.plugins.fomanticUI.fomantic
+import kweb.state.CloseReason
+import kweb.state.KVal
+import kweb.state.KVar
+import kweb.state.render
 import org.freenet.util.toObject
 import java.util.*
 
 const val MAX_NEWS_ITEMS = 7
 
 fun ElementCreator<*>.landingPage(db: Firestore) {
-    val newsCollection = db.collection("news-items")
 
-    val newsDocuments = newsCollection.orderBy("date", Query.Direction.DESCENDING).limit(50).get().get().documents
-
-    data class NewsItem(val date: Date, val description : String, val important : Boolean) {
-        // Required for Firestore toObject
-        constructor() : this(Date(), "", false)
-    }
-
-    val newsItems : List<NewsItem> = newsDocuments.map { doc -> doc.toObject() }
-
-    val newsItemList = ArrayList<NewsItem>()
-
-    newsItems.filter { it.important }.take(MAX_NEWS_ITEMS).forEach { newsItemList.add(it) }
-    newsItems.filter { !it.important }.take(MAX_NEWS_ITEMS - newsItemList.size).forEach { newsItemList.add(it) }
+    val newsItemList : KVal<List<NewsItem>> = retrieveNews(db)
 
     div(fomantic.ui.text.center.aligned.container) {
         div(fomantic.ui.text.left.aligned.container) {
@@ -43,13 +34,17 @@ fun ElementCreator<*>.landingPage(db: Firestore) {
 
             h2(fomantic.ui.text).text("Locutus News")
             div(fomantic.ui.bulleted.list) {
-                for (newsItem in newsItemList) {
-                    div(fomantic.item) {
-                        val prettyDate = humanize.Humanize.formatDate(newsItem.date,"MMMM d, yyyy")
+                render(newsItemList) { items ->
+                    for (newsItem in items) {
+                        div(fomantic.item) {
+                            val prettyDate = humanize.Humanize.formatDate(newsItem.date, "MMMM d, yyyy")
 
-                        parent.innerHTML("""
+                            parent.innerHTML(
+                                """
                             <B>${prettyDate}:</B> ${newsItem.description}
-                        """.trimIndent())
+                        """.trimIndent()
+                            )
+                        }
                     }
                 }
             }
@@ -93,4 +88,36 @@ fun ElementCreator<*>.landingPage(db: Firestore) {
 
 
     }.setAttribute("background-color", "e8e8e8")
+}
+
+fun ElementCreator<*>.retrieveNews(db: Firestore): KVal<List<NewsItem>> {
+    val newsCollection = db.collection("news-items")
+
+    val newsDocuments = newsCollection.orderBy("date", Query.Direction.DESCENDING).limit(50).get().get().documents
+
+    val newsItems : List<NewsItem> = newsDocuments.map { doc -> doc.toObject() }
+
+    val newsItemList = ArrayList<NewsItem>()
+
+    newsItems.filter { it.important }.take(MAX_NEWS_ITEMS).forEach { newsItemList.add(it) }
+    newsItems.filter { !it.important }.take(MAX_NEWS_ITEMS - newsItemList.size).forEach { newsItemList.add(it) }
+
+    val kv = KVar(newsItems)
+
+    val registration = newsCollection.orderBy("date", Query.Direction.DESCENDING).limit(50).addSnapshotListener { value, error ->
+        val newNewsItems : List<NewsItem> = value?.documents?.map { doc -> doc.toObject() } ?: emptyList()
+        kv.value = newNewsItems
+    }
+
+    this.onCleanup(true) {
+        registration.remove()
+        kv.close(CloseReason("Cleanup"))
+    }
+
+    return kv
+}
+
+data class NewsItem(val date: Date, val description : String, val important : Boolean) {
+    // Required for Firestore toObject
+    constructor() : this(Date(), "", false)
 }
