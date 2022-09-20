@@ -14,7 +14,10 @@ fun ElementCreator<*>.landingPage(db: Firestore) {
 
     val newsDocuments = newsCollection.orderBy("date", Query.Direction.DESCENDING).limit(50).get().get().documents
 
-    data class NewsItem(val date: Date, val description : String, val important : Boolean)
+    data class NewsItem(val date: Date, val description : String, val important : Boolean) {
+        // Required for Firestore toObject
+        constructor() : this(Date(), "", false)
+    }
 
     val newsItems : List<NewsItem> = newsDocuments.map { doc -> doc.toObject() }
 
