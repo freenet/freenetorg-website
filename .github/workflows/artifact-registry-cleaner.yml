@@ -44,5 +44,4 @@ jobs:
             -repo=us-east1-docker.pkg.dev/freenet-353920/freenet-repo/freenet-org-staging
             -grace=24h
             -keep=3
-            -dry-run=true
             
