@@ -6,7 +6,7 @@ import kweb.*
 import kweb.plugins.fomanticUI.fomantic
 import java.util.*
 
-fun ElementCreator<*>.landingPage(db: Firestore) {
+fun ElementCreator<*>.landingPage(db: Firestore?) {
     val news = getNews(db)
 
     div(fomantic.ui.text.center.aligned.container) {
@@ -80,25 +80,38 @@ fun ElementCreator<*>.landingPage(db: Firestore) {
 
 data class NewsItem(val date: Date, val description : String, val important : Boolean)
 
-fun getNews(db: Firestore, maxNewsItems : Int = 6): List<NewsItem> {
-    val newsCollection = db.collection("news-items")
+fun getNews(db: Firestore?, maxNewsItems : Int = 6): List<NewsItem> {
+    if (db != null) {
+        val newsCollection = db.collection("news-items")
 
-    val newsDocuments = newsCollection.orderBy("date", Query.Direction.DESCENDING).limit(50).get().get().documents
+        val newsDocuments = newsCollection.orderBy("date", Query.Direction.DESCENDING).limit(50).get().get().documents
 
 
-    val newsItems = newsDocuments.map { doc ->
-        val date = doc.getTimestamp("date")?.toDate() ?: error("Unable to retrieve date from document")
-        val description = doc.getString("description") ?: error("Unable to retrieve description from document")
-        val important = doc.getBoolean("important") ?: error("Unable to retrieve important from document")
-        NewsItem(date, description, important)
-    }.sortedByDescending { it.date }
+        val newsItems = newsDocuments.map { doc -> doc.toObject(NewsItem::class.java) }.sortedByDescending { it.date }
 
-    val newsItemList = ArrayList<NewsItem>()
+        val newsItemList = ArrayList<NewsItem>()
 
-    newsItems.filter { it.important }.take(maxNewsItems / 2).forEach { newsItemList.add(it) }
-    newsItems.filter { !it.important }.take(maxNewsItems - newsItemList.size).forEach { newsItemList.add(it) }
+        newsItems.filter { it.important }.take(maxNewsItems / 2).forEach { newsItemList.add(it) }
+        newsItems.filter { !it.important }.take(maxNewsItems - newsItemList.size).forEach { newsItemList.add(it) }
 
-    newsItems.sortedBy { it.date }
+        newsItems.sortedBy { it.date }
 
-    return newsItemList;
+        return newsItemList;
+    } else {
+        return listOf(
+            NewsItem(Date(), "Man bites dog", true),
+            NewsItem(Date(), "Something awful happened", false),
+            NewsItem(Date(), "Something great happened", true),
+        )
+    }
 }
+
+/*
+
+<svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" version="1.0" width="30%" height="100%" viewBox="45 100 80 80"><link xmlns="" type="text/css" rel="stylesheet" id="dark-mode-custom-link"/><link xmlns="" type="text/css" rel="stylesheet" id="dark-mode-general-link"/><style xmlns="" lang="en" type="text/css" id="dark-mode-custom-style"/><style xmlns="" lang="en" type="text/css" id="dark-mode-native-style"/><style xmlns="" lang="en" type="text/css" id="dark-mode-native-sheet"/>
+  <defs/>
+  <g transform="translate(-00,-0)">
+    <path d="M 80.03,122.66 C 94.49,107.06 104.32,113.99 87.53,124.89 C 82.19,128.36 83.58,129.37 87.17,128.82 C 92.24,128.05 95.01,129.02 96.24,129.98 C 99.18,132.28 100.65,130.57 101.64,128.82 C 103.61,125.35 110.25,129.12 105.39,132.75 C 101.59,135.58 102.12,138.77 105.57,140.61 C 111.96,144.01 126.30,150.75 124.14,157.93 C 123.26,160.86 121.67,163.62 118.07,159.89 C 111.32,152.92 106.83,146.97 91.28,144.54 C 81.24,142.96 71.15,140.33 61.46,145.25 C 56.90,147.67 51.16,149.23 49.94,146.37 C 48.35,142.64 56.47,139.57 64.32,138.82 C 69.42,138.33 73.99,134.99 67.00,133.29 C 58.39,130.64 68.28,123.09 74.50,124.89 C 78.55,126.07 78.95,123.83 80.03,122.66 z" style="fill:#ff0000;fill-opacity:0.0;stroke:#6D6D6D;stroke-opacity:0.2;stroke-width:1.5;"/>
+  </g>
+</svg>
+ */
