@@ -5,4 +5,3 @@ metadata:
 spec:
   domains:
     - staging.freenet.org
-    - www.staging.freenet.org
