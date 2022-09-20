@@ -4,6 +4,7 @@ import com.google.cloud.firestore.Firestore
 import com.google.cloud.firestore.Query
 import kweb.*
 import kweb.plugins.fomanticUI.fomantic
+import org.freenet.util.toObject
 import java.util.*
 
 const val MAX_NEWS_ITEMS = 7
@@ -15,12 +16,7 @@ fun ElementCreator<*>.landingPage(db: Firestore) {
 
     data class NewsItem(val date: Date, val description : String, val important : Boolean)
 
-    val newsItems = newsDocuments.map { doc ->
-        val date = doc.getTimestamp("date")?.toDate() ?: error("Unable to retrieve date from document")
-        val description = doc.getString("description") ?: error("Unable to retrieve description from document")
-        val important = doc.getBoolean("important") ?: error("Unable to retrieve important from document")
-        NewsItem(date, description, important)
-    }.sortedByDescending { it.date }
+    val newsItems : List<NewsItem> = newsDocuments.map { doc -> doc.toObject() }
 
     val newsItemList = ArrayList<NewsItem>()
 
