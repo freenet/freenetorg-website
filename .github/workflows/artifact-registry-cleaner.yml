@@ -40,8 +40,8 @@ jobs:
         uses: 'docker://us-docker.pkg.dev/gcr-cleaner/gcr-cleaner/gcr-cleaner-cli'
         with:
           args: >-
-            -repo=$IMAGE_PATH1
-            -repo=$IMAGE_PATH2
+            -repo=us-east1-docker.pkg.dev/freenet-repo/freenet-org-production
+            -repo=us-east1-docker.pkg.dev/freenet-repo/freenet-org-staging
             -grace=24h
             -keep=3
             -dry-run=true
