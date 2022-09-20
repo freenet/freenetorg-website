@@ -12,16 +12,3 @@ spec:
     metadata:
       labels:
         app: freenet-org
-    spec:
-      containers:
-        - name: freenet-org-app
-          image: us-east1-docker.pkg.dev/freenet-353920/freenet-repo/freenet-org
-          ports:
-            - containerPort: 8080
-          env:
-            - name: STRIPE_SECRET_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: stripe-key
-                  key: STRIPE_SECRET_KEY
-      serviceAccountName: freenet-service-account
