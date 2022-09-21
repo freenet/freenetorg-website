@@ -48,6 +48,7 @@ jobs:
             -repo=us-east1-docker.pkg.dev/freenet-353920/freenet-repo/freenet-org
             -repo=us-east1-docker.pkg.dev/freenet-353920/freenet-repo/freenet-org-staging
             -keep=3
+            -tag_filter_any="^[a-zA-Z0-9_]*$"
             -dry-run=true
             
             
