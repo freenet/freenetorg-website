@@ -103,7 +103,7 @@ fun ElementCreator<*>.retrieveNews(db: Firestore): KVal<List<NewsItem>> {
     newsItems.filter { !it.important }.take(MAX_NEWS_ITEMS - newsItemList.size).forEach { newsItemList.add(it) }
 
     val kv = KVar(newsItems)
-/*
+
     val registration = newsCollection.orderBy("date", Query.Direction.DESCENDING).limit(50).addSnapshotListener { value, error ->
         val newNewsItems : List<NewsItem> = value?.documents?.map { doc -> doc.toObject() } ?: emptyList()
         kv.value = newNewsItems
@@ -113,7 +113,7 @@ fun ElementCreator<*>.retrieveNews(db: Firestore): KVal<List<NewsItem>> {
         registration.remove()
         kv.close(CloseReason("Cleanup"))
     }
-*/
+
     return kv
 }
 
