@@ -50,6 +50,7 @@ fun main() {
     Kweb(port = 8080, debug = false, plugins = listOf(fomanticUIPlugin, StripeRoutePlugin(),
         StaticFilesPlugin(ResourceFolder("static"), "/static"))) {
         doc.head {
+            title().text("Freenet")
             element("meta").setAttribute("content", "width=device-width, initial-scale=1").setAttribute("name", "viewport")
             element("link").setAttribute("rel", "stylesheet").setAttribute("href", "/static/checkout.css")
             element("link").setAttribute("rel", "stylesheet").setAttribute("href", "/static/homepage.css")
