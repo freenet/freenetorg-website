@@ -5,14 +5,12 @@ metadata:
   namespace: freenetorg
   annotations:
     cloud.google.com/backend-config: '{"default" : "backendconfig-prod"}'
-    cloud.google.com/app-protocols: '{"my-port":"HTTP2"}'
     #cloud.google.com/neg: '{"exposed_ports": {"8080":{}}}'
 spec:
   selector:
     app: freenet-org
   ports:
-  - name: my-port
-    port: 443
+  - port: 80
     protocol: TCP
-    targetPort: 8433
+    targetPort: 8080
   type: NodePort
