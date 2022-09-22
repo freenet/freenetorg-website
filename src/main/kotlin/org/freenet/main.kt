@@ -46,7 +46,7 @@ enum class EmailStatus {
 
 fun main() {
 
-    Kweb(port = 8443, debug = false, plugins = listOf(fomanticUIPlugin, StripeRoutePlugin(),
+    Kweb(port = 8080, debug = false, plugins = listOf(fomanticUIPlugin, StripeRoutePlugin(),
         StaticFilesPlugin(ResourceFolder("static"), "/static"))) {
         doc.head {
             element("meta").setAttribute("content", "width=device-width, initial-scale=1").setAttribute("name", "viewport")
