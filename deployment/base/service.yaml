@@ -11,8 +11,8 @@ spec:
   selector:
     app: freenet-org
   ports:
-    - name: my-port
-      port: 443
-      protocol: TCP
-      targetPort: 8433
+  - name: my-port
+    port: 443
+    protocol: TCP
+    targetPort: 8433
   type: NodePort
