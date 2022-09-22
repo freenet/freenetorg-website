@@ -17,7 +17,7 @@ spec:
         - name: freenet-org-app-staging
           image: us-east1-docker.pkg.dev/freenet-353920/freenet-repo/freenet-org-staging
           ports:
-            - containerPort: 8080
+            - containerPort: 8443
           env:
             - name: STRIPE_SECRET_KEY
               valueFrom:

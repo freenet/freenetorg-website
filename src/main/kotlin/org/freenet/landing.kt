@@ -93,23 +93,20 @@ fun ElementCreator<*>.landingPage(db: Firestore) {
 fun ElementCreator<*>.retrieveNews(db: Firestore): KVal<List<NewsItem>> {
     val newsCollection = db.collection("news-items")
 
-    val newsDocumentsFuture = newsCollection.orderBy("date", Query.Direction.DESCENDING).limit(50).get()
-    val newsDocuments = newsDocumentsFuture.get().documents
-    //val newsDocuments = newsCollection.orderBy("date", Query.Direction.DESCENDING).limit(50).get().get().documents
+    val kv = KVar(listOf(NewsItem()))
 
-    val newsItems : List<NewsItem> = newsDocuments.map { doc -> doc.toObject() }
+    val registration = newsCollection.orderBy("date", Query.Direction.DESCENDING).limit(50).addSnapshotListener { value, error ->
+        val newNewsItems : List<NewsItem> = value?.documents?.map { doc -> doc.toObject() } ?: emptyList()
+        kv.value = newNewsItems
+    }
+
+    val newsItems : List<NewsItem> = kv.value
 
     val newsItemList = ArrayList<NewsItem>()
 
     newsItems.filter { it.important }.take(MAX_NEWS_ITEMS).forEach { newsItemList.add(it) }
     newsItems.filter { !it.important }.take(MAX_NEWS_ITEMS - newsItemList.size).forEach { newsItemList.add(it) }
 
-    val kv = KVar(newsItems)
-
-    val registration = newsCollection.orderBy("date", Query.Direction.DESCENDING).limit(50).addSnapshotListener { value, error ->
-        val newNewsItems : List<NewsItem> = value?.documents?.map { doc -> doc.toObject() } ?: emptyList()
-        kv.value = newNewsItems
-    }
 
     this.onCleanup(true) {
         registration.remove()
