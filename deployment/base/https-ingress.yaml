@@ -14,4 +14,4 @@ spec:
       name: freenet-org
       port:
         number:
-          8080
+          443
