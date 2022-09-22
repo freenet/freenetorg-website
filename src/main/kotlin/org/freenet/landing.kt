@@ -13,9 +13,7 @@ import java.util.*
 
 const val MAX_NEWS_ITEMS = 7
 
-fun ElementCreator<*>.landingPage(db: Firestore) {
-
-    val newsItemList : KVal<List<NewsItem>> = retrieveNews(db)
+fun ElementCreator<*>.landingPage(newsItemList : KVal<List<NewsItem>>) {
 
     div(fomantic.ui.text.center.aligned.container) {
         div(fomantic.ui.text.left.aligned.container) {
@@ -90,34 +88,3 @@ fun ElementCreator<*>.landingPage(db: Firestore) {
     }.setAttribute("background-color", "e8e8e8")
 }
 
-fun ElementCreator<*>.retrieveNews(db: Firestore): KVal<List<NewsItem>> {
-    val newsCollection = db.collection("news-items")
-
-    val newsDocuments = newsCollection.orderBy("date", Query.Direction.DESCENDING).limit(50).get().get().documents
-
-    val newsItems : List<NewsItem> = newsDocuments.map { doc -> doc.toObject() }
-
-    val newsItemList = ArrayList<NewsItem>()
-
-    newsItems.filter { it.important }.take(MAX_NEWS_ITEMS).forEach { newsItemList.add(it) }
-    newsItems.filter { !it.important }.take(MAX_NEWS_ITEMS - newsItemList.size).forEach { newsItemList.add(it) }
-
-    val kv = KVar(newsItems)
-
-    val registration = newsCollection.orderBy("date", Query.Direction.DESCENDING).limit(50).addSnapshotListener { value, error ->
-        val newNewsItems : List<NewsItem> = value?.documents?.map { doc -> doc.toObject() } ?: emptyList()
-        kv.value = newNewsItems
-    }
-
-    this.onCleanup(true) {
-        registration.remove()
-        kv.close(CloseReason("Cleanup"))
-    }
-
-    return kv
-}
-
-data class NewsItem(val date: Date, val description : String, val important : Boolean) {
-    // Required for Firestore toObject
-    constructor() : this(Date(), "", false)
-}

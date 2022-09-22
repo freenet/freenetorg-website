@@ -32,6 +32,7 @@ val firestoreOptions = FirestoreOptions.getDefaultInstance().toBuilder()
     .build()
 val db: Firestore = firestoreOptions.service
 val presetDonationValues = KVar(arrayOf("10", "20", "40"))
+val newsItemList = retrieveNews(db)
 
 sealed class InputStatus {
     object None : InputStatus()
@@ -78,7 +79,7 @@ fun main() {
                 }
 
                 path("") {
-                    landingPage(db)
+                    landingPage(newsItemList)
                 }
 
                 path("/names") {
