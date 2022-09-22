@@ -11,7 +11,7 @@ spec:
   selector:
     app: freenet-org
   ports:
-    - name: "my-port"
+    - name: my-port
       port: 443
       protocol: TCP
       targetPort: 8080
