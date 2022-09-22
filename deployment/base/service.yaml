@@ -12,7 +12,7 @@ spec:
     app: freenet-org
   ports:
     - name: "my-port"
-      port: 443
+      port: 8080
       protocol: TCP
       targetPort: 8080
   type: NodePort
