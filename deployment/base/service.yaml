@@ -11,7 +11,8 @@ spec:
   selector:
     app: freenet-org
   ports:
-    - port: 443
+    - name: "my-port"
+      port: 443
       protocol: TCP
       targetPort: 8080
   type: NodePort
