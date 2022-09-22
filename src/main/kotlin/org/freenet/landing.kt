@@ -24,11 +24,21 @@ fun ElementCreator<*>.landingPage(newsItemList : KVal<List<NewsItem>>) {
 
             br()
 
-            p(fomantic.ui.text).text("23 years ago we created the original Freenet, the first distributed, decentralized peer-to-peer network. It pioneered " +
-                    "technologies like cryptographic contracts and small-world networks, and is still under active development.\n" +
-                    "\n")
-            p(fomantic.ui.text).text("Today we’re building Locutus, which will make it easy for developers to create and deploy decentralized alternatives to today’s centralized tech companies. " +
-                    "These decentralized apps will be easy to use, scalable, and secured through cryptography.")
+            p(fomantic.ui.text).text(
+                """|The Internet has grown increasingly centralized over the past 25 years, such that a handful 
+                   |of companies now effectively control the Internet infrastructure. The public square is privately 
+                   |owned, threatening freedom of speech and democracy.""".trimMargin()
+            )
+
+            p(fomantic.ui.text).text(
+                """|23 years ago we created the original Freenet, the first distributed, decentralized 
+                   |peer-to-peer network. It pioneered technologies like cryptographic contracts and small-world 
+                   |networks, and is still under active development.""".trimMargin()
+            )
+            p(fomantic.ui.text).text(
+                """|Today we’re building Locutus, which will make it easy for developers 
+                   |to create and deploy decentralized alternatives to today’s centralized tech companies. These 
+                   |decentralized apps will be easy to use, scalable, and secured through cryptography.""".trimMargin())
 
             h2(fomantic.ui.text).text("Locutus News")
             div(fomantic.ui.bulleted.list) {
