@@ -93,7 +93,9 @@ fun ElementCreator<*>.landingPage(db: Firestore) {
 fun ElementCreator<*>.retrieveNews(db: Firestore): KVal<List<NewsItem>> {
     val newsCollection = db.collection("news-items")
 
-    val newsDocuments = newsCollection.orderBy("date", Query.Direction.DESCENDING).limit(50).get().get().documents
+    val newsDocumentsFuture = newsCollection.orderBy("date", Query.Direction.DESCENDING).limit(50).get()
+    val newsDocuments = newsDocumentsFuture.get().documents
+    //val newsDocuments = newsCollection.orderBy("date", Query.Direction.DESCENDING).limit(50).get().get().documents
 
     val newsItems : List<NewsItem> = newsDocuments.map { doc -> doc.toObject() }
 
