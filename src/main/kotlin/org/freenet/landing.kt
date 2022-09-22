@@ -87,4 +87,3 @@ fun ElementCreator<*>.landingPage(newsItemList : KVal<List<NewsItem>>) {
 
     }.setAttribute("background-color", "e8e8e8")
 }
-
