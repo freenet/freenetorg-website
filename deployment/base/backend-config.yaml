@@ -4,4 +4,4 @@ metadata:
   name: backend-config
   namespace: freenetorg
 spec:
-  timeoutSec: 3000
+  timeoutSec: 300
