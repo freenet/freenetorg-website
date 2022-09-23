@@ -4,53 +4,55 @@ import com.google.cloud.firestore.Firestore
 import com.google.cloud.firestore.Query
 import kweb.*
 import kweb.plugins.fomanticUI.fomantic
+import kweb.state.CloseReason
+import kweb.state.KVal
+import kweb.state.KVar
+import kweb.state.render
+import org.freenet.util.toObject
 import java.util.*
 
 const val MAX_NEWS_ITEMS = 7
 
-fun ElementCreator<*>.landingPage(db: Firestore) {
-    val newsCollection = db.collection("news-items")
-
-    val newsDocuments = newsCollection.orderBy("date", Query.Direction.DESCENDING).limit(50).get().get().documents
-
-    data class NewsItem(val date: Date, val description : String, val important : Boolean)
-
-    val newsItems = newsDocuments.map { doc ->
-        val date = doc.getTimestamp("date")?.toDate() ?: error("Unable to retrieve date from document")
-        val description = doc.getString("description") ?: error("Unable to retrieve description from document")
-        val important = doc.getBoolean("important") ?: error("Unable to retrieve important from document")
-        NewsItem(date, description, important)
-    }.sortedByDescending { it.date }
-
-    val newsItemList = ArrayList<NewsItem>()
-
-    newsItems.filter { it.important }.take(MAX_NEWS_ITEMS).forEach { newsItemList.add(it) }
-    newsItems.filter { !it.important }.take(MAX_NEWS_ITEMS - newsItemList.size).forEach { newsItemList.add(it) }
+fun ElementCreator<*>.landingPage(newsItemList : KVal<List<NewsItem>>) {
 
     div(fomantic.ui.text.center.aligned.container) {
         div(fomantic.ui.text.left.aligned.container) {
             div() {
                 h1(fomantic.ui.text).addClasses("engraved").text("Freenet")
-                h2(fomantic.ui.text).text("Declare your digital independence")
+                h2(fomantic.ui.text).addClasses("subtitle").text("Declare your digital independence")
             }
 
             br()
 
-            p(fomantic.ui.text).text("23 years ago we created the original Freenet, the first distributed, decentralized peer-to-peer network. It pioneered " +
-                    "technologies like cryptographic contracts and small-world networks, and is still under active development.\n" +
-                    "\n")
-            p(fomantic.ui.text).text("Today we’re building Locutus, which will make it easy for developers to create and deploy decentralized alternatives to today’s centralized tech companies. " +
-                    "These decentralized apps will be easy to use, scalable, and secured through cryptography.")
+            p(fomantic.ui.text).text(
+                """|The Internet has grown increasingly centralized over the past 25 years, such that a handful 
+                   |of companies now effectively control the Internet infrastructure. The public square is privately 
+                   |owned, threatening freedom of speech and democracy.""".trimMargin()
+            )
+
+            p(fomantic.ui.text).text(
+                """|23 years ago we created the original Freenet, the first distributed, decentralized 
+                   |peer-to-peer network. It pioneered technologies like cryptographic contracts and small-world 
+                   |networks, and is still under active development.""".trimMargin()
+            )
+            p(fomantic.ui.text).text(
+                """|Today we’re building Locutus, which will make it easy for developers 
+                   |to create and deploy decentralized alternatives to today’s centralized tech companies. These 
+                   |decentralized apps will be easy to use, scalable, and secured through cryptography.""".trimMargin())
 
             h2(fomantic.ui.text).text("Locutus News")
             div(fomantic.ui.bulleted.list) {
-                for (newsItem in newsItemList) {
-                    div(fomantic.item) {
-                        val prettyDate = humanize.Humanize.formatDate(newsItem.date,"MMMM d, yyyy")
+                render(newsItemList) { items ->
+                    for (newsItem in items) {
+                        div(fomantic.item) {
+                            val prettyDate = humanize.Humanize.formatDate(newsItem.date, "MMMM d, yyyy")
 
-                        parent.innerHTML("""
+                            parent.innerHTML(
+                                """
                             <B>${prettyDate}:</B> ${newsItem.description}
-                        """.trimIndent())
+                        """.trimIndent()
+                            )
+                        }
                     }
                 }
             }

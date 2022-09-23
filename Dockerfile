@@ -9,4 +9,4 @@ FROM openjdk:17
 EXPOSE 8080:8080
 RUN mkdir /app
 COPY --from=build /home/gradle/src/build/libs/locutus-donation-site-1.2-SNAPSHOT-all.jar /app/Freenet.jar
-ENTRYPOINT ["java", "-jar", "/app/Freenet.jar"]
+ENTRYPOINT ["java", "-server", "-XX:MaxRAMPercentage=75.0", "-jar", "/app/Freenet.jar"]

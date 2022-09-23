@@ -35,19 +35,15 @@ body{
     background-color: #0000ff;
 }
 
-p {
-    margin-bottom: 20px;
-    font-weight: 300;
-}
-
 body {
-    background: rgb(207,207,207);
-    background: linear-gradient(90deg, rgba(207,207,207,1) 0%, rgba(242,242,242,1) 34%, rgba(217,217,217,1) 70%);
+    background: url("/static/rabbit-logo.svg"), linear-gradient(90deg, rgba(227,227,227,1) 0%, rgba(255,255,255,1) 34%, rgba(237,237,237,1) 70%);
+    background-repeat: repeat-y;
+    background-position: center;
 }
 
 h1 {
     font-size: 100px;
-    font-family: Futura;
+    font-family: Candara, Calibri, Segoe, "Segoe UI", Optima, Arial, sans-serif;
     background-color: #666666;
     -webkit-background-clip: text;
     -moz-background-clip: text;
@@ -56,6 +52,6 @@ h1 {
     text-shadow: rgba(245,245,245,0.5) 3px 5px 1px;
 }
 
-h2 {
-    font-family: Futura;
+.subtitle {
+    margin-top: 0px;
 }
