@@ -65,6 +65,12 @@ fun main() {
                 """.trimIndent())
             }
 
+            element("link").new {
+                parent.setAttribute("rel", "icon")
+                parent.setAttribute("href", "/static/rabbit-logo.svg")
+                parent.setAttribute("type", "image/svg+xml")
+            }
+
             title().text("Freenet")
             element("meta").setAttribute("content", "width=device-width, initial-scale=1").setAttribute("name", "viewport")
             element("link").setAttribute("rel", "stylesheet").setAttribute("href", "/static/checkout.css")
