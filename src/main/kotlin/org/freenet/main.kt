@@ -61,7 +61,7 @@ fun main() {
         doc.body {
             route {
 
-                path("/success") {
+                /*path("/success") {
                     val payIntent = PaymentIntent.retrieve(browser.httpRequestInfo.request.call.parameters["payment_intent"])
                     val customerEmail = saveCustomer(payIntent.charges.data[0].customer)
                     saveStripePaymentDetails(payIntent.toString(), customerEmail, payIntent.metadata["username"]!!, payIntent.amount, payIntent.charges.data[0].id)
@@ -73,17 +73,17 @@ fun main() {
                         p().text(successCopy2)
                         p().text(successCopy3)
                     }
-                }
+                }*/
 
-                path("/cancel") {
+                /*path("/cancel") {
                     h1().text("Payment cancelled")
-                }
+                }*/
 
                 path("") {
                     landingPage(newsItemList)
                 }
 
-                path("/names") {
+                /*path("/names") {
 
                     val ipAddress = browser.httpRequestInfo.request.call.request.origin.remoteHost
                     div(fomantic.ui.text.center.aligned.container) {
@@ -255,7 +255,7 @@ fun main() {
                             }
                         }
                     }
-                }
+                }*/
             }
         }
     }
@@ -268,6 +268,7 @@ fun isDonationAmountHighEnough(userDonationInput: String, minDonationAmount: Dou
 }
 */
 
+/*
 fun ElementCreator<*>.renderCheckout(confirmationText : String) {
     browser.callJsFunction("initialize()")
     lateinit var paymentForm : FormElement
@@ -393,4 +394,4 @@ fun showToast(webBrowser: WebBrowser, message: String) {
             }
         }).showToast();
     """.trimIndent(), message.json)
-}
+}*/
