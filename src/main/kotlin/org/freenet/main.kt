@@ -50,6 +50,11 @@ fun main() {
     Kweb(port = 8080, debug = false, plugins = listOf(fomanticUIPlugin, StripeRoutePlugin(),
         StaticFilesPlugin(ResourceFolder("static"), "/static"))) {
         doc.head {
+            element("script").innerHTML("(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':" +
+                    "new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0]," +
+                    "j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=" +
+                    "'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);" +
+                    "})(window,document,'script','dataLayer','GTM-WKG2MWP');")
             title().text("Freenet")
             element("meta").setAttribute("content", "width=device-width, initial-scale=1").setAttribute("name", "viewport")
             element("link").setAttribute("rel", "stylesheet").setAttribute("href", "/static/checkout.css")
@@ -59,6 +64,15 @@ fun main() {
 
         }
         doc.body {
+            element("noscript").new {
+                element("iframe")
+                    .setAttributes(
+                        "height" to "0".json,
+                        "width" to "0".json,
+                        "style" to "display:none;visibility:hidden".json,
+                        "src" to "https://www.googletagmanager.com/ns.html?id=GTM-WKG2MWP".json);
+            }
+
             route {
 
                 path("/success") {
