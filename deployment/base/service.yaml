@@ -5,7 +5,6 @@ metadata:
   namespace: freenetorg
   annotations:
     cloud.google.com/backend-config: '{"default" : "backendconfig-prod"}'
-    #cloud.google.com/neg: '{"exposed_ports": {"8080":{}}}'
 spec:
   selector:
     app: freenet-org
