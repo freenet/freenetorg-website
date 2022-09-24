@@ -3,6 +3,5 @@ kind: Kustomization
 resources:
 - deployment.yaml
 - https-ingress.yaml
-- managed-cert.yaml
 - service.yaml
 - backend-config.yaml

@@ -6,7 +6,6 @@ metadata:
   annotations:
     kubernetes.io/ingress.global-static-ip-name: "freenet-org-prod-static"
     kubernetes.io/ingress.allow-http: "true"
-    networking.gke.io/managed-certificates: managed-cert
     kubernetes.io/ingress.class: "gce"
 spec:
   defaultBackend:
