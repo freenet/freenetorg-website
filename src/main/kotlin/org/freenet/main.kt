@@ -19,20 +19,41 @@ import kweb.state.KVal
 import kweb.state.KVar
 import kweb.state.render
 import kweb.util.json
+import mu.KotlinLogging
 import org.freenet.util.StripeRoutePlugin
+import java.util.*
+import kotlin.collections.HashMap
+
+private val logger = KotlinLogging.logger {  }
 
 const val usernameTableName = "reservedUsernames"
 const val timeToReserveName = 60 * 1000 * 15//15 minutes
 
+val isLocalTestingMode : Boolean = System.getenv("FREENET_SITE_LOCAL_TESTING").equals("true", true)
+
 //TODO Google Authentication can fail in the first few seconds of a pod existing. Need to add check to
 //TODO make sure this succeeds, and call it again on fail
-val firestoreOptions = FirestoreOptions.getDefaultInstance().toBuilder()
-    .setProjectId(System.getenv("GOOGLE_CLOUD_PROJECT_NAME"))
-    .setCredentials(GoogleCredentials.getApplicationDefault())
-    .build()
-val db: Firestore = firestoreOptions.service
+val db: Firestore? = run {
+    if (isLocalTestingMode) {
+        null
+    } else {
+        val firestoreOptions = FirestoreOptions.getDefaultInstance().toBuilder()
+            .setProjectId(System.getenv("GOOGLE_CLOUD_PROJECT_NAME"))
+            .setCredentials(GoogleCredentials.getApplicationDefault())
+            .build()
+        firestoreOptions.service
+    }
+
+}
+
 val presetDonationValues = KVar(arrayOf("10", "20", "40"))
-val newsItemList = retrieveNews(db)
+val newsItemList = if (db != null) retrieveNews(db) else {
+    KVar(listOf(
+        NewsItem(Date(),"This is the first news item", true),
+        NewsItem(Date(),"This is the second news item", false),
+        NewsItem(Date(),"This is the third news item", true),
+    ))
+}
 
 sealed class InputStatus {
     object None : InputStatus()
@@ -47,8 +68,12 @@ enum class EmailStatus {
 
 fun main() {
 
-    Kweb(port = 8080, debug = false, plugins = listOf(fomanticUIPlugin, StripeRoutePlugin(),
+    logger.info("Starting Freenet Site, isLocalTestingMode: $isLocalTestingMode")
+
+    Kweb(port = 8080, debug = isLocalTestingMode, plugins = listOf(fomanticUIPlugin, StripeRoutePlugin(),
         StaticFilesPlugin(ResourceFolder("static"), "/static"))) {
+        logger.info("Received inbound HTTP(S) connection from ${this.httpRequestInfo.remoteHost}")
+
         doc.head {
 
             element("link").new {
@@ -320,6 +345,9 @@ fun getMinimumDonationAmount(username: String) : Long{
 
 
 fun tempReserveName(username: String,  ipAddress: String, referer: String? = null) {
+    if (db == null)
+        error("No database available because site is running in offline mode for development")
+
     val docRef = db.collection(usernameTableName).document(username)
     val data = HashMap<String, Any>()
 
@@ -346,6 +374,9 @@ fun isValidEmail(email : String) : Boolean {
 }
 
 fun isUsernameAvailable(username: String) : Boolean {
+    if (db == null) {
+        error("No database available because site is running in offline mode for development")
+    }
     val usernameCollection = db.collection(usernameTableName)
     val query = usernameCollection.whereEqualTo("lowercaseUsername", username.lowercase())
     val querySnapshot = query.get()
@@ -365,6 +396,10 @@ fun isUsernameAvailable(username: String) : Boolean {
 
 //Called to finalize reserving a username, via a Stripe payment
 fun saveStripePaymentDetails(stripePayIntentJson: String, email: String, username: String, donationAmount: Long, transactionId: String) {
+    if (db == null) {
+        error("No database available because site is running in offline mode for development")
+    }
+
     val docRef = db.collection(usernameTableName).document(username)
     val data = HashMap<String, Any>()
 
@@ -378,6 +413,10 @@ fun saveStripePaymentDetails(stripePayIntentJson: String, email: String, usernam
 }
 
 fun saveCustomer(stripeCustomerId: String) : String{
+    if (db == null) {
+        error("No database available because site is running in offline mode for development")
+    }
+
     val customer = Customer.retrieve(stripeCustomerId)
     val docRef = db.collection("Customers").document(customer.email)
     val data = HashMap<String, Any>()

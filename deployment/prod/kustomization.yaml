@@ -2,7 +2,8 @@ resources:
   - ../base/
 nameSuffix: -prod
 patchesStrategicMerge:
-  - attach_backend_config.yaml
-  - deployment.yaml
-  - service.yaml
   - set_static_ip.yaml
+  - attach_backend_config.yaml
+  - attach_service_to_ingress.yaml
+  - deployment.yaml
+  - prod_cert.yaml

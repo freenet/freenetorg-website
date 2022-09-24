@@ -14,7 +14,7 @@ spec:
         app: freenet-org-prod
     spec:
       containers:
-        - name: freenet-org-app
+        - name: freenet-org-app-prod
           image: us-east1-docker.pkg.dev/freenet-353920/freenet-repo/freenet-org-production
           ports:
             - containerPort: 8080

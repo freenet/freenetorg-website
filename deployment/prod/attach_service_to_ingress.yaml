@@ -6,7 +6,7 @@ metadata:
 spec:
   defaultBackend:
     service:
-      name: freenet-org-staging
+      name: freenet-org-prod
       port:
         number:
           8080
