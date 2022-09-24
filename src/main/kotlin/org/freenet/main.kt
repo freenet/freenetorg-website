@@ -19,24 +19,29 @@ import kweb.state.KVal
 import kweb.state.KVar
 import kweb.state.render
 import kweb.util.json
+import mu.KotlinLogging
 import org.freenet.util.StripeRoutePlugin
 import java.util.*
 import kotlin.collections.HashMap
 
+private val logger = KotlinLogging.logger {  }
+
 const val usernameTableName = "reservedUsernames"
 const val timeToReserveName = 60 * 1000 * 15//15 minutes
+
+val isLocalTestingMode : Boolean = System.getenv("FREENET_SITE_LOCAL_TESTING").equals("true", true)
 
 //TODO Google Authentication can fail in the first few seconds of a pod existing. Need to add check to
 //TODO make sure this succeeds, and call it again on fail
 val db: Firestore? = run {
-    if (!System.getenv("FREENET_SITE_LOCAL_TESTING").equals("true", true)) {
+    if (isLocalTestingMode) {
+        null
+    } else {
         val firestoreOptions = FirestoreOptions.getDefaultInstance().toBuilder()
             .setProjectId(System.getenv("GOOGLE_CLOUD_PROJECT_NAME"))
             .setCredentials(GoogleCredentials.getApplicationDefault())
             .build()
         firestoreOptions.service
-    } else {
-        null
     }
 
 }
@@ -63,8 +68,12 @@ enum class EmailStatus {
 
 fun main() {
 
-    Kweb(port = 8080, debug = false, plugins = listOf(fomanticUIPlugin, StripeRoutePlugin(),
+    logger.info("Starting Freenet Site, isLocalTestingMode: $isLocalTestingMode")
+
+    Kweb(port = 8080, debug = isLocalTestingMode, plugins = listOf(fomanticUIPlugin, StripeRoutePlugin(),
         StaticFilesPlugin(ResourceFolder("static"), "/static"))) {
+        logger.info("Received inbound HTTP(S) connection from ${this.httpRequestInfo.remoteHost}")
+
         doc.head {
 
             element("link").new {
