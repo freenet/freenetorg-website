@@ -19,11 +19,12 @@ import kweb.state.KVal
 import kweb.state.KVar
 import kweb.state.render
 import kweb.util.json
+import mu.KotlinLogging
 import org.freenet.util.StripeRoutePlugin
 import java.util.*
 import kotlin.collections.HashMap
 
-private val logger = KotlinLogging.logger {}
+private val logger = KotlinLogging.logger {  }
 
 const val usernameTableName = "reservedUsernames"
 const val timeToReserveName = 60 * 1000 * 15//15 minutes
