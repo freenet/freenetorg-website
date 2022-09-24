@@ -10,6 +10,6 @@ while pushes to the [production branch](https://github.com/freenet/freenetorg-we
 
 ## Testing Locally
 
-If the environment variable `GOOGLE_APPLICATION_CREDENTIALS` is not set, or `FREENET_SITE_NO_DB` is set to `true`, 
-the site will run in "offline" mode, using dummy data instead of the database. This makes it easy to test locally 
-without needing to set up a local FireStore instance.
+If and only if the environment variable `FREENET_SITE_LOCAL_TESTING` is set to `true`, the site will run in "offline" 
+mode, using dummy data instead of the database. This makes it easy to test locally without needing to set up a local 
+FireStore instance.
