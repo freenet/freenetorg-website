@@ -30,7 +30,7 @@ const val timeToReserveName = 60 * 1000 * 15//15 minutes
 //TODO make sure this succeeds, and call it again on fail
 val db: Firestore? = run {
     if (System.getenv("GOOGLE_APPLICATION_CREDENTIALS") != null &&
-        System.getenv("FREENET_SITE_NO_DB").equals("true", true)) {
+        !System.getenv("FREENET_SITE_NO_DB").equals("true", true)) {
         val firestoreOptions = FirestoreOptions.getDefaultInstance().toBuilder()
             .setProjectId(System.getenv("GOOGLE_CLOUD_PROJECT_NAME"))
             .setCredentials(GoogleCredentials.getApplicationDefault())
