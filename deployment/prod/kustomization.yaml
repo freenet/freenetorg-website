@@ -6,3 +6,4 @@ patchesStrategicMerge:
   #- attach_service_to_ingress.yaml
   - deployment.yaml
   - service.yaml
+  - set_static_ip.yaml
