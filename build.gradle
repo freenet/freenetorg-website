@@ -33,6 +33,9 @@ dependencies {
 
     implementation 'com.github.mfornos:humanize-slim:1.2.2'
 
+    implementation 'io.github.microutils:kotlin-logging-jvm:3.0.0'
+    implementation 'com.google.cloud:google-cloud-logging-logback:0.127.10-alpha'
+
     testImplementation(platform("org.junit:junit-bom:5.8.2"))
     testImplementation 'org.junit.jupiter:junit-jupiter'
 }

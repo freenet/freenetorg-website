@@ -23,6 +23,8 @@ import org.freenet.util.StripeRoutePlugin
 import java.util.*
 import kotlin.collections.HashMap
 
+private val logger = KotlinLogging.logger {}
+
 const val usernameTableName = "reservedUsernames"
 const val timeToReserveName = 60 * 1000 * 15//15 minutes
 
@@ -65,8 +67,12 @@ enum class EmailStatus {
 
 fun main() {
 
+    logger.info("Starting Freenet Site, isLocalTestingMode: $isLocalTestingMode")
+
     Kweb(port = 8080, debug = isLocalTestingMode, plugins = listOf(fomanticUIPlugin, StripeRoutePlugin(),
         StaticFilesPlugin(ResourceFolder("static"), "/static"))) {
+        logger.info("Received inbound HTTP(S) connection from ${this.httpRequestInfo.remoteHost}")
+
         doc.head {
 
             element("link").new {
