@@ -18,7 +18,7 @@ fun ElementCreator<*>.landingPage(newsItemList : KVal<List<NewsItem>>) {
     div(fomantic.ui.text.center.aligned.container) {
         div(fomantic.ui.text.left.aligned.container) {
             div() {
-                h1(fomantic.ui.text).addClasses("engraved").text("Freenet")
+                h1(fomantic.ui.text).text("Freenet")
                 h2(fomantic.ui.text).addClasses("subtitle").text("Declare your digital independence")
             }
 
@@ -67,14 +67,14 @@ fun ElementCreator<*>.landingPage(newsItemList : KVal<List<NewsItem>>) {
             div(fomantic.ui.bulleted.list) {
                 div(fomantic.ui.item).innerHTML("<a href=\"https://reddit.com/r/freenet\">r/freenet</a> on Reddit")
                 div(fomantic.ui.item) {
-                    p().text("Locutus")
+                    span().text("Locutus")
                     div(fomantic.ui.bulleted.list) {
                         div(fomantic.ui.item).innerHTML("Follow <a href=\"https://twitter.com/freenetorg\">@freenetorg</a> on Twitter for updates")
                         div(fomantic.ui.item).innerHTML("Chat with us on <a href=\"https://matrix.to/#/#freenet-locutus:matrix.org\">Matrix</a>")
                     }
                 }
                 div(fomantic.ui.item) {
-                    p().text("Fred")
+                    span().text("Fred")
                     div(fomantic.ui.bulleted.list) {
                         div(fomantic.ui.item).innerHTML("Follow <a href=\"https://freenetproject.org\">@freenetproject</a>")
                         div(fomantic.ui.item).innerHTML("IRC: <a href=\"https://web.libera.chat/?nick=FollowRabbit%7C?#freenet\">#freenet on libera</a>")

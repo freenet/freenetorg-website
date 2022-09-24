@@ -27,7 +27,7 @@ const val timeToReserveName = 60 * 1000 * 15//15 minutes
 //TODO Google Authentication can fail in the first few seconds of a pod existing. Need to add check to
 //TODO make sure this succeeds, and call it again on fail
 val firestoreOptions = FirestoreOptions.getDefaultInstance().toBuilder()
-    .setProjectId("freenet-353920")
+    .setProjectId(System.getenv("GOOGLE_CLOUD_PROJECT_NAME"))
     .setCredentials(GoogleCredentials.getApplicationDefault())
     .build()
 val db: Firestore = firestoreOptions.service
@@ -50,15 +50,23 @@ fun main() {
     Kweb(port = 8080, debug = false, plugins = listOf(fomanticUIPlugin, StripeRoutePlugin(),
         StaticFilesPlugin(ResourceFolder("static"), "/static"))) {
         doc.head {
+
+            element("link").new {
+                parent.setAttribute("rel", "icon")
+                parent.setAttribute("href", "/static/rabbit-logo.svg")
+                parent.setAttribute("type", "image/svg+xml")
+            }
+
             title().text("Freenet")
             element("meta").setAttribute("content", "width=device-width, initial-scale=1").setAttribute("name", "viewport")
-            element("link").setAttribute("rel", "stylesheet").setAttribute("href", "/static/checkout.css")
+          //  element("link").setAttribute("rel", "stylesheet").setAttribute("href", "/static/checkout.css")
             element("link").setAttribute("rel", "stylesheet").setAttribute("href", "/static/homepage.css")
             element("script").setAttribute("src", "https://js.stripe.com/v3/")
             element("script").setAttribute("src", "/static/checkout.js")
 
         }
         doc.body {
+
             route {
 
                 /*path("/success") {
