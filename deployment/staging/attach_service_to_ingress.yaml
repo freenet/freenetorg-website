@@ -7,3 +7,6 @@ spec:
   defaultBackend:
     service:
       name: freenet-org-staging
+      port:
+        number:
+          8080

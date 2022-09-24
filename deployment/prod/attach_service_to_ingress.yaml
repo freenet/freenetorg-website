@@ -7,3 +7,6 @@ spec:
   defaultBackend:
     service:
       name: freenet-org-prod
+      port:
+        number:
+          8080
