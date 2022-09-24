@@ -27,7 +27,7 @@ const val timeToReserveName = 60 * 1000 * 15//15 minutes
 //TODO Google Authentication can fail in the first few seconds of a pod existing. Need to add check to
 //TODO make sure this succeeds, and call it again on fail
 val firestoreOptions = FirestoreOptions.getDefaultInstance().toBuilder()
-    .setProjectId("freenet-353920")
+    .setProjectId(System.getenv("GOOGLE_CLOUD_PROJECT_NAME"))
     .setCredentials(GoogleCredentials.getApplicationDefault())
     .build()
 val db: Firestore = firestoreOptions.service
