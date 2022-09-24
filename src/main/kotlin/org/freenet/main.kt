@@ -51,20 +51,6 @@ fun main() {
         StaticFilesPlugin(ResourceFolder("static"), "/static"))) {
         doc.head {
 
-            element("script").new {
-                parent.setAttribute("async", "")
-                parent.setAttribute("src", "https://www.googletagmanager.com/gtag/js?id=G-RZEQHJ1TFT")
-            }
-            element("script").new {
-                parent.innerHTML("""
-                    window.dataLayer = window.dataLayer || [];
-                    function gtag(){dataLayer.push(arguments);}
-                    gtag('js', new Date());
-                    
-                    gtag('config', 'G-RZEQHJ1TFT');
-                """.trimIndent())
-            }
-
             element("link").new {
                 parent.setAttribute("rel", "icon")
                 parent.setAttribute("href", "/static/rabbit-logo.svg")
