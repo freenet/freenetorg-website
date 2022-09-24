@@ -6,3 +6,10 @@ metadata:
   annotations:
     kubernetes.io/ingress.global-static-ip-name: "freenet-org-prod-static"
     kubernetes.io/ingress.class: "gce"
+
+spec:
+  defaultBackend:
+    service:
+      name: freenet-org-prod
+
+
