@@ -20,19 +20,36 @@ import kweb.state.KVar
 import kweb.state.render
 import kweb.util.json
 import org.freenet.util.StripeRoutePlugin
+import java.util.*
+import kotlin.collections.HashMap
 
 const val usernameTableName = "reservedUsernames"
 const val timeToReserveName = 60 * 1000 * 15//15 minutes
 
 //TODO Google Authentication can fail in the first few seconds of a pod existing. Need to add check to
 //TODO make sure this succeeds, and call it again on fail
-val firestoreOptions = FirestoreOptions.getDefaultInstance().toBuilder()
-    .setProjectId("freenet-353920")
-    .setCredentials(GoogleCredentials.getApplicationDefault())
-    .build()
-val db: Firestore = firestoreOptions.service
+
+val db: Firestore? = run {
+    if (System.getenv("GOOGLE_APPLICATION_CREDENTIALS") != null &&
+        System.getenv("FREENET_SITE_NO_DB").equals("true", true)) {
+        val firestoreOptions = FirestoreOptions.getDefaultInstance().toBuilder()
+            .setProjectId("freenet-353920")
+            .setCredentials(GoogleCredentials.getApplicationDefault())
+            .build()
+        firestoreOptions.service
+    } else {
+        null
+    }
+
+}
 val presetDonationValues = KVar(arrayOf("10", "20", "40"))
-val newsItemList = retrieveNews(db)
+val newsItemList = if (db != null) retrieveNews(db) else {
+    KVar(listOf(
+        NewsItem(Date(),"This is the first news item", true),
+        NewsItem(Date(),"This is the second news item", false),
+        NewsItem(Date(),"This is the third news item", true),
+    ))
+}
 
 sealed class InputStatus {
     object None : InputStatus()
@@ -319,6 +336,9 @@ fun getMinimumDonationAmount(username: String) : Long{
 
 
 fun tempReserveName(username: String,  ipAddress: String, referer: String? = null) {
+    if (db == null)
+        return
+
     val docRef = db.collection(usernameTableName).document(username)
     val data = HashMap<String, Any>()
 
@@ -345,6 +365,9 @@ fun isValidEmail(email : String) : Boolean {
 }
 
 fun isUsernameAvailable(username: String) : Boolean {
+    if (db == null) {
+        return false
+    }
     val usernameCollection = db.collection(usernameTableName)
     val query = usernameCollection.whereEqualTo("lowercaseUsername", username.lowercase())
     val querySnapshot = query.get()
@@ -364,6 +387,10 @@ fun isUsernameAvailable(username: String) : Boolean {
 
 //Called to finalize reserving a username, via a Stripe payment
 fun saveStripePaymentDetails(stripePayIntentJson: String, email: String, username: String, donationAmount: Long, transactionId: String) {
+    if (db == null) {
+        error("Can't save stripe payment info because ")
+    }
+
     val docRef = db.collection(usernameTableName).document(username)
     val data = HashMap<String, Any>()
 
@@ -377,6 +404,10 @@ fun saveStripePaymentDetails(stripePayIntentJson: String, email: String, usernam
 }
 
 fun saveCustomer(stripeCustomerId: String) : String{
+    if (db == null) {
+        return ""
+    }
+
     val customer = Customer.retrieve(stripeCustomerId)
     val docRef = db.collection("Customers").document(customer.email)
     val data = HashMap<String, Any>()
