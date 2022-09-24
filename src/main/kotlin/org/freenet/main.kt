@@ -73,7 +73,7 @@ fun main() {
 
             title().text("Freenet")
             element("meta").setAttribute("content", "width=device-width, initial-scale=1").setAttribute("name", "viewport")
-            element("link").setAttribute("rel", "stylesheet").setAttribute("href", "/static/checkout.css")
+          //  element("link").setAttribute("rel", "stylesheet").setAttribute("href", "/static/checkout.css")
             element("link").setAttribute("rel", "stylesheet").setAttribute("href", "/static/homepage.css")
             element("script").setAttribute("src", "https://js.stripe.com/v3/")
             element("script").setAttribute("src", "/static/checkout.js")
