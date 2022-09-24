@@ -3,13 +3,10 @@ kind: Service
 metadata:
   name: freenet-org
   namespace: freenetorg
-  annotations:
-    cloud.google.com/backend-config: '{"default" : "backendconfig-prod"}'
 spec:
   selector:
     app: freenet-org
   ports:
   - port: 8080
-    protocol: TCP
     targetPort: 8080
-  type: NodePort
+  type: LoadBalancer
