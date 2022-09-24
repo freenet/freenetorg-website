@@ -4,8 +4,8 @@ nameSuffix: -staging
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 patchesStrategicMerge:
-  - set_domains.yaml
   - set_static_ip.yaml
   - attach_backend_config.yaml
   - attach_service_to_ingress.yaml
   - deployment.yaml
+  - staging_cert.yaml

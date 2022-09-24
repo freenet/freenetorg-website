@@ -4,14 +4,5 @@ metadata:
   name: https-ingress
   namespace: freenetorg
   annotations:
-    kubernetes.io/ingress.global-static-ip-name: "freenet-org-prod-static"
-    kubernetes.io/ingress.allow-http: "false"
-    networking.gke.io/managed-certificates: managed-cert
+    kubernetes.io/ingress.allow-http: "true"
     kubernetes.io/ingress.class: "gce"
-spec:
-  defaultBackend:
-    service:
-      name: freenet-org
-      port:
-        number:
-          8080
