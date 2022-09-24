@@ -337,7 +337,7 @@ fun getMinimumDonationAmount(username: String) : Long{
 
 fun tempReserveName(username: String,  ipAddress: String, referer: String? = null) {
     if (db == null)
-        return
+        error("No database available because site is running in offline mode for development")
 
     val docRef = db.collection(usernameTableName).document(username)
     val data = HashMap<String, Any>()
@@ -366,7 +366,7 @@ fun isValidEmail(email : String) : Boolean {
 
 fun isUsernameAvailable(username: String) : Boolean {
     if (db == null) {
-        return false
+        error("No database available because site is running in offline mode for development")
     }
     val usernameCollection = db.collection(usernameTableName)
     val query = usernameCollection.whereEqualTo("lowercaseUsername", username.lowercase())
@@ -388,7 +388,7 @@ fun isUsernameAvailable(username: String) : Boolean {
 //Called to finalize reserving a username, via a Stripe payment
 fun saveStripePaymentDetails(stripePayIntentJson: String, email: String, username: String, donationAmount: Long, transactionId: String) {
     if (db == null) {
-        error("Can't save stripe payment info because ")
+        error("No database available because site is running in offline mode for development")
     }
 
     val docRef = db.collection(usernameTableName).document(username)
@@ -405,7 +405,7 @@ fun saveStripePaymentDetails(stripePayIntentJson: String, email: String, usernam
 
 fun saveCustomer(stripeCustomerId: String) : String{
     if (db == null) {
-        return ""
+        error("No database available because site is running in offline mode for development")
     }
 
     val customer = Customer.retrieve(stripeCustomerId)
