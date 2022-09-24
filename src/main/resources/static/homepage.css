@@ -35,7 +35,7 @@ body{
 }
 
 body {
-    background: url("/static/rabbit-logo.svg"), linear-gradient(90deg, rgba(227,227,227,1) 0%, rgba(255,255,255,1) 34%, rgba(237,237,237,1) 70%);
+    background: linear-gradient(90deg, rgba(227,227,227,1) 0%, rgba(255,255,255,1) 34%, rgba(237,237,237,1) 70%);
     background-repeat: repeat-y;
     background-position: center;
 }
@@ -43,11 +43,7 @@ body {
 h1 {
     font-size: 100px;
     background-color: #666666;
-    -webkit-background-clip: text;
-    -moz-background-clip: text;
-    background-clip: text;
     color: transparent;
-    text-shadow: rgba(245,245,245,0.5) 3px 5px 1px;
 }
 
 .subtitle {

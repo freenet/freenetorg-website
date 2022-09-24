@@ -18,7 +18,7 @@ fun ElementCreator<*>.landingPage(newsItemList : KVal<List<NewsItem>>) {
     div(fomantic.ui.text.center.aligned.container) {
         div(fomantic.ui.text.left.aligned.container) {
             div() {
-                h1(fomantic.ui.text).addClasses("engraved").text("Freenet")
+                h1(fomantic.ui.text).text("Freenet")
                 h2(fomantic.ui.text).addClasses("subtitle").text("Declare your digital independence")
             }
 
