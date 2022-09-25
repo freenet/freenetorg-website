@@ -3,8 +3,6 @@ kind: Service
 metadata:
   name: freenet-org
   namespace: freenetorg
-  annotations:
-    cloud.google.com/backend-config: '{"default" : "backendconfig-prod"}'
 spec:
   selector:
     app: freenet-org

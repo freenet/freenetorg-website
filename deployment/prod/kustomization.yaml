@@ -1,6 +1,6 @@
 resources:
   - ../base/
-nameSuffix: -prod
+nameSuffix: -production
 patchesStrategicMerge:
   - set_static_ip.yaml
   - attach_backend_config.yaml
