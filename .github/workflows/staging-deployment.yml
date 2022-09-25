@@ -18,7 +18,6 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
-  #PROJECT_ID: freenet-353920
   GAR_LOCATION: us-east1
   GKE_CLUSTER: freenet-org-east1
   GKE_ZONE: us-east1-b
