@@ -41,7 +41,22 @@ fun ElementCreator<*>.landingPage() {
                    |to create and deploy decentralized alternatives to today’s centralized tech companies. These 
                    |decentralized apps will be easy to use, scalable, and secured through cryptography.""".trimMargin())
 
-            h2(fomantic.ui.text).text("Locutus News")
+            p(fomantic.ui.text).innerHTML("""
+                To learn about and try the original Freenet client software <B>Fred</B>, visit 
+                <a href="https://freenetproject.org">freenetproject.org</a>.
+                """.trimIndent())
+
+            p(fomantic.ui.text).innerHTML("""
+                For a video introduction 
+                watch <strong>Ian's talk and Q&amp;A</strong> - 
+                <a href="https://youtu.be/d31jmv5Tx5k" rel="nofollow">YouTube</a> / 
+                <a href="https://vimeo.com/manage/videos/740461100" rel="nofollow">Vimeo</a>.
+                To learn about the new <B>Locutus</B> software as a developer read 
+                <a href="https://docs.freenet.org/" rel="nofollow">The Locutus Book</a>, or visit
+                our <a href="https://github.com/freenet/locutus">GitHub repository</a>.
+            """.trimIndent())
+
+            h2(fomantic.ui.text).text("Latest News")
             div(fomantic.ui.bulleted.list) {
                 render(newsItemList) { items ->
                     for (newsItem in items) {
@@ -56,12 +71,6 @@ fun ElementCreator<*>.landingPage() {
                         }
                     }
                 }
-            }
-
-            h2(fomantic.ui.text).text("Software")
-            div(fomantic.ui.bulleted.list) {
-                div(fomantic.ui.item).innerHTML("<a href=\"https://freenetproject.org/\">Fred</a> - The original Freenet software, first released in March 2000 and continuously developed since")
-                div(fomantic.ui.item).innerHTML("<a href=\"https://github.com/freenet/locutus\">Locutus</a> - A decentralized application layer for the Internet, first release expected September 2022")
             }
 
             h2(fomantic.ui.text).text("Community")
