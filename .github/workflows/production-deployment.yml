@@ -17,12 +17,11 @@ on:
     branches: [ "production" ]
 
 env:
-  #PROJECT_ID: ${{ secrets.GKE_PROJECT }}
-  PROJECT_ID: freenet-353920
+  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
   GAR_LOCATION: us-east1
   GKE_CLUSTER: freenet-org-east1
   GKE_ZONE: us-east1-b
-  DEPLOYMENT_NAME: freenet-org-prod
+  DEPLOYMENT_NAME: freenet-org-production
   REPOSITORY: freenet-repo
   IMAGE: freenet-org-production
   NAMESPACE: freenetorg
