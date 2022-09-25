@@ -10,7 +10,7 @@ data class Visit(val time : Date, val remoteHostHash : Int, val userAgent : Stri
 }
 
 fun recordVisit(httpRequestInfo: HttpRequestInfo) {
-    if (db != null && httpRequestInfo.userAgent != "GoogleHC/1.0") {
+    if (db != null && httpRequestInfo.requestedUrl.contains("freenet.org")) {
         val visit = Visit(
             time = Date(),
             remoteHostHash = httpRequestInfo.remoteHost.hashCode(),
