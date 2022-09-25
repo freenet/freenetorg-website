@@ -23,7 +23,7 @@ The website is built using the [Kweb](https://kweb.io/) framework, which is impl
 1. Clone the repository, two options:
    1. Command Line
       ```bash
-      git clone git@github.com:freenet/freenetorg-website.git
+      $ git clone git@github.com:freenet/freenetorg-website.git
       ```
    2. IntelliJ IDEA
       1. File -> New -> Project from Version Control -> Git
