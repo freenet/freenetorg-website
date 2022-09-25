@@ -1,5 +1,5 @@
-import org.freenet.isUsernameValid
-import org.freenet.isValidEmail
+import org.freenet.website.isUsernameValid
+import org.freenet.website.isValidEmail
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 
@@ -21,13 +21,15 @@ class RegexTest {
 
     @Test
     fun usernameHasLegalSymbols() {
-        assertEquals(isUsernameValid("derek_."), true,
+        assertEquals(
+            isUsernameValid("derek_."), true,
             "A username should be allowed to contain a period and underscore")
     }
 
     @Test
     fun usernameHasIllegalSymbols() {
-        assertEquals(isUsernameValid("""!@#$%^&*()-=+[]{}\|;:'",<>/? """), false,
+        assertEquals(
+            isUsernameValid("""!@#$%^&*()-=+[]{}\|;:'",<>/? """), false,
             "A username should not be allowed to include any of these symbols")
     }
 
@@ -38,7 +40,8 @@ class RegexTest {
 
     @Test
     fun invalidEmailTest() {
-        assertEquals(isValidEmail("whoaf*&*@alfja.s"), false,
+        assertEquals(
+            isValidEmail("whoaf*&*@alfja.s"), false,
             "This email should be read as invalid")
     }
 

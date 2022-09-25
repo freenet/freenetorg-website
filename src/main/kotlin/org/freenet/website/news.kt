@@ -1,4 +1,4 @@
-package org.freenet
+package org.freenet.website
 
 import com.google.cloud.firestore.Firestore
 import com.google.cloud.firestore.Query
@@ -6,7 +6,7 @@ import kweb.ElementCreator
 import kweb.state.CloseReason
 import kweb.state.KVal
 import kweb.state.KVar
-import org.freenet.util.toObject
+import org.freenet.website.util.toObject
 import java.util.*
 
 fun retrieveNews(db: Firestore): KVal<List<NewsItem>> {

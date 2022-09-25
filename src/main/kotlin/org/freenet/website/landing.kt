@@ -1,4 +1,4 @@
-package org.freenet
+package org.freenet.website
 
 import com.google.cloud.firestore.Firestore
 import com.google.cloud.firestore.Query
@@ -8,7 +8,7 @@ import kweb.state.CloseReason
 import kweb.state.KVal
 import kweb.state.KVar
 import kweb.state.render
-import org.freenet.util.toObject
+import org.freenet.website.util.toObject
 import java.util.*
 
 const val MAX_NEWS_ITEMS = 7
@@ -25,7 +25,7 @@ fun ElementCreator<*>.landingPage(newsItemList : KVal<List<NewsItem>>) {
             br()
 
             p(fomantic.ui.text).text(
-                """|The Internet has grown increasingly centralized over the past 25 years, such that a handful 
+                """|The Internet has grown increasingly centralized over the past 20 years, such that a handful 
                    |of companies now effectively control the Internet infrastructure. The public square is privately 
                    |owned, threatening freedom of speech and democracy.""".trimMargin()
             )

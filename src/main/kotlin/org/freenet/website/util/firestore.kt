@@ -1,4 +1,4 @@
-package org.freenet.util
+package org.freenet.website.util
 
 import com.google.cloud.firestore.QueryDocumentSnapshot
 
