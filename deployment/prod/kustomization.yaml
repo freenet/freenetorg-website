@@ -6,4 +6,5 @@ patchesStrategicMerge:
   - attach_backend_config.yaml
   - attach_service_to_ingress.yaml
   - deployment.yaml
+  - service.yaml
   - prod_cert.yaml
