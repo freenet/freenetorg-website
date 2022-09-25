@@ -14,6 +14,10 @@ while pushes to the [production branch](https://github.com/freenet/freenetorg-we
 2. [Gradle Build Tool](https://gradle.org/install/)
 3. [IntelliJ IDEA](https://www.jetbrains.com/idea/download/) (optional)
 
+## Overview
+
+The website is built using the [Kweb](https://kweb.io/) framework, which is implemented in Kotlin.
+
 ## Setting up
 
 1. Clone the repository, two options:
@@ -34,3 +38,7 @@ while pushes to the [production branch](https://github.com/freenet/freenetorg-we
       * This will use dummy data so no connection to the database is required
 4. Run the configuration
 5. Open a browser and navigate to http://localhost:8080/
+
+## Pull Requests
+
+To submit improvements create a pull request against the `staging` branch.
