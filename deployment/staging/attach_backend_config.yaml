@@ -5,6 +5,7 @@ metadata:
   namespace: freenetorg
   annotations:
     cloud.google.com/backend-config: '{"default" : "backend-config-staging"}'
+    cloud.google.com/neg: '{"ingress": true}'
 spec:
   selector:
     app: freenet-org-staging

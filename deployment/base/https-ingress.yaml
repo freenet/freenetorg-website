@@ -4,5 +4,5 @@ metadata:
   name: https-ingress
   namespace: freenetorg
   annotations:
-    kubernetes.io/ingress.allow-http: "true"
+    kubernetes.io/ingress.allow-http: "false"
     kubernetes.io/ingress.class: "gce"
