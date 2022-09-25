@@ -5,6 +5,7 @@ import kweb.plugins.fomanticUI.fomanticUIPlugin
 import kweb.plugins.staticFiles.ResourceFolder
 import kweb.plugins.staticFiles.StaticFilesPlugin
 import mu.KotlinLogging
+import org.freenet.website.util.HealthCheckPlugin
 import org.freenet.website.util.StripeRoutePlugin
 import org.freenet.website.util.recordVisit
 
@@ -23,7 +24,7 @@ fun main() {
 
     logger.info("Starting Freenet Site, isLocalTestingMode: $isLocalTestingMode")
 
-    Kweb(port = 8080, debug = isLocalTestingMode, plugins = listOf(fomanticUIPlugin, StripeRoutePlugin(),
+    Kweb(port = 8080, debug = isLocalTestingMode, plugins = listOf(fomanticUIPlugin, HealthCheckPlugin, StripeRoutePlugin(),
         StaticFilesPlugin(ResourceFolder("static"), "/static"))) {
         logger.info("Received inbound HTTP(S) connection from ${this.httpRequestInfo.remoteHost}")
 
