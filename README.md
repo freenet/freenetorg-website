@@ -8,8 +8,29 @@ https://staging.freenet.org/, and the live site is at https://freenet.org/. Push
 [staging branch](https://github.com/freenet/freenetorg-website/tree/staging) will be automatically deployed to staging,
 while pushes to the [production branch](https://github.com/freenet/freenetorg-website/tree/production) will go live.
 
-## Testing Locally
+## Prerequisites
 
-If and only if the environment variable `FREENET_SITE_LOCAL_TESTING` is set to `true`, the site will run in "offline" 
-mode, using dummy data instead of the database. This makes it easy to test locally without needing to set up a local 
-FireStore instance.
+1. [A Recent Java Development Environment](https://adoptopenjdk.net/)
+2. [Gradle Build Tool](https://gradle.org/install/)
+3. [IntelliJ IDEA](https://www.jetbrains.com/idea/download/) (optional)
+
+## Setting up
+
+1. Clone the repository, two options:
+   1. Command Line
+      ```bash
+      git clone git@github.com:freenet/freenetorg-website.git
+      ```
+   2. IntelliJ IDEA
+      1. File -> New -> Project from Version Control -> Git
+      2. Enter the URL of the repository, `git@github.com:freenet/freenetorg-website.git`
+2. Open the project in IntelliJ IDEA
+3. Create a new run configuration
+   1. Run -> Edit Configurations...
+   2. Click the `+` button and select `Application`
+   3. Name the configuration `freenet.org website`
+   4. Set the `Main class` to `org.freenet.website.MainKt`
+   7. Set environment variables to `FREENET_SITE_LOCAL_TESTING=true`
+      * This will use dummy data so no connection to the database is required
+4. Run the configuration
+5. Open a browser and navigate to http://localhost:8080/
