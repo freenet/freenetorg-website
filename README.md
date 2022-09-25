@@ -14,10 +14,6 @@ while pushes to the [production branch](https://github.com/freenet/freenetorg-we
 2. [Gradle Build Tool](https://gradle.org/install/)
 3. [IntelliJ IDEA](https://www.jetbrains.com/idea/download/) (optional but highly recommended)
 
-## Overview
-
-The website is built using the [Kweb](https://kweb.io/) framework, which is implemented in Kotlin.
-
 ## Setting up
 
 1. Clone the repository, two options:
