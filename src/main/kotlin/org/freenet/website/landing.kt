@@ -114,7 +114,7 @@ fun ElementCreator<*>.landingPage() {
     }.setAttribute("background-color", "e8e8e8")
 }
 
-private val newsItemList = if (db != null) retrieveNews(db) else {
+val newsItemList = if (db != null) retrieveNews(db) else {
     KVar(listOf(
         NewsItem(Date(),"This is the first news item", true),
         NewsItem(Date(),"This is the second news item", false),

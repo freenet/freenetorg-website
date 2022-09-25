@@ -8,7 +8,7 @@ fun ElementCreator<BodyElement>.routes() {
     route {
 
         path("") {
-            landingPage(newsItemList)
+            landingPage()
         }
 
         connectNamesRoutes()

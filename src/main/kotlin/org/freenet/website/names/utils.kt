@@ -4,7 +4,7 @@ import com.stripe.model.Customer
 import io.ktor.util.date.*
 import kweb.WebBrowser
 import kweb.util.json
-import org.freenet.website.db
+import org.freenet.website.db.db
 import org.freenet.website.timeToReserveName
 import org.freenet.website.usernameTableName
 
