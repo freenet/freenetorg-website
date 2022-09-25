@@ -5,7 +5,7 @@ metadata:
   namespace: freenetorg
 spec:
   selector:
-    app: freenet-org-prod
+    app: freenet-org-production
   ports:
     - port: 8080
       protocol: TCP

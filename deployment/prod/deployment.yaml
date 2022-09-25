@@ -7,14 +7,14 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: freenet-org-prod
+      app: freenet-org-production
   template:
     metadata:
       labels:
-        app: freenet-org-prod
+        app: freenet-org-production
     spec:
       containers:
-        - name: freenet-org-app-prod
+        - name: freenet-org-app-production
           image: us-east1-docker.pkg.dev/freenet-353920/freenet-repo/freenet-org-production
           ports:
             - containerPort: 8080

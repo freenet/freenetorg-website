@@ -4,7 +4,7 @@ metadata:
   name: freenet-org
   namespace: freenetorg
   annotations:
-    cloud.google.com/backend-config: '{"default" : "backend-config-prod"}'
+    cloud.google.com/backend-config: '{"default" : "backend-config-production"}'
 spec:
   selector:
-    app: freenet-org-prod
+    app: freenet-org-production
