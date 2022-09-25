@@ -83,11 +83,26 @@ fun ElementCreator<*>.landingPage(newsItemList : KVal<List<NewsItem>>) {
             }
 
             h2(fomantic.ui.text).text("Support Us")
-            div(fomantic.ui.bulleted.list) {
-                div(fomantic.ui.item).text("Bitcoin: 3M3fbA7RDYdvYeaoR69cDCtVJqEodo9vth")
-                div(fomantic.ui.item).text("Zcash: t1VHw1PHgzvMqEEd31ZBt3Vyy2UrG4J8utB")
-                div(fomantic.ui.item).text("Ethereum: 0x79158A5Dbd9C0737CB27411817BD2759f5b9a9Ae")
-                div(fomantic.ui.item).innerHTML("<a href=\"https://freenetproject.org/pages/donate.html\">Paypal & others</a>")
+
+            val donationWallets = listOf(Pair("Bitcoin", "3M3fbA7RDYdvYeaoR69cDCtVJqEodo9vth"),
+                                         Pair("Zcash", "t1VHw1PHgzvMqEEd31ZBt3Vyy2UrG4J8utB"),
+                                         Pair("Ethereum", "0x79158A5Dbd9C0737CB27411817BD2759f5b9a9Ae"),
+                )
+
+            div(fomantic.ui.list) {
+                for (wallet in donationWallets) {
+                    div(fomantic.ui.item) {
+                        div(fomantic.ui.mini.labeled.input) {
+                            div(fomantic.ui.label).text(wallet.first)
+                            input(type = InputType.text)
+                                .setAttribute("readonly", "true")
+                                .setAttribute("size", wallet.second.length.toString())
+                                .setAttribute("value", wallet.second)
+                        }
+                    }
+                }
+                div(fomantic.ui.item).innerHTML("Find Paypal and other donation options " +
+                        "<a href=\"https://freenetproject.org/pages/donate.html\">here</a>.")
             }
 
         }

@@ -1,4 +1,4 @@
-<configuration>
+<configuration debug="true">
     <appender name="CLOUD" class="com.google.cloud.logging.logback.LoggingAppender">
         <!-- Optional : filter logs at or above a level -->
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
