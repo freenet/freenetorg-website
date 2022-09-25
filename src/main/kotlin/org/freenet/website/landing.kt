@@ -26,28 +26,31 @@ fun ElementCreator<*>.landingPage() {
             br()
 
             p(fomantic.ui.text).text(
-                """|The Internet has grown increasingly centralized over the past 20 years, such that a handful 
-                   |of companies now effectively control the Internet infrastructure. The public square is privately 
-                   |owned, threatening freedom of speech and democracy.""".trimMargin()
+                """The internet has become increasingly centralized over the past few years, with a handful of 
+                    companies now controlling the internet infrastructure. This privatization of the public 
+                    square threatens freedom of speech and democracy..""".trimMargin()
             )
 
             p(fomantic.ui.text).text(
-                """|23 years ago we created the original Freenet, the first distributed, decentralized 
-                   |peer-to-peer network. It pioneered technologies like cryptographic contracts and small-world 
-                   |networks, and is still under active development.""".trimMargin()
+                """We're committed to decentralization and freedom of speech on the internet. 23 years ago, we 
+                  created the original Freenet- the first distributed, decentralized peer-to-peer network. It 
+                  pioneered technologies like cryptographic contracts and small-world networks and is still 
+                  under active development today.
+                """.trimMargin()
             )
             p(fomantic.ui.text).text(
-                """|Today we’re building Locutus, which will make it easy for developers 
-                   |to create and deploy decentralized alternatives to today’s centralized tech companies. These 
-                   |decentralized apps will be easy to use, scalable, and secured through cryptography.""".trimMargin())
+                """Now we're building Locutus. Locutus makes it easy for developers to create and deploy 
+                    decentralized alternatives to today's centralized tech companies. These decentralized apps will 
+                    be easy to use, scalable, and secured through cryptography.
+                """.trimMargin())
 
             p(fomantic.ui.text).innerHTML("""
-                To learn about and try the original Freenet client software <B>Fred</B>, visit 
+                To learn about the original Freenet client <B>Fred</B>, visit its website at
                 <a href="https://freenetproject.org">freenetproject.org</a>.
                 """.trimIndent())
 
             p(fomantic.ui.text).innerHTML("""
-                For a video introduction 
+                For a video introduction to Locutus
                 watch <strong>Ian's talk and Q&amp;A</strong> - 
                 <a href="https://youtu.be/d31jmv5Tx5k" rel="nofollow">YouTube</a> / 
                 <a href="https://vimeo.com/manage/videos/740461100" rel="nofollow">Vimeo</a>.
@@ -69,25 +72,6 @@ fun ElementCreator<*>.landingPage() {
                         """.trimIndent()
                             )
                         }
-                    }
-                }
-            }
-
-            h2(fomantic.ui.text).text("Community")
-            div(fomantic.ui.bulleted.list) {
-                div(fomantic.ui.item).innerHTML("<a href=\"https://reddit.com/r/freenet\">r/freenet</a> on Reddit")
-                div(fomantic.ui.item) {
-                    span().text("Locutus")
-                    div(fomantic.ui.bulleted.list) {
-                        div(fomantic.ui.item).innerHTML("Follow <a href=\"https://twitter.com/freenetorg\">@freenetorg</a> on Twitter for updates")
-                        div(fomantic.ui.item).innerHTML("Chat with us on <a href=\"https://matrix.to/#/#freenet-locutus:matrix.org\">Matrix</a>")
-                    }
-                }
-                div(fomantic.ui.item) {
-                    span().text("Fred")
-                    div(fomantic.ui.bulleted.list) {
-                        div(fomantic.ui.item).innerHTML("Follow <a href=\"https://freenetproject.org\">@freenetproject</a>")
-                        div(fomantic.ui.item).innerHTML("IRC: <a href=\"https://web.libera.chat/?nick=FollowRabbit%7C?#freenet\">#freenet on libera</a>")
                     }
                 }
             }
