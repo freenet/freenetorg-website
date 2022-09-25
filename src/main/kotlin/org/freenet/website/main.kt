@@ -33,38 +33,7 @@ val isLocalTestingMode : Boolean = System.getenv("FREENET_SITE_LOCAL_TESTING").e
 
 //TODO Google Authentication can fail in the first few seconds of a pod existing. Need to add check to
 //TODO make sure this succeeds, and call it again on fail
-val db: Firestore? = run {
-    if (isLocalTestingMode) {
-        null
-    } else {
-        val firestoreOptions = FirestoreOptions.getDefaultInstance().toBuilder()
-            .setProjectId(System.getenv("GOOGLE_CLOUD_PROJECT_NAME"))
-            .setCredentials(GoogleCredentials.getApplicationDefault())
-            .build()
-        firestoreOptions.service
-    }
 
-}
-
-val presetDonationValues = KVar(arrayOf("10", "20", "40"))
-val newsItemList = if (db != null) retrieveNews(db) else {
-    KVar(listOf(
-        NewsItem(Date(),"This is the first news item", true),
-        NewsItem(Date(),"This is the second news item", false),
-        NewsItem(Date(),"This is the third news item", true),
-    ))
-}
-
-sealed class InputStatus {
-    object None : InputStatus()
-    class Available(val minDonationAmount : Long) : InputStatus()
-    object NotAvailable : InputStatus()
-    object Invalid : InputStatus()
-}
-
-enum class EmailStatus {
-    Empty, Valid, Invalid
-}
 
 fun main() {
 

@@ -218,9 +218,7 @@ fun ElementCreator<*>.renderNamesLanding() {
             }
         }
     }
-
 }
-
 
 fun ElementCreator<*>.renderSuccess() {
     val payIntent = PaymentIntent.retrieve(browser.httpRequestInfo.request.call.parameters["payment_intent"])
@@ -241,4 +239,18 @@ fun ElementCreator<*>.renderSuccess() {
 
 fun ElementCreator<*>.renderCancel() {
     h1().text("Payment cancelled")
+}
+
+private val presetDonationValues = KVar(arrayOf("10", "20", "40"))
+
+
+private sealed class InputStatus {
+    object None : InputStatus()
+    class Available(val minDonationAmount : Long) : InputStatus()
+    object NotAvailable : InputStatus()
+    object Invalid : InputStatus()
+}
+
+private enum class EmailStatus {
+    Empty, Valid, Invalid
 }

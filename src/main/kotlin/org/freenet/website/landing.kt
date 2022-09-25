@@ -8,12 +8,13 @@ import kweb.state.CloseReason
 import kweb.state.KVal
 import kweb.state.KVar
 import kweb.state.render
+import org.freenet.website.db.db
 import org.freenet.website.util.toObject
 import java.util.*
 
 const val MAX_NEWS_ITEMS = 7
 
-fun ElementCreator<*>.landingPage(newsItemList : KVal<List<NewsItem>>) {
+fun ElementCreator<*>.landingPage() {
 
     div(fomantic.ui.text.center.aligned.container) {
         div(fomantic.ui.text.left.aligned.container) {
@@ -111,4 +112,12 @@ fun ElementCreator<*>.landingPage(newsItemList : KVal<List<NewsItem>>) {
 
 
     }.setAttribute("background-color", "e8e8e8")
+}
+
+private val newsItemList = if (db != null) retrieveNews(db) else {
+    KVar(listOf(
+        NewsItem(Date(),"This is the first news item", true),
+        NewsItem(Date(),"This is the second news item", false),
+        NewsItem(Date(),"This is the third news item", true),
+    ))
 }
