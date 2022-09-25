@@ -1,5 +1,7 @@
 package org.freenet.website
 
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kweb.*
 import kweb.plugins.fomanticUI.fomanticUIPlugin
 import kweb.plugins.staticFiles.ResourceFolder
@@ -28,8 +30,6 @@ fun main() {
         StaticFilesPlugin(ResourceFolder("static"), "/static"))) {
         logger.info("Received inbound HTTP(S) connection from ${this.httpRequestInfo.remoteHost}")
 
-        recordVisit(this.httpRequestInfo)
-
         doc.head {
 
             element("link").new {
@@ -52,6 +52,9 @@ fun main() {
             p().classes("page-end-spacer")
         }
 
+        GlobalScope.launch {
+            recordVisit(this@Kweb.httpRequestInfo)
+        }
     }
 
 }
