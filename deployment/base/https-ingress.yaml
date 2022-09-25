@@ -6,3 +6,4 @@ metadata:
   annotations:
     kubernetes.io/ingress.allow-http: "false"
     kubernetes.io/ingress.class: "gce"
+    cloud.google.com/neg: '{"ingress": true}'
