@@ -35,6 +35,7 @@ body{
 }
 
 body {
+    margin-top: 100px;
     background: linear-gradient(90deg, rgba(227,227,227,1) 0%, rgba(255,255,255,1) 34%, rgba(237,237,237,1) 70%);
     background-repeat: repeat-y;
     background-position: center;
@@ -46,4 +47,8 @@ h1 {
 
 .subtitle {
     margin-top: 0px;
+}
+
+p.page-end-spacer {
+    padding-bottom: 200px;
 }
