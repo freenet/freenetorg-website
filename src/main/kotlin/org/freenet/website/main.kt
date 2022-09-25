@@ -1,28 +1,12 @@
 package org.freenet.website
 
-import com.google.auth.oauth2.GoogleCredentials
-import com.google.cloud.firestore.Firestore
-import com.google.cloud.firestore.FirestoreOptions
-import com.stripe.model.Customer
-import com.stripe.model.PaymentIntent
-import io.ktor.server.plugins.*
-import io.ktor.util.date.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.serialization.json.JsonPrimitive
 import kweb.*
-import kweb.plugins.fomanticUI.fomantic
 import kweb.plugins.fomanticUI.fomanticUIPlugin
 import kweb.plugins.staticFiles.ResourceFolder
 import kweb.plugins.staticFiles.StaticFilesPlugin
-import kweb.state.KVal
-import kweb.state.KVar
-import kweb.state.render
-import kweb.util.json
 import mu.KotlinLogging
 import org.freenet.website.util.StripeRoutePlugin
-import java.util.*
-import kotlin.collections.HashMap
+import org.freenet.website.util.recordVisit
 
 private val logger = KotlinLogging.logger {  }
 
@@ -42,6 +26,8 @@ fun main() {
     Kweb(port = 8080, debug = isLocalTestingMode, plugins = listOf(fomanticUIPlugin, StripeRoutePlugin(),
         StaticFilesPlugin(ResourceFolder("static"), "/static"))) {
         logger.info("Received inbound HTTP(S) connection from ${this.httpRequestInfo.remoteHost}")
+
+        recordVisit(this.httpRequestInfo)
 
         doc.head {
 
