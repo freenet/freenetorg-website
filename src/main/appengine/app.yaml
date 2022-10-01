@@ -1,2 +1,2 @@
 runtime: java11
-entrypoint: 'java -jar locutus-donation-site-1.2-SNAPSHOT-all.jar'
+entrypoint: 'java -jar freenetorg-website-1.2-SNAPSHOT-all.jar'

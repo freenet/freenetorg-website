@@ -54,7 +54,7 @@ shadowJar {
 
 appengine {
     stage {
-        artifact = "build/libs/locutus-donation-site-1.2-SNAPSHOT-all.jar"
+        artifact = "build/libs/freenetorg-website-1.2-SNAPSHOT-all.jar"
     }
     deploy {
         version = "GCLOUD_CONFIG"
