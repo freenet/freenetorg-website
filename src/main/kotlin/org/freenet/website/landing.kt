@@ -28,7 +28,7 @@ fun ElementCreator<*>.landingPage() {
             p(fomantic.ui.text).text(
                 """The internet has become increasingly centralized over the past few years, with a handful of 
                     companies now controlling the internet infrastructure. This privatization of the public 
-                    square threatens freedom of speech and democracy..""".trimMargin()
+                    square threatens freedom of speech and democracy.""".trimMargin()
             )
 
             p(fomantic.ui.text).text(
