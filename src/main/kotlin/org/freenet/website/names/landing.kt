@@ -10,7 +10,6 @@ import kweb.state.KVal
 import kweb.state.KVar
 import kweb.state.render
 import kweb.util.json
-import org.freenet.website.*
 
 fun ElementCreator<*>.renderNamesLanding() {
     val ipAddress = browser.httpRequestInfo.request.call.request.origin.remoteHost

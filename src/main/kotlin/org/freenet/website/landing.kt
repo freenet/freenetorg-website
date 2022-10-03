@@ -26,8 +26,8 @@ fun ElementCreator<*>.landingPage() {
             br()
 
             p(fomantic.ui.text).text(
-                """The internet has become increasingly centralized over the past few years, with a handful of 
-                    companies now controlling the internet infrastructure. This privatization of the public 
+                """The internet has become increasingly centralized over the past 30 years, with a handful of 
+                    corporations now controlling most of the internet infrastructure. This privatization of the public 
                     square threatens freedom of speech and democracy.""".trimMargin()
             )
 
@@ -44,22 +44,32 @@ fun ElementCreator<*>.landingPage() {
                     be easy to use, scalable, and secured through cryptography.
                 """.trimMargin())
 
-            p(fomantic.ui.text).innerHTML("""
-                To learn about the original Freenet client <B>Fred</B>, visit its website at
-                <a href="https://freenetproject.org">freenetproject.org</a>.
-                """.trimIndent())
-
-            p(fomantic.ui.text).innerHTML("""
-                For a video introduction to Locutus
-                watch <strong>Ian's talk and Q&amp;A</strong> - 
-                <a href="https://youtu.be/d31jmv5Tx5k" rel="nofollow">YouTube</a> / 
-                <a href="https://vimeo.com/manage/videos/740461100" rel="nofollow">Vimeo</a>.
-                To learn about the new <B>Locutus</B> software as a developer read 
-                <a href="https://docs.freenet.org/" rel="nofollow">The Locutus Book</a>, or visit
-                our <a href="https://github.com/freenet/locutus">GitHub repository</a>.
+            ul(fomantic.ui.list) {
+                li().innerHTML("""
+                For a video introduction to Locutus watch Ian's talk in July 2022 on
+                <a href="https://youtu.be/d31jmv5Tx5k">YouTube</a> or 
+                <a href="https://vimeo.com/manage/videos/740461100">Vimeo</a>
             """.trimIndent())
+                li().innerHTML(
+                    """The <a href="https://docs.freenet.org/" rel="nofollow">Locutus Book</a> is a technical
+                        introduction to Locutus including a <a href="https://docs.freenet.org/dev-guide.html">
+                        development guide</a> on how to build and test a decentralized app"""
+                )
+                li().innerHTML("""
+                    Have a question or idea? Chat with us on 
+                    <a href="https://matrix.to/#/#freenet-locutus:matrix.org">Matrix</a>""")
+                li().innerHTML("""
+                        Visit the Locutus <a href="https://github.com/freenet/locutus">GitHub repository</a> to 
+                        browse our source code, and report bugs """
+                )
+                li().innerHTML("""
+                        While Locutus is still in development, the original Freenet software was first released in
+                        March 2000 and has a vibrant community of users and developers, learn more at 
+                        <a href="https://freenetproject.org">freenetproject.org</a>
+                """)
+            }
 
-            h2(fomantic.ui.text).text("Latest News")
+            h3(fomantic.ui.text).text("Latest News")
             div(fomantic.ui.bulleted.list) {
                 render(newsItemList) { items ->
                     for (newsItem in items) {
@@ -76,7 +86,7 @@ fun ElementCreator<*>.landingPage() {
                 }
             }
 
-            h2(fomantic.ui.text).text("Support Us")
+            h3(fomantic.ui.text).text("Support Our Work")
 
             val donationWallets = listOf(Pair("Bitcoin", "3M3fbA7RDYdvYeaoR69cDCtVJqEodo9vth"),
                                          Pair("Zcash", "t1VHw1PHgzvMqEEd31ZBt3Vyy2UrG4J8utB"),
