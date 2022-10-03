@@ -10,6 +10,7 @@ import kweb.state.KVar
 import kweb.state.render
 import org.freenet.website.db.db
 import org.freenet.website.util.toObject
+import java.time.Year
 import java.util.*
 
 const val MAX_NEWS_ITEMS = 7
@@ -26,22 +27,30 @@ fun ElementCreator<*>.landingPage() {
             br()
 
             p(fomantic.ui.text).text(
-                """The internet has become increasingly centralized over the past 30 years, with a handful of 
-                    corporations now controlling most of the internet infrastructure. This privatization of the public 
-                    square threatens freedom of speech and democracy.""".trimMargin()
+                """The internet has grown increasingly centralized over the past few decades, with a handful of 
+                    corporations now controlling most of its infrastructure. This privatization of the public square 
+                    threatens freedom of speech and democracy.""".trimMargin()
             )
 
             p(fomantic.ui.text).text(
-                """We're committed to decentralization and freedom of speech on the internet. 23 years ago, we 
-                  created the original Freenet- the first distributed, decentralized peer-to-peer network. It 
-                  pioneered technologies like cryptographic contracts and small-world networks and is still 
-                  under active development today.
+                """23 years ago, we created Freenet - the first distributed, 
+                    decentralized peer-to-peer network. Freenet pioneered technologies like cryptographic contracts and 
+                    small-world networks and still has an active community of users and developers today.
                 """.trimMargin()
             )
+            // Assign current year to currentYear variable
+            val currentYear = Year.now().value
+
             p(fomantic.ui.text).text(
-                """Now we're building Locutus. Locutus makes it easy for developers to create and deploy 
-                    decentralized alternatives to today's centralized tech companies. These decentralized apps will 
-                    be easy to use, scalable, and secured through cryptography.
+                """But the Internet has changed a lot since those early days, and so have people's expectations. 
+                    That's why, to meet today's challenges and expectations, we're building Locutus.""")
+
+            p(fomantic.ui.text).text(
+                     """Locutus makes it easy for developers to create and deploy 
+                    decentralized alternatives to today's centralized internet services, like instant messaging,
+                    social networking, email, and online stores. These decentralized apps will 
+                    be easy to use, scalable, and secured through cryptography. Locutus will put control back in the 
+                    hands of the user.
                 """.trimMargin())
 
             ul(fomantic.ui.list) {
