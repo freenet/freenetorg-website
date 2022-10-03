@@ -4,7 +4,7 @@ body{
     line-height:1.5;
     color:#606060;
     background: rgb(221,217,217);
-    background: radial-gradient(circle, rgba(221,217,217,1) 0%, rgba(255,255,255,1) 35%, rgba(225,230,231,1) 100%);
+    background: radial-gradient(circle, rgba(230,230,255,1) 0%, rgba(255,255,255,1) 35%, rgba(230,230,255,1) 100%);
 }
 
 .headerText {
