@@ -1,5 +1,5 @@
-import org.freenet.website.isUsernameValid
-import org.freenet.website.isValidEmail
+import org.freenet.website.names.isUsernameValid
+import org.freenet.website.names.isValidEmail
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 

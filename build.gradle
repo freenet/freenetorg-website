@@ -14,17 +14,19 @@ application {
 
 repositories {
     mavenCentral()
-    maven { url "https://maven.pkg.github.com/kwebio/kweb-core" }
+    maven { url "https://jitpack.io" }
 }
 
 dependencies {
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
     implementation 'com.google.appengine:appengine-api-1.0-sdk:2.0.9'
 
     implementation "com.google.guava:guava:31.1-jre"
     implementation 'com.google.code.gson:gson:2.9.0'
 
-    implementation "io.kweb:kweb-core:0.12.6"
+    implementation "com.github.kwebio:kweb-core:483e9f455e"
     implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.30'
 
     implementation 'com.stripe:stripe-java:21.8.0'
