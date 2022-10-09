@@ -56,8 +56,7 @@ fun ElementCreator<*>.landingPage() {
             ul(fomantic.ui.list) {
                 li().innerHTML("""
                 For a video introduction to Locutus watch Ian's talk in July 2022 on
-                <a href="https://youtu.be/d31jmv5Tx5k">YouTube</a> or 
-                <a href="https://vimeo.com/manage/videos/740461100">Vimeo</a>
+                <a href="https://youtu.be/x9g018OYwb4">YouTube</a>.
             """.trimIndent())
                 li().innerHTML(
                     """The <a href="https://docs.freenet.org/" rel="nofollow">Locutus Book</a> is a technical
