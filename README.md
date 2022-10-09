@@ -8,6 +8,10 @@ https://staging.freenet.org/, and the live site is at https://freenet.org/. Push
 [staging branch](https://github.com/freenet/freenetorg-website/tree/staging) will be automatically deployed to staging,
 while pushes to the [production branch](https://github.com/freenet/freenetorg-website/tree/production) will go live.
 
+## Source
+
+* [landing.kt](https://github.com/freenet/freenetorg-website/blob/staging/src/main/kotlin/org/freenet/website/landing.kt) - renders https://freenet.org/
+
 ## Prerequisites
 
 1. [A Recent Java Development Environment](https://adoptopenjdk.net/)
