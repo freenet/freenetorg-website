@@ -21,10 +21,13 @@ package org.freenet.website
 
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kweb.*
+import kweb.Kweb
+import kweb.new
+import kweb.p
 import kweb.plugins.fomanticUI.fomanticUIPlugin
 import kweb.plugins.staticFiles.ResourceFolder
 import kweb.plugins.staticFiles.StaticFilesPlugin
+import kweb.title
 import mu.KotlinLogging
 import org.freenet.website.util.HealthCheckPlugin
 import org.freenet.website.util.StripeRoutePlugin

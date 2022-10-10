@@ -21,7 +21,6 @@ package org.freenet.website.landing
 
 import com.google.cloud.firestore.Firestore
 import com.google.cloud.firestore.Query
-import kweb.ElementCreator
 import kweb.state.CloseReason
 import kweb.state.KVal
 import kweb.state.KVar

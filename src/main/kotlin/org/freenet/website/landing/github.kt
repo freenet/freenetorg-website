@@ -19,15 +19,9 @@
 
 package org.freenet.website.landing
 
-import com.google.cloud.firestore.Firestore
-import com.google.cloud.firestore.Query
-import kweb.state.CloseReason
 import kweb.state.KVal
-import kweb.state.KVar
-import org.freenet.website.util.toObject
 import org.kohsuke.github.GHIssueState
 import org.kohsuke.github.GitHub
-import java.util.*
 
 private val github = GitHub.connect()
 
