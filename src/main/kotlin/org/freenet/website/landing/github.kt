@@ -17,8 +17,26 @@
  *
  */
 
-package org.freenet.website.util
+package org.freenet.website.landing
 
-import com.google.cloud.firestore.QueryDocumentSnapshot
+import com.google.cloud.firestore.Firestore
+import com.google.cloud.firestore.Query
+import kweb.state.CloseReason
+import kweb.state.KVal
+import kweb.state.KVar
+import org.freenet.website.util.toObject
+import org.kohsuke.github.GHIssueState
+import org.kohsuke.github.GitHub
+import java.util.*
 
-inline fun <reified T> QueryDocumentSnapshot.toObject(): T = this.toObject(T::class.java)
+private val github = GitHub.connect()
+
+private val kwebRepo = github.getRepository("kwebio/kweb-core")
+
+fun retrieveIssues(): KVal<List<NewsItem>> {
+
+    kwebRepo.getIssues(GHIssueState.OPEN).toList().map { issue ->
+
+        if (issue.labels.con)
+    }
+}

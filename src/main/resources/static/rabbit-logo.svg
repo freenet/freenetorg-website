@@ -1,3 +1,22 @@
+<!--
+  -         Freenet.org - web application
+  -         Copyright (C) 2022  Freenet Project Inc
+  -
+  -         This program is free software: you can redistribute it and/or modify
+  -         it under the terms of the GNU Affero General Public License as
+  -         published by the Free Software Foundation, either version 3 of the
+  -         License, or (at your option) any later version.
+  -
+  -         This program is distributed in the hope that it will be useful,
+  -         but WITHOUT ANY WARRANTY; without even the implied warranty of
+  -         MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  -         GNU Affero General Public License for more details.
+  -
+  -         You should have received a copy of the GNU Affero General Public License
+  -         along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -
+  -->
+
 <svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="30%" height="30%" viewBox="45 100 80 80">
     <g transform="translate(-00,-0)">
         <path d="M 80.03,122.66 C 94.49,107.06 104.32,113.99 87.53,124.89 C 82.19,128.36 83.58,129.37 87.17,128.82 C 92.24,128.05 95.01,129.02 96.24,129.98 C 99.18,132.28 100.65,130.57 101.64,128.82 C 103.61,125.35 110.25,129.12 105.39,132.75 C 101.59,135.58 102.12,138.77 105.57,140.61 C 111.96,144.01 126.30,150.75 124.14,157.93 C 123.26,160.86 121.67,163.62 118.07,159.89 C 111.32,152.92 106.83,146.97 91.28,144.54 C 81.24,142.96 71.15,140.33 61.46,145.25 C 56.90,147.67 51.16,149.23 49.94,146.37 C 48.35,142.64 56.47,139.57 64.32,138.82 C 69.42,138.33 73.99,134.99 67.00,133.29 C 58.39,130.64 68.28,123.09 74.50,124.89 C 78.55,126.07 78.95,123.83 80.03,122.66 z" style="fill:#ff0000;fill-opacity:0.0;stroke:#ADADAD;stroke-opacity:0.1;stroke-width:1.5;"/>

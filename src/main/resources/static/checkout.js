@@ -1,3 +1,22 @@
+/*
+ *         Freenet.org - web application
+ *         Copyright (C) 2022  Freenet Project Inc
+ *
+ *         This program is free software: you can redistribute it and/or modify
+ *         it under the terms of the GNU Affero General Public License as
+ *         published by the Free Software Foundation, either version 3 of the
+ *         License, or (at your option) any later version.
+ *
+ *         This program is distributed in the hope that it will be useful,
+ *         but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *         MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *         GNU Affero General Public License for more details.
+ *
+ *         You should have received a copy of the GNU Affero General Public License
+ *         along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ */
+
 ///This key can be publicly-accessible and does not need to be hidden.
 const stripe = Stripe("pk_test_51KVKDLAIWUhNLMbdcgFrq0f8t5Rm07SEt6ZqXn46fZ7AQbz3mxoMF2cFvW7qRfI3kZN6NyPG95nzN7CrcHBHRWGD00VAifbJEy");
 
