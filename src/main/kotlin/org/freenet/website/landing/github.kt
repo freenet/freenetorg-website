@@ -37,6 +37,8 @@ fun retrieveIssues(): KVal<List<NewsItem>> {
 
     kwebRepo.getIssues(GHIssueState.OPEN).toList().map { issue ->
 
-        if (issue.labels.con)
+
+        //       if (issue.labels.con)
     }
+    TODO()//  }
 }

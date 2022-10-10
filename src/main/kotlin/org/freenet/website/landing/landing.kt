@@ -17,20 +17,13 @@
  *
  */
 
-package org.freenet.website
+package org.freenet.website.landing
 
-import com.google.cloud.firestore.Firestore
-import com.google.cloud.firestore.Query
 import kweb.*
 import kweb.plugins.fomanticUI.fomantic
-import kweb.state.CloseReason
-import kweb.state.KVal
 import kweb.state.KVar
 import kweb.state.render
 import org.freenet.website.db.db
-import org.freenet.website.landing.NewsItem
-import org.freenet.website.landing.retrieveNews
-import org.freenet.website.util.toObject
 import java.time.Year
 import java.util.*
 
