@@ -10,7 +10,7 @@ while pushes to the [production branch](https://github.com/freenet/freenetorg-we
 
 ## Source
 
-* [landing.kt](https://github.com/freenet/freenetorg-website/blob/staging/src/main/kotlin/org/freenet/website/landing/landing.kt) - renders https://freenet.org/
+* [landing.kt](https://github.com/freenet/freenetorg-website/blob/staging/src/main/kotlin/org/freenet/website/landing/landing.kt#L13) - renders https://freenet.org/
 
 ## Prerequisites
 
