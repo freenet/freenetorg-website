@@ -2,27 +2,16 @@ package org.freenet.website.landing
 
 import com.google.cloud.firestore.Firestore
 import com.google.cloud.firestore.Query
-import kweb.state.CloseReason
-import kweb.state.KVal
-import kweb.state.KVar
-import org.freenet.website.util.toObject
+import kweb.state.ObservableList
+import org.freenet.website.util.getObservableCollection
 import java.util.*
 
-fun retrieveNews(db: Firestore): KVal<List<NewsItem>> {
-    val newsCollection = db.collection("news-items")
-    val kv : KVar<List<NewsItem>> = KVar(emptyList())
+fun retrieveNews(db: Firestore): ObservableList<NewsItem> {
+    return db.collection("news-items")
+        .orderBy("date", Query.Direction.DESCENDING)
+        .limit(50)
+        .getObservableCollection()
 
-    val registration = newsCollection.orderBy("date", Query.Direction.DESCENDING).limit(50).addSnapshotListener { value, error ->
-        val newNewsItems : List<NewsItem> = value?.documents?.map { doc -> doc.toObject() } ?: emptyList()
-        kv.value = newNewsItems
-    }
-
-    Runtime.getRuntime().addShutdownHook(Thread {
-        registration.remove()
-        kv.close(CloseReason("Cleanup"))
-    })
-
-    return kv
 }
 
 data class NewsItem(val date: Date, val description : String, val important : Boolean) {
