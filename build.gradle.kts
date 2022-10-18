@@ -1,3 +1,5 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import com.github.jengelman.gradle.plugins.shadow.transformers.ServiceFileTransformer
 
 plugins {
     id("maven-publish")
@@ -46,20 +48,23 @@ application {
     mainClass.set("org.freenet.website.MainKt")
 }
 
-test {
-    useJUnitPlatform()
-}
-
-shadowJar {
-    transform(ServiceFileTransformer) {
-        path = 'META-INF/services'
-        include 'org.eclipse.jetty.http.HttpFieldPreEncoder'
+tasks {
+    test {
+        useJUnitPlatform()
     }
+
+    withType(ShadowJar::class.java) {
+        transform(ServiceFileTransformer::class.java) {
+            setPath("META-INF/services")
+            include("org.eclipse.jetty.http.HttpFieldPreEncoder")
+        }
+    }
+
 }
 
 appengine {
     stage {
-        artifact = "build/libs/freenetorg-website-1.2-SNAPSHOT-all.jar"
+        setArtifact("build/libs/freenet-website-1.2-SNAPSHOT-all.jar")
     }
     deploy {
         version = "GCLOUD_CONFIG"
