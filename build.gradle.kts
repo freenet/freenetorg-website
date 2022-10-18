@@ -25,7 +25,7 @@ dependencies {
     implementation("com.google.guava:guava:31.1-jre")
     implementation("com.google.code.gson:gson:2.9.0")
 
-    implementation("com.github.kwebio:kweb-core:f9b2ac284d")
+    implementation("com.github.kwebio:kweb-core:2f02d41869")
     implementation("org.slf4j:slf4j-simple:1.7.30")
 
     implementation("com.stripe:stripe-java:21.8.0")
