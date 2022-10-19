@@ -76,9 +76,8 @@ fun ElementCreator<*>.landingPage() {
                 )
                 li().innerHTML(
                     """
-                        While Locutus is still in development, the original Freenet software was first released in
-                        March 2000 and has a vibrant community of users and developers, learn more at 
-                        <a href="https://freenetproject.org">freenetproject.org</a>
+                        While Locutus is still in development, the original Freenet "classic" software has a vibrant 
+                        community of users and developers, learn more at <a href="https://freenetproject.org">freenetproject.org</a>
                 """
                 )
             }
