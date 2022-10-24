@@ -22,6 +22,9 @@ fun retrieveNews(db: Firestore): KVal<List<NewsItem>> {
         kv.close(CloseReason("Cleanup"))
     })
 
+    // REMOVE
+    db.collection("BLAH").document("one").addSnapshotListener { value, error ->  }
+
     return kv
 }
 
