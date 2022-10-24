@@ -3,7 +3,9 @@ package org.freenet.website.landing
 import kweb.*
 import kweb.plugins.fomanticUI.fomantic
 import kweb.state.KVar
+import kweb.state.ObservableList
 import kweb.state.render
+import kweb.state.renderEach
 import org.freenet.website.db.db
 import java.time.Year
 import java.util.*
@@ -38,63 +40,70 @@ fun ElementCreator<*>.landingPage() {
 
             p(fomantic.ui.text).text(
                 """But the Internet has changed a lot since those early days, and so have people's expectations. 
-                    That's why, to meet today's challenges and expectations, we're building Locutus.""")
+                    That's why, to meet today's challenges and expectations, we're building Locutus."""
+            )
 
             p(fomantic.ui.text).text(
-                     """Locutus makes it easy for developers to create and deploy 
+                """Locutus makes it easy for developers to create and deploy 
                     decentralized alternatives to today's centralized internet services, like instant messaging,
                     social networking, email, and online stores. These decentralized apps will 
                     be easy to use, scalable, and secured through cryptography. Locutus will put control back in the 
                     hands of the user.
-                """.trimMargin())
+                """.trimMargin()
+            )
 
             ul(fomantic.ui.list) {
-                li().innerHTML("""
+                li().innerHTML(
+                    """
                 For a video introduction to Locutus watch Ian's talk in July 2022 on
                 <a href="https://youtu.be/x9g018OYwb4">YouTube</a>.
-            """.trimIndent())
+            """.trimIndent()
+                )
                 li().innerHTML(
                     """The <a href="https://docs.freenet.org/" rel="nofollow">Locutus Book</a> is a technical
                         introduction to Locutus including a <a href="https://docs.freenet.org/dev-guide.html">
                         development guide</a> on how to build and test a decentralized app"""
                 )
-                li().innerHTML("""
+                li().innerHTML(
+                    """
                     Have a question or idea? Chat with us on 
-                    <a href="https://matrix.to/#/#freenet-locutus:matrix.org">Matrix</a>""")
-                li().innerHTML("""
+                    <a href="https://matrix.to/#/#freenet-locutus:matrix.org">Matrix</a>"""
+                )
+                li().innerHTML(
+                    """
                         Visit the Locutus <a href="https://github.com/freenet/locutus">GitHub repository</a> to 
                         browse our source code, and report bugs """
                 )
-                li().innerHTML("""
-                        While Locutus is still in development, the original Freenet software was first released in
-                        March 2000 and has a vibrant community of users and developers, learn more at 
-                        <a href="https://freenetproject.org">freenetproject.org</a>
-                """)
+                li().innerHTML(
+                    """
+                        While Locutus is still in development, the original Freenet "classic" software has a vibrant 
+                        community of users and developers, learn more at <a href="https://freenetproject.org">freenetproject.org</a>
+                """
+                )
             }
 
             h3(fomantic.ui.text).text("Latest News")
             div(fomantic.ui.bulleted.list) {
-                render(newsItemList) { items ->
-                    for (newsItem in items) {
-                        div(fomantic.item) {
-                            val prettyDate = humanize.Humanize.formatDate(newsItem.date, "MMMM d, yyyy")
+                renderEach(newsItemList) { newsItem ->
+                    div(fomantic.item) {
+                        val prettyDate = humanize.Humanize.formatDate(newsItem.date, "MMMM d, yyyy")
 
-                            parent.innerHTML(
-                                """
+                        element.innerHTML(
+                            """
                             <B>${prettyDate}:</B> ${newsItem.description}
                         """.trimIndent()
-                            )
-                        }
+                        )
                     }
                 }
             }
 
             h3(fomantic.ui.text).text("Support Our Work")
 
-            val donationWallets = listOf(Pair("Bitcoin", "3M3fbA7RDYdvYeaoR69cDCtVJqEodo9vth"),
-                                         Pair("Zcash", "t1VHw1PHgzvMqEEd31ZBt3Vyy2UrG4J8utB"),
-                                         Pair("Ethereum", "0x79158A5Dbd9C0737CB27411817BD2759f5b9a9Ae"),
-                )
+            val donationWallets = listOf(
+                Pair("Bitcoin", "3M3fbA7RDYdvYeaoR69cDCtVJqEodo9vth"),
+                Pair("Zcash", "t1VHw1PHgzvMqEEd31ZBt3Vyy2UrG4J8utB"),
+                Pair("Ethereum", "0x79158A5Dbd9C0737CB27411817BD2759f5b9a9Ae"),
+            )
 
             div(fomantic.ui.list) {
                 for (wallet in donationWallets) {
@@ -108,22 +117,24 @@ fun ElementCreator<*>.landingPage() {
                         }
                     }
                 }
-                div(fomantic.ui.item).innerHTML("Find Paypal and other donation options " +
-                        "<a href=\"https://freenetproject.org/pages/donate.html\">here</a>.")
+                div(fomantic.ui.item).innerHTML(
+                    "Find Paypal and other donation options " +
+                            "<a href=\"https://freenetproject.org/pages/donate.html\">here</a>."
+                )
             }
 
         }
 
 
-
-
-    }.setAttribute("background-color", "e8e8e8")
+    }.set("background-color", "e8e8e8")
 }
 
 val newsItemList = if (db != null) retrieveNews(db) else {
-    KVar(listOf(
-        NewsItem(Date(),"This is the first news item", true),
-        NewsItem(Date(),"This is the second news item", false),
-        NewsItem(Date(),"This is the third news item", true),
-    ))
+    ObservableList(
+        listOf(
+            NewsItem(Date(), "This is the first news item", true),
+            NewsItem(Date(), "This is the second news item", false),
+            NewsItem(Date(), "This is the third news item", true),
+        )
+    )
 }
