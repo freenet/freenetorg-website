@@ -20,7 +20,7 @@ repositories {
 dependencies {
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
- //   implementation("com.google.appengine:appengine-api-1.0-sdk:2.0.9")
+    implementation("com.google.appengine:appengine-api-1.0-sdk:2.0.9")
 
     implementation("com.google.guava:guava:31.1-jre")
     implementation("com.google.code.gson:gson:2.10")
