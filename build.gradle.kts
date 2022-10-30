@@ -14,7 +14,7 @@ version = "1.2-SNAPSHOT"
 
 repositories {
     mavenCentral()
-   // maven { url = uri("https://jitpack.io") }
+    maven { url = uri("https://jitpack.io") }
 }
 
 dependencies {
@@ -23,19 +23,19 @@ dependencies {
     implementation("com.google.appengine:appengine-api-1.0-sdk:2.0.9")
 
     implementation("com.google.guava:guava:31.1-jre")
-    implementation("com.google.code.gson:gson:2.10")
+    implementation("com.google.code.gson:gson:2.9.0")
 
     implementation("io.kweb:kweb-core:1.0.2")
 
-    implementation("org.slf4j:slf4j-simple:2.0.3")
+    implementation("org.slf4j:slf4j-simple:1.7.30")
 
-    implementation("com.stripe:stripe-java:21.12.0")
+    implementation("com.stripe:stripe-java:21.8.0")
 
-    implementation("com.google.cloud:google-cloud-firestore:3.7.0")
+    implementation("com.google.cloud:google-cloud-firestore:3.5.0")
 
     implementation("com.github.mfornos:humanize-slim:1.2.2")
 
-    implementation("io.github.microutils:kotlin-logging-jvm:3.0.2")
+    implementation("io.github.microutils:kotlin-logging-jvm:3.0.0")
     implementation("com.google.cloud:google-cloud-logging-logback:0.127.10-alpha")
 
     implementation("org.kohsuke:github-api:1.313")
