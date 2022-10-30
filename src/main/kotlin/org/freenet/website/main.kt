@@ -2,13 +2,12 @@ package org.freenet.website
 
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kweb.Kweb
-import kweb.new
-import kweb.p
+import kweb.*
 import kweb.plugins.fomanticUI.fomanticUIPlugin
 import kweb.plugins.staticFiles.ResourceFolder
 import kweb.plugins.staticFiles.StaticFilesPlugin
-import kweb.title
+import kweb.state.Component
+import kweb.state.render
 import mu.KotlinLogging
 import org.freenet.website.util.HealthCheckPlugin
 import org.freenet.website.util.StripeRoutePlugin
@@ -35,18 +34,17 @@ fun main() {
 
         doc.head {
 
-            element("link").new {
-                parent.setAttribute("rel", "icon")
-                parent.setAttribute("href", "/static/rabbit-logo.svg")
-                parent.setAttribute("type", "image/svg+xml")
-            }
-
             title().text("Freenet")
-            element("meta").setAttribute("content", "width=device-width, initial-scale=1").setAttribute("name", "viewport")
+
+            render(RabbitLogo)
+
+            element("meta").set("content", "width=device-width, initial-scale=1").set("name", "viewport")
           //  element("link").setAttribute("rel", "stylesheet").setAttribute("href", "/static/checkout.css")
-            element("link").setAttribute("rel", "stylesheet").setAttribute("href", "/static/homepage.css")
-            element("script").setAttribute("src", "https://js.stripe.com/v3/")
-            element("script").setAttribute("src", "/static/checkout.js")
+            element("link")
+                .set("rel", "stylesheet")
+                .set("href", "/static/homepage.css")
+            element("script")["src"] = "https://js.stripe.com/v3/"
+            element("script")["src"] = "/static/checkout.js"
 
         }
         doc.body {
@@ -57,6 +55,21 @@ fun main() {
 
         GlobalScope.launch {
             recordVisit(this@Kweb.httpRequestInfo)
+        }
+    }
+
+}
+
+object RabbitLogo : Component<Unit> {
+    override fun render(elementCreator: ElementCreator<*>) {
+        with(elementCreator) {
+            element("link").new {
+                element {
+                    set("rel", "icon")
+                    set("href", "/static/rabbit-logo.svg")
+                    set("type", "image/svg+xml")
+                }
+            }
         }
     }
 
