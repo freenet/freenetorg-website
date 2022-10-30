@@ -39,7 +39,14 @@ dependencies {
     implementation("com.google.cloud:google-cloud-logging-logback:0.127.10-alpha")
 
     implementation("org.kohsuke:github-api:1.313")
-
+    constraints {
+        implementation("com.fasterxml.jackson.core:jackson-databind:2.14.0-rc2") {
+            because("""
+                CVE-2022-42003 7.5 Deserialization of Untrusted Data vulnerability pending CVSS allocation
+                CVE-2022-42004 7.5 Deserialization of Untrusted Data vulnerability pending CVSS allocation
+                """.trimIndent())
+        }
+    }
 
     testImplementation(platform("org.junit:junit-bom:5.8.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
