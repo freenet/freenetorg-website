@@ -14,7 +14,6 @@ version = "1.2-SNAPSHOT"
 
 repositories {
     mavenCentral()
-    maven { url = uri("https://jitpack.io") }
 }
 
 dependencies {
