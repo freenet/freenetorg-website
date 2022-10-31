@@ -27,7 +27,7 @@ val isLocalTestingMode : Boolean = System.getenv("FREENET_SITE_LOCAL_TESTING").e
 fun main() {
 
     logger.info("Starting Freenet Site, isLocalTestingMode: $isLocalTestingMode")
-
+12
     Kweb(port = 8080, debug = isLocalTestingMode, plugins = listOf(fomanticUIPlugin, HealthCheckPlugin, StripeRoutePlugin(),
         StaticFilesPlugin(ResourceFolder("static"), "/static"))) {
         logger.info("Received inbound HTTP(S) connection from ${this.httpRequestInfo.remoteHost}")
