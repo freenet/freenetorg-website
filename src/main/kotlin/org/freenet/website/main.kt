@@ -38,11 +38,19 @@ fun main() {
 
             render(RabbitLogo)
 
-            element("meta").set("content", "width=device-width, initial-scale=1").set("name", "viewport")
-          //  element("link").setAttribute("rel", "stylesheet").setAttribute("href", "/static/checkout.css")
-            element("link")
-                .set("rel", "stylesheet")
-                .set("href", "/static/homepage.css")
+            element("meta") {
+                element {
+                    this["content"] = "width=device-width, initial-scale=1"
+                    this["name"] = "viewport"
+                }
+         }
+            element("link") {
+                element {
+                    this["rel"] = "stylesheet"
+                    this["href"] = "/static/homepage.css"
+                }
+            }
+
             element("script")["src"] = "https://js.stripe.com/v3/"
             element("script")["src"] = "/static/checkout.js"
 
