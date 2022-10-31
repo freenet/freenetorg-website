@@ -1,2 +1,0 @@
-runtime: java11
-entrypoint: 'java -jar freenetorg-website-1.2-SNAPSHOT-all.jar'
