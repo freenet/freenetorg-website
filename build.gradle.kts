@@ -6,7 +6,6 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version "1.7.20"
     id("application")
     id("com.github.johnrengelman.shadow") version "7.1.2"
-    id("com.google.cloud.tools.appengine") version "2.4.5"
 }
 
 group = "org.freenet.website"
@@ -22,19 +21,19 @@ dependencies {
     implementation("com.google.appengine:appengine-api-1.0-sdk:2.0.9")
 
     implementation("com.google.guava:guava:31.1-jre")
-    implementation("com.google.code.gson:gson:2.9.0")
+    implementation("com.google.code.gson:gson:2.10")
 
     implementation("io.kweb:kweb-core:1.0.2")
 
-    implementation("org.slf4j:slf4j-simple:1.7.30")
+    implementation("org.slf4j:slf4j-simple:2.0.3")
 
-    implementation("com.stripe:stripe-java:21.8.0")
+    implementation("com.stripe:stripe-java:21.12.0")
 
-    implementation("com.google.cloud:google-cloud-firestore:3.5.0")
+    implementation("com.google.cloud:google-cloud-firestore:3.7.0")
 
     implementation("com.github.mfornos:humanize-slim:1.2.2")
 
-    implementation("io.github.microutils:kotlin-logging-jvm:3.0.0")
+    implementation("io.github.microutils:kotlin-logging-jvm:3.0.2")
     implementation("com.google.cloud:google-cloud-logging-logback:0.127.10-alpha")
 
     implementation("org.kohsuke:github-api:1.313")
@@ -67,14 +66,4 @@ tasks {
         }
     }
 
-}
-
-appengine {
-    stage {
-        setArtifact("build/libs/freenet-website-1.2-SNAPSHOT-all.jar")
-    }
-    deploy {
-        version = "GCLOUD_CONFIG"
-        projectId = "GCLOUD_CONFIG"
-    }
 }
