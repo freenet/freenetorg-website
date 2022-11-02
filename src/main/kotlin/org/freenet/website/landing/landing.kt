@@ -2,21 +2,17 @@ package org.freenet.website.landing
 
 import kweb.*
 import kweb.plugins.fomanticUI.fomantic
-import kweb.state.KVar
 import kweb.state.ObservableList
-import kweb.state.render
 import kweb.state.renderEach
 import org.freenet.website.db.db
 import java.time.Year
 import java.util.*
 
-const val MAX_NEWS_ITEMS = 7
-
 fun ElementCreator<*>.landingPage() {
 
     div(fomantic.ui.text.center.aligned.container) {
         div(fomantic.ui.text.left.aligned.container) {
-            div() {
+            div {
                 h1(fomantic.ui.text).text("Freenet")
                 h2(fomantic.ui.text).addClasses("subtitle").text("Declare your digital independence")
             }
@@ -111,9 +107,9 @@ fun ElementCreator<*>.landingPage() {
                         div(fomantic.ui.mini.labeled.input) {
                             div(fomantic.ui.label).text(wallet.first)
                             input(type = InputType.text)
-                                .setAttribute("readonly", "true")
-                                .setAttribute("size", wallet.second.length.toString())
-                                .setAttribute("value", wallet.second)
+                                .set("readonly", "true")
+                                .set("size", wallet.second.length.toString())
+                                .set("value", wallet.second)
                         }
                     }
                 }

@@ -29,24 +29,22 @@ fun tempReserveName(username: String,  ipAddress: String, referer: String? = nul
 
     data["lowercaseUsername"] = username.lowercase()
     data["timeReserved"] = getTimeMillis()
-    data["ipAddress"] = ""
+    data["ipAddress"] = ipAddress
     referer?.let {
         data["referer"] = it
     }
     docRef.set(data)
 }
 
-fun isUsernameValid(username: String) : Boolean {
+fun isUsernameValid(username: String): Boolean {
     //allows a 2-30 character alphanumeric username that may contain an underscore or period
     val usernameRegex = "^[A-Za-z][A-Za-z0-9_.]{1,29}\$"
-    val isValid = username.matches(usernameRegex.toRegex())
-    return isValid
+    return username.matches(usernameRegex.toRegex())
 }
 
-fun isValidEmail(email : String) : Boolean {
-    val emailRegex ="""^([a-zA-Z0-9_\-.]+)@([a-zA-Z0-9 \-.]+)\.([a-zA-Z]{2,5})${'$'}"""
-    val isValid = email.matches(emailRegex.toRegex())
-    return isValid
+fun isValidEmail(email: String): Boolean {
+    val emailRegex = """^([a-zA-Z0-9_\-.]+)@([a-zA-Z0-9 \-.]+)\.([a-zA-Z]{2,5})${'$'}"""
+    return email.matches(emailRegex.toRegex())
 }
 
 fun isUsernameAvailable(username: String) : Boolean {
@@ -100,21 +98,4 @@ fun saveCustomer(stripeCustomerId: String) : String{
     data["stripeCustomerId"] = stripeCustomerId
     docRef.set(data)
     return customer.email
-}
-
-fun showToast(webBrowser: WebBrowser, message: String) {
-    webBrowser.callJsFunction(""" 
-        Toastify({
-            text: {},
-            duration: 5000,
-            close: false,
-            gravity: "bottom",
-            position: "center",
-            stopOnFocus: false,
-            style: {
-                color: "#ff0033",
-                background: "white"
-            }
-        }).showToast();
-    """.trimIndent(), message.json)
 }

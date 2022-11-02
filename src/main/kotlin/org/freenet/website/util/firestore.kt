@@ -4,7 +4,6 @@ import com.google.cloud.firestore.DocumentChange
 import com.google.cloud.firestore.Query
 import com.google.cloud.firestore.QueryDocumentSnapshot
 import kweb.state.ObservableList
-import java.util.ArrayList
 
 inline fun <reified T> QueryDocumentSnapshot.toObject(): T = this.toObject(T::class.java)
 

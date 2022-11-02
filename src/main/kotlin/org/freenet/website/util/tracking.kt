@@ -6,6 +6,8 @@ import org.freenet.website.db.db
 import java.util.*
 
 data class Visit(val time : Date, val remoteHostHash : Int, val userAgent : String, val visitUrl : String, val referrer : String) {
+    // Needed for Firestore toObject
+    @Suppress("unused")
     constructor() : this(Date(), 0, "", "", "")
 }
 

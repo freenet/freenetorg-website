@@ -14,7 +14,7 @@ import kweb.util.json
 fun ElementCreator<*>.renderNamesLanding() {
     val ipAddress = browser.httpRequestInfo.request.call.request.origin.remoteHost
     div(fomantic.ui.text.center.aligned.container) {
-        h1(fomantic.ui).setAttribute("style", """font-size: 4em;""").text("Locutus")
+        h1(fomantic.ui).set("style", """font-size: 4em;""").text("Locutus")
     }
 
     div(fomantic.ui.text.container) {
@@ -144,10 +144,10 @@ fun ElementCreator<*>.renderNamesLanding() {
                             for (preset in presetDonationValues.value) {
                                 div(fomantic.field.two.wide.column) {
                                     div(fomantic.ui.radio.checkbox) {
-                                        val radioButton = input().setAttribute("type", "radio")
-                                            .setAttribute("name", "donationPresetRadio")
-                                            .setAttribute("value", preset)
-                                            .setAttribute("tabindex", "0")
+                                        val radioButton = input().set("type", "radio")
+                                            .set("name", "donationPresetRadio")
+                                            .set("value", preset)
+                                            .set("tabindex", "0")
                                         radioButton.on.click {
                                             selectedDonationAmount.value = preset
                                         }
@@ -159,13 +159,13 @@ fun ElementCreator<*>.renderNamesLanding() {
                         div(fomantic.field.six.wide.column.left.aligned) {
                             div(fomantic.ui.radio.checkbox) {
                                 val customDonationField = input(
-                                    attributes = mapOf(
-                                        "id" to "donationRadioCustomField".json,
-                                        "class" to "ui input".json
-                                    )
-                                ).setAttribute("type", "radio")
-                                    .setAttribute("name", "donationPresetRadio")
-                                    .setAttribute("tabindex", "0")
+                                                                attributes = mapOf(
+                                                                    "id" to "donationRadioCustomField".json,
+                                                                    "class" to "ui input".json
+                                                                )
+                                                            ).set("type", "radio")
+                                    .set("name", "donationPresetRadio")
+                                    .set("tabindex", "0")
                                 customDonationField.on.click {
                                     println("selectedDonationAmount on customClick: ${selectedDonationAmount.value}")
                                     selectedDonationAmount = donationInput.value
@@ -176,7 +176,7 @@ fun ElementCreator<*>.renderNamesLanding() {
                                         type = InputType.text, placeholder = "Custom",
                                         attributes = mapOf("id" to "donationInput".json)
                                     )
-                                    donationInput.setAttribute("class", "fluid").setAttribute("width", "6em")
+                                    donationInput.set("class", "fluid").set("width", "6em")
                                     selectedDonationAmount = donationInput.value
                                     donationInput.on.input {
                                     }
@@ -205,6 +205,7 @@ fun ElementCreator<*>.renderNamesLanding() {
                             }
                             browser.callJsFunction("$(\'#\' + {}).modal(\'show\');", modal.id.json)
                         } else {
+                            TODO()
                         }
                     }
 
