@@ -22,14 +22,7 @@ import org.freenet.website.util.recordVisit
 
 private val logger = KotlinLogging.logger { }
 
-const val usernameTableName = "reservedUsernames"
-const val timeToReserveName = 60 * 1000 * 15//15 minutes
-
 val isLocalTestingMode: Boolean = System.getenv("FREENET_SITE_LOCAL_TESTING").equals("true", true)
-
-//TODO Google Authentication can fail in the first few seconds of a pod existing. Need to add check to
-//TODO make sure this succeeds, and call it again on fail
-
 
 fun main() {
 
@@ -38,8 +31,12 @@ fun main() {
     logger.info("Starting Freenet Site, isLocalTestingMode: $isLocalTestingMode")
 
     Kweb(
-        port = 8080, debug = isLocalTestingMode, plugins = listOf(
-            fomanticUIPlugin, HealthCheckPlugin, StripeRoutePlugin(),
+        port = 8080,
+        debug = isLocalTestingMode,
+        plugins = listOf(
+            fomanticUIPlugin,
+            HealthCheckPlugin,
+            StripeRoutePlugin(),
             StaticFilesPlugin(ResourceFolder("static"), "/static")
         )
     ) {
@@ -64,7 +61,7 @@ fun main() {
 
 }
 
-object ConfigureHeadComponent : Component<Unit> {
+private object ConfigureHeadComponent : Component {
     override fun render(elementCreator: ElementCreator<*>) {
         with(elementCreator) {
             element("meta") { meta ->
@@ -97,7 +94,7 @@ private val latestNewsItems : ObservableList<NewsItem> = run {
     latestNewsItems
 }
 
-object RabbitLogo : Component<Unit> {
+object RabbitLogo : Component {
     override fun render(elementCreator: ElementCreator<*>) {
         with(elementCreator) {
             element("link").new { link ->

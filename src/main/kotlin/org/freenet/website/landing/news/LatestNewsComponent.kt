@@ -8,7 +8,7 @@ import kweb.state.Component
 import kweb.state.ObservableList
 import kweb.state.renderEach
 
-class LatestNewsComponent(private val newsItems : ObservableList<NewsItem>) : Component<Unit> {
+class LatestNewsComponent(private val newsItems : ObservableList<NewsItem>) : Component {
     override fun render(elementCreator: ElementCreator<*>) {
         with(elementCreator) {
             h3(fomantic.ui.text).text("Latest News")

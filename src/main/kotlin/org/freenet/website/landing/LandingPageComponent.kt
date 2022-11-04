@@ -10,7 +10,7 @@ import org.freenet.website.landing.news.NewsItem
 import java.time.Year
 import java.util.*
 
-class LandingPageComponent(private val latestNewsItems : ObservableList<NewsItem>) : Component<Unit> {
+class LandingPageComponent(private val latestNewsItems : ObservableList<NewsItem>) : Component {
     override fun render(elementCreator: ElementCreator<*>) {
         with(elementCreator) {
             div(fomantic.ui.text.center.aligned.container) {

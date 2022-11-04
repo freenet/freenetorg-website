@@ -22,7 +22,7 @@ dependencies {
     implementation("com.google.guava:guava:31.1-jre")
     implementation("com.google.code.gson:gson:2.10")
 
-    implementation("io.kweb:kweb-core:1.1.1")
+    implementation("io.kweb:kweb-core:1.1.2")
 
     implementation("org.slf4j:slf4j-simple:2.0.3")
 
@@ -32,7 +32,7 @@ dependencies {
 
     implementation("com.github.mfornos:humanize-slim:1.2.2")
 
-    implementation("io.github.microutils:kotlin-logging-jvm:3.0.2")
+    implementation("io.github.microutils:kotlin-logging-jvm:3.0.3")
     implementation("com.google.cloud:google-cloud-logging-logback:0.127.10-alpha")
 
     implementation("org.kohsuke:github-api:1.313")
