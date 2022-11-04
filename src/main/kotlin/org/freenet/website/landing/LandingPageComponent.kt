@@ -34,8 +34,6 @@ class LandingPageComponent(private val latestNewsItems : ObservableList<NewsItem
                     small-world networks and still has an active community of users and developers today.
                 """.trimMargin()
                     )
-                    // Assign current year to currentYear variable
-                    val currentYear = Year.now().value
 
                     p(fomantic.ui.text).text(
                         """But the Internet has changed a lot since those early days, and so have people's expectations. 

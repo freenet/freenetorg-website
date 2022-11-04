@@ -2,7 +2,6 @@ package org.freenet.website
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kweb.*
 import kweb.plugins.fomanticUI.fomanticUIPlugin
@@ -17,7 +16,6 @@ import org.freenet.website.landing.dummyNewsItems
 import org.freenet.website.landing.news.NewsItem
 import org.freenet.website.landing.news.retrieveNews
 import org.freenet.website.util.HealthCheckPlugin
-import org.freenet.website.util.StripeRoutePlugin
 import org.freenet.website.util.recordVisit
 
 private val logger = KotlinLogging.logger { }
@@ -36,7 +34,6 @@ fun main() {
         plugins = listOf(
             fomanticUIPlugin,
             HealthCheckPlugin,
-            StripeRoutePlugin(),
             StaticFilesPlugin(ResourceFolder("static"), "/static")
         )
     ) {

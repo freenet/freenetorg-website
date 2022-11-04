@@ -20,13 +20,10 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
 
     implementation("com.google.guava:guava:31.1-jre")
-    implementation("com.google.code.gson:gson:2.10")
 
     implementation("io.kweb:kweb-core:1.1.2.1")
 
     implementation("org.slf4j:slf4j-simple:2.0.3")
-
-    implementation("com.stripe:stripe-java:21.12.0")
 
     implementation("com.google.cloud:google-cloud-firestore:3.7.0")
 
