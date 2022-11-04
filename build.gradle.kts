@@ -22,7 +22,7 @@ dependencies {
     implementation("com.google.guava:guava:31.1-jre")
     implementation("com.google.code.gson:gson:2.10")
 
-    implementation("io.kweb:kweb-core:1.1.2")
+    implementation("io.kweb:kweb-core:1.1.2.1")
 
     implementation("org.slf4j:slf4j-simple:2.0.3")
 
