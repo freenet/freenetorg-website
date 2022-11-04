@@ -1,5 +1,7 @@
 package org.freenet.website
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kweb.*
@@ -7,8 +9,13 @@ import kweb.plugins.fomanticUI.fomanticUIPlugin
 import kweb.plugins.staticFiles.ResourceFolder
 import kweb.plugins.staticFiles.StaticFilesPlugin
 import kweb.state.Component
+import kweb.state.ObservableList
 import kweb.state.render
 import mu.KotlinLogging
+import org.freenet.website.db.db
+import org.freenet.website.landing.dummyNewsItems
+import org.freenet.website.landing.news.NewsItem
+import org.freenet.website.landing.news.retrieveNews
 import org.freenet.website.util.HealthCheckPlugin
 import org.freenet.website.util.StripeRoutePlugin
 import org.freenet.website.util.recordVisit
@@ -26,7 +33,7 @@ val isLocalTestingMode: Boolean = System.getenv("FREENET_SITE_LOCAL_TESTING").eq
 
 fun main() {
 
-    val scope = MainScope()
+    val scope = CoroutineScope(Dispatchers.IO)
 
     logger.info("Starting Freenet Site, isLocalTestingMode: $isLocalTestingMode")
 
@@ -36,14 +43,30 @@ fun main() {
             StaticFilesPlugin(ResourceFolder("static"), "/static")
         )
     ) {
-        logger.info("Received inbound HTTP(S) connection from ${this.httpRequestInfo.remoteHost}")
-
         doc.head {
 
             title().text("Freenet")
 
             render(RabbitLogo)
 
+            render(ConfigureHeadComponent)
+        }
+        doc.body {
+            render(RoutesComponent(latestNewsItems))
+
+            p().classes("page-end-spacer")
+        }
+
+        scope.launch {
+            recordVisit(this@Kweb.httpRequestInfo)
+        }
+    }
+
+}
+
+object ConfigureHeadComponent : Component<Unit> {
+    override fun render(elementCreator: ElementCreator<*>) {
+        with(elementCreator) {
             element("meta") { meta ->
                 meta["content"] = "width=device-width, initial-scale=1"
                 meta["name"] = "viewport"
@@ -55,19 +78,23 @@ fun main() {
 
             element("script")["src"] = "https://js.stripe.com/v3/"
             element("script")["src"] = "/static/checkout.js"
-
-        }
-        doc.body {
-            routes()
-
-            p().classes("page-end-spacer")
-        }
-
-        scope.launch {
-            recordVisit(this@Kweb.httpRequestInfo)
         }
     }
 
+}
+
+/*
+ * These are the same for all users so we only need one globally
+ */
+private val latestNewsItems : ObservableList<NewsItem> = run {
+    val latestNewsItems = if (db != null) {
+        logger.info("Retrieving Latest News")
+        retrieveNews(db)
+    } else {
+        logger.info("Using dummy news as Firestore is not available")
+        dummyNewsItems
+    }
+    latestNewsItems
 }
 
 object RabbitLogo : Component<Unit> {

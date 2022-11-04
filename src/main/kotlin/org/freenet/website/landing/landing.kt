@@ -2,135 +2,125 @@ package org.freenet.website.landing
 
 import kweb.*
 import kweb.plugins.fomanticUI.fomantic
+import kweb.state.Component
 import kweb.state.ObservableList
-import kweb.state.renderEach
-import org.freenet.website.db.db
+import kweb.state.render
+import org.freenet.website.landing.news.LatestNewsComponent
+import org.freenet.website.landing.news.NewsItem
 import java.time.Year
 import java.util.*
 
-fun ElementCreator<*>.landingPage() {
+class LandingPageComponent(private val latestNewsItems : ObservableList<NewsItem>) : Component<Unit> {
+    override fun render(elementCreator: ElementCreator<*>) {
+        with(elementCreator) {
+            div(fomantic.ui.text.center.aligned.container) {
+                div(fomantic.ui.text.left.aligned.container) {
+                    div {
+                        h1(fomantic.ui.text).text("Freenet")
+                        h2(fomantic.ui.text).addClasses("subtitle").text("Declare your digital independence")
+                    }
 
-    div(fomantic.ui.text.center.aligned.container) {
-        div(fomantic.ui.text.left.aligned.container) {
-            div {
-                h1(fomantic.ui.text).text("Freenet")
-                h2(fomantic.ui.text).addClasses("subtitle").text("Declare your digital independence")
-            }
+                    br()
 
-            br()
-
-            p(fomantic.ui.text).text(
-                """The internet has grown increasingly centralized over the past few decades, with a handful of 
+                    p(fomantic.ui.text).text(
+                        """The internet has grown increasingly centralized over the past few decades, with a handful of 
                     corporations now controlling most of its infrastructure. This privatization of the public square 
                     threatens freedom of speech and democracy.""".trimMargin()
-            )
+                    )
 
-            p(fomantic.ui.text).text(
-                """23 years ago, we created Freenet - the first distributed, 
+                    p(fomantic.ui.text).text(
+                        """23 years ago, we created Freenet - the first distributed, 
                     decentralized peer-to-peer network. Freenet pioneered technologies like cryptographic contracts and 
                     small-world networks and still has an active community of users and developers today.
                 """.trimMargin()
-            )
-            // Assign current year to currentYear variable
-            val currentYear = Year.now().value
+                    )
+                    // Assign current year to currentYear variable
+                    val currentYear = Year.now().value
 
-            p(fomantic.ui.text).text(
-                """But the Internet has changed a lot since those early days, and so have people's expectations. 
+                    p(fomantic.ui.text).text(
+                        """But the Internet has changed a lot since those early days, and so have people's expectations. 
                     That's why, to meet today's challenges and expectations, we're building Locutus."""
-            )
+                    )
 
-            p(fomantic.ui.text).text(
-                """Locutus makes it easy for developers to create and deploy 
+                    p(fomantic.ui.text).text(
+                        """Locutus makes it easy for developers to create and deploy 
                     decentralized alternatives to today's centralized internet services, like instant messaging,
                     social networking, email, and online stores. These decentralized apps will 
                     be easy to use, scalable, and secured through cryptography. Locutus will put control back in the 
                     hands of the user.
                 """.trimMargin()
-            )
+                    )
 
-            ul(fomantic.ui.list) {
-                li().innerHTML(
-                    """
+                    ul(fomantic.ui.list) {
+                        li().innerHTML(
+                            """
                 For a video introduction to Locutus watch Ian's talk in July 2022 on
                 <a href="https://youtu.be/x9g018OYwb4">YouTube</a>.
             """.trimIndent()
-                )
-                li().innerHTML(
-                    """The <a href="https://docs.freenet.org/" rel="nofollow">Locutus Book</a> is a technical
+                        )
+                        li().innerHTML(
+                            """The <a href="https://docs.freenet.org/" rel="nofollow">Locutus Book</a> is a technical
                         introduction to Locutus including a <a href="https://docs.freenet.org/dev-guide.html">
                         development guide</a> on how to build and test a decentralized app"""
-                )
-                li().innerHTML(
-                    """
+                        )
+                        li().innerHTML(
+                            """
                     Have a question or idea? Chat with us on 
                     <a href="https://matrix.to/#/#freenet-locutus:matrix.org">Matrix</a>"""
-                )
-                li().innerHTML(
-                    """
+                        )
+                        li().innerHTML(
+                            """
                         Visit the Locutus <a href="https://github.com/freenet/locutus">GitHub repository</a> to 
                         browse our source code, and report bugs """
-                )
-                li().innerHTML(
-                    """
+                        )
+                        li().innerHTML(
+                            """
                         While Locutus is still in development, the original Freenet "classic" software has a vibrant 
                         community of users and developers, learn more at <a href="https://freenetproject.org">freenetproject.org</a>
                 """
-                )
-            }
-
-            h3(fomantic.ui.text).text("Latest News")
-            div(fomantic.ui.bulleted.list) {
-                renderEach(newsItemList) { newsItem ->
-                    div(fomantic.item) {
-                        val prettyDate = humanize.Humanize.formatDate(newsItem.date, "MMMM d, yyyy")
-
-                        element.innerHTML(
-                            """
-                            <B>${prettyDate}:</B> ${newsItem.description}
-                        """.trimIndent()
                         )
                     }
-                }
-            }
 
-            h3(fomantic.ui.text).text("Support Our Work")
+                    render(LatestNewsComponent(latestNewsItems))
 
-            val donationWallets = listOf(
-                Pair("Bitcoin", "3M3fbA7RDYdvYeaoR69cDCtVJqEodo9vth"),
-                Pair("Zcash", "t1VHw1PHgzvMqEEd31ZBt3Vyy2UrG4J8utB"),
-                Pair("Ethereum", "0x79158A5Dbd9C0737CB27411817BD2759f5b9a9Ae"),
-            )
+                    h3(fomantic.ui.text).text("Support Our Work")
 
-            div(fomantic.ui.list) {
-                for (wallet in donationWallets) {
-                    div(fomantic.ui.item) {
-                        div(fomantic.ui.mini.labeled.input) {
-                            div(fomantic.ui.label).text(wallet.first)
-                            input(type = InputType.text)
-                                .set("readonly", "true")
-                                .set("size", wallet.second.length.toString())
-                                .set("value", wallet.second)
+                    val donationWallets = listOf(
+                        Pair("Bitcoin", "3M3fbA7RDYdvYeaoR69cDCtVJqEodo9vth"),
+                        Pair("Zcash", "t1VHw1PHgzvMqEEd31ZBt3Vyy2UrG4J8utB"),
+                        Pair("Ethereum", "0x79158A5Dbd9C0737CB27411817BD2759f5b9a9Ae"),
+                    )
+
+                    div(fomantic.ui.list) {
+                        for (wallet in donationWallets) {
+                            div(fomantic.ui.item) {
+                                div(fomantic.ui.mini.labeled.input) {
+                                    div(fomantic.ui.label).text(wallet.first)
+                                    input(type = InputType.text)
+                                        .set("readonly", "true")
+                                        .set("size", wallet.second.length.toString())
+                                        .set("value", wallet.second)
+                                }
+                            }
                         }
+                        div(fomantic.ui.item).innerHTML(
+                            "Find Paypal and other donation options " +
+                                    "<a href=\"https://freenetproject.org/pages/donate.html\">here</a>."
+                        )
                     }
+
                 }
-                div(fomantic.ui.item).innerHTML(
-                    "Find Paypal and other donation options " +
-                            "<a href=\"https://freenetproject.org/pages/donate.html\">here</a>."
-                )
-            }
 
+
+            }.set("background-color", "e8e8e8")
         }
-
-
-    }.set("background-color", "e8e8e8")
+    }
 }
 
-val newsItemList = if (db != null) retrieveNews(db) else {
-    ObservableList(
-        listOf(
-            NewsItem(Date(), "This is the first news item", true),
-            NewsItem(Date(), "This is the second news item", false),
-            NewsItem(Date(), "This is the third news item", true),
-        )
+val dummyNewsItems = ObservableList(
+    listOf(
+        NewsItem(Date(), "This is the first news item", true),
+        NewsItem(Date(), "This is the second news item", false),
+        NewsItem(Date(), "This is the third news item", true),
     )
-}
+)

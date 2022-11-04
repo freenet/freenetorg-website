@@ -1,4 +1,4 @@
-package org.freenet.website.landing
+package org.freenet.website.landing.news
 
 import com.google.cloud.firestore.Firestore
 import com.google.cloud.firestore.Query
@@ -19,3 +19,4 @@ data class NewsItem(val date: Date, val description : String, val important : Bo
     @Suppress("unused")
     constructor() : this(Date(), "", false)
 }
+
