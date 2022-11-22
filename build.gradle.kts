@@ -21,15 +21,15 @@ dependencies {
 
     implementation("com.google.guava:guava:31.1-jre")
 
-    implementation("io.kweb:kweb-core:1.1.2.1")
+    implementation("io.kweb:kweb-core:1.1.6")
 
-    implementation("org.slf4j:slf4j-simple:2.0.3")
+    implementation("org.slf4j:slf4j-simple:2.0.4")
 
     implementation("com.google.cloud:google-cloud-firestore:3.7.0")
 
     implementation("com.github.mfornos:humanize-slim:1.2.2")
 
-    implementation("io.github.microutils:kotlin-logging-jvm:3.0.3")
+    implementation("io.github.microutils:kotlin-logging-jvm:3.0.4")
     implementation("com.google.cloud:google-cloud-logging-logback:0.127.10-alpha")
 
     implementation("org.kohsuke:github-api:1.313")
@@ -42,7 +42,7 @@ dependencies {
         }
     }
 
-    testImplementation(platform("org.junit:junit-bom:5.8.2"))
+    testImplementation(platform("org.junit:junit-bom:5.9.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
 }
 
