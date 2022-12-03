@@ -21,11 +21,11 @@ dependencies {
 
     implementation("com.google.guava:guava:31.1-jre")
 
-    implementation("io.kweb:kweb-core:1.1.6")
+    implementation("io.kweb:kweb-core:1.2.0")
 
-    implementation("org.slf4j:slf4j-simple:2.0.4")
+    implementation("org.slf4j:slf4j-simple:2.0.5")
 
-    implementation("com.google.cloud:google-cloud-firestore:3.7.0")
+    implementation("com.google.cloud:google-cloud-firestore:3.7.2")
 
     implementation("com.github.mfornos:humanize-slim:1.2.2")
 
