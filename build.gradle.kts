@@ -23,6 +23,9 @@ dependencies {
 
     implementation("io.kweb:kweb-core:1.3.0")
 
+    implementation("io.ktor:ktor-client-core:2.2.1")
+    implementation("io.ktor:ktor-client-cio:2.2.1")
+
     implementation("org.slf4j:slf4j-simple:2.0.5")
 
     implementation("com.google.cloud:google-cloud-firestore:3.7.2")
