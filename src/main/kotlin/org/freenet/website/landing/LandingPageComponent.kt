@@ -1,18 +1,14 @@
 package org.freenet.website.landing
 
 import kweb.*
+import kweb.components.Component
 import kweb.plugins.fomanticUI.fomantic
-import kweb.state.Component
 import kweb.state.ObservableList
-import kweb.state.render
-import org.freenet.website.landing.news.LatestNewsComponent
 import org.freenet.website.landing.news.NewsItem
-import java.time.Year
+import org.freenet.website.landing.news.latestNewsComponent
 import java.util.*
 
-class LandingPageComponent(private val latestNewsItems : ObservableList<NewsItem>) : Component {
-    override fun render(elementCreator: ElementCreator<*>) {
-        with(elementCreator) {
+fun Component.landingPageComponent(latestNewsItems : ObservableList<NewsItem>)  {
             div(fomantic.ui.text.center.aligned.container) {
                 div(fomantic.ui.text.left.aligned.container) {
                     div {
@@ -79,7 +75,7 @@ class LandingPageComponent(private val latestNewsItems : ObservableList<NewsItem
                         )
                     }
 
-                    render(LatestNewsComponent(latestNewsItems))
+                    latestNewsComponent(latestNewsItems)
 
                     h3(fomantic.ui.text).text("Support Our Work")
 
@@ -112,8 +108,6 @@ class LandingPageComponent(private val latestNewsItems : ObservableList<NewsItem
 
             }.set("background-color", "e8e8e8")
         }
-    }
-}
 
 val dummyNewsItems = ObservableList(
     listOf(

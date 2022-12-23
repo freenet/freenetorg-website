@@ -3,13 +3,15 @@ package org.freenet.website
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kweb.*
+import kweb.Kweb
+import kweb.components.Component
+import kweb.new
+import kweb.p
 import kweb.plugins.fomanticUI.fomanticUIPlugin
 import kweb.plugins.staticFiles.ResourceFolder
 import kweb.plugins.staticFiles.StaticFilesPlugin
-import kweb.state.Component
 import kweb.state.ObservableList
-import kweb.state.render
+import kweb.title
 import mu.KotlinLogging
 import org.freenet.website.db.db
 import org.freenet.website.landing.dummyNewsItems
@@ -41,12 +43,12 @@ fun main() {
 
             title().text("Freenet")
 
-            render(RabbitLogo)
+            rabbitLogoComponent()
 
-            render(ConfigureHeadComponent)
+            configureHeadComponent()
         }
         doc.body {
-            render(RoutesComponent(latestNewsItems))
+            routesComponent(latestNewsItems)
 
             p().classes("page-end-spacer")
         }
@@ -58,29 +60,24 @@ fun main() {
 
 }
 
-private object ConfigureHeadComponent : Component {
-    override fun render(elementCreator: ElementCreator<*>) {
-        with(elementCreator) {
-            element("meta") { meta ->
-                meta["content"] = "width=device-width, initial-scale=1"
-                meta["name"] = "viewport"
-            }
-            element("link") { link ->
-                link["rel"] = "stylesheet"
-                link["href"] = "/static/homepage.css"
-            }
-
-            element("script")["src"] = "https://js.stripe.com/v3/"
-            element("script")["src"] = "/static/checkout.js"
-        }
+private fun Component.configureHeadComponent() {
+    element("meta") { meta ->
+        meta["content"] = "width=device-width, initial-scale=1"
+        meta["name"] = "viewport"
+    }
+    element("link") { link ->
+        link["rel"] = "stylesheet"
+        link["href"] = "/static/homepage.css"
     }
 
+    element("script")["src"] = "https://js.stripe.com/v3/"
+    element("script")["src"] = "/static/checkout.js"
 }
 
 /*
  * These are the same for all users so we only need one globally
  */
-private val latestNewsItems : ObservableList<NewsItem> = run {
+private val latestNewsItems: ObservableList<NewsItem> = run {
     val latestNewsItems = if (db != null) {
         logger.info("Retrieving Latest News")
         retrieveNews(db)
@@ -91,15 +88,10 @@ private val latestNewsItems : ObservableList<NewsItem> = run {
     latestNewsItems
 }
 
-object RabbitLogo : Component {
-    override fun render(elementCreator: ElementCreator<*>) {
-        with(elementCreator) {
-            element("link").new { link ->
-                link["rel"] = "icon"
-                link["href"] = "/static/rabbit-logo.svg"
-                link["type"] = "image/svg+xml"
-            }
-        }
+fun Component.rabbitLogoComponent() {
+    element("link").new { link ->
+        link["rel"] = "icon"
+        link["href"] = "/static/rabbit-logo.svg"
+        link["type"] = "image/svg+xml"
     }
-
 }
