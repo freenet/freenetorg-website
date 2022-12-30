@@ -5,4 +5,3 @@ metadata:
 spec:
   redirectToHttps:
     enabled: true
-    responseCodeName: "308"
