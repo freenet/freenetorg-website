@@ -5,6 +5,7 @@ metadata:
   namespace: freenetorg
   annotations:
     cloud.google.com/backend-config: '{"default" : "backend-config-staging"}'
+    networking.gke.io/v1beta1.FrontendConfig: "frontend-config-staging"
 spec:
   selector:
     app: freenet-org-staging
