@@ -1,0 +1,12 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Freenet-Site" type="Application" factoryName="Application">
+    <envs>
+      <env name="FREENET_SITE_LOCAL_TESTING" value="true" />
+    </envs>
+    <option name="MAIN_CLASS_NAME" value="org.freenet.website.MainKt" />
+    <module name="freenetorg-website.main" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
