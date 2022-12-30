@@ -6,3 +6,4 @@ resources:
 - managed-cert.yaml
 - service.yaml
 - backend-config.yaml
+- frontend-config.yaml
