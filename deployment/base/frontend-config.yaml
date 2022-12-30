@@ -2,6 +2,7 @@ apiVersion: networking.gke.io/v1beta1
 kind: FrontendConfig
 metadata:
   name: frontend-config
+  namespace: freenetorg
 spec:
   redirectToHttps:
     enabled: true
