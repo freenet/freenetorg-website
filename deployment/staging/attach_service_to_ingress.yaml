@@ -3,8 +3,6 @@ kind: Ingress
 metadata:
   name: https-ingress
   namespace: freenetorg
-  annotations:
-    networking.gke.io/v1beta1.FrontendConfig: "frontend-config-staging"
 spec:
   defaultBackend:
     service:
