@@ -2,7 +2,9 @@ name: Clean Artifact Registry
 
 on:
   workflow_dispatch:
-
+  schedule:
+    - cron: '14 3 * * 1'
+  
 env:
   PROJECT_ID: freenet-353920
   GAR_LOCATION: us-east1
