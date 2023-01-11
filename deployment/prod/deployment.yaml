@@ -29,4 +29,9 @@ spec:
                 secretKeyRef:
                   name: google-project-name
                   key: google-project-name
+            - name: pivotal-tracker-api-token
+              valueFrom:
+                secretKeyRef:
+                  name: pivotal-api-key
+                  key: pivotal-tracker-api-token
       serviceAccountName: freenet-service-account
