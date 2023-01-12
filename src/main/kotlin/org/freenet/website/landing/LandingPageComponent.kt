@@ -6,6 +6,7 @@ import kweb.plugins.fomanticUI.fomantic
 import kweb.state.ObservableList
 import org.freenet.website.landing.news.NewsItem
 import org.freenet.website.landing.news.latestNewsComponent
+import org.freenet.website.landing.roadmap.roadmapComponent
 import java.util.*
 
 fun Component.landingPageComponent(latestNewsItems : ObservableList<NewsItem>)  {
@@ -45,6 +46,8 @@ fun Component.landingPageComponent(latestNewsItems : ObservableList<NewsItem>)  
                 """.trimMargin()
                     )
 
+                    h3(fomantic.ui.text).text("Learn More")
+
                     ul(fomantic.ui.list) {
                         li().innerHTML(
                             """
@@ -76,6 +79,8 @@ fun Component.landingPageComponent(latestNewsItems : ObservableList<NewsItem>)  
                     }
 
                     latestNewsComponent(latestNewsItems)
+
+                    roadmapComponent()
 
                     h3(fomantic.ui.text).text("Support Our Work")
 

@@ -3,9 +3,10 @@ import com.github.jengelman.gradle.plugins.shadow.transformers.ServiceFileTransf
 
 plugins {
     id("maven-publish")
-    id("org.jetbrains.kotlin.jvm") version "1.7.20"
+    id("org.jetbrains.kotlin.jvm") version "1.8.0"
     id("application")
     id("com.github.johnrengelman.shadow") version "7.1.2"
+    kotlin("plugin.serialization") version "1.8.0"
 }
 
 group = "org.freenet.website"
@@ -14,6 +15,8 @@ version = "1.2-SNAPSHOT"
 repositories {
     mavenCentral()
 }
+
+val ktor_version: String by project
 
 dependencies {
 
@@ -41,6 +44,11 @@ dependencies {
                 """.trimIndent())
         }
     }
+
+    implementation("io.ktor:ktor-client-core:$ktor_version")
+    implementation("io.ktor:ktor-client-cio:$ktor_version")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
 
     testImplementation(platform("org.junit:junit-bom:5.9.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
