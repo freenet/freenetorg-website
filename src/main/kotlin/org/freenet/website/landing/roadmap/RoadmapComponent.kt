@@ -11,7 +11,7 @@ private val formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy")
 fun Component.roadmapComponent() {
     render(PivotalTracker.releases) { releases ->
         if (releases != null) {
-            h3(fomantic.ui.text).text("Roadmap")
+            h3(fomantic.ui.text).innerHTML("<a name=\"roadmap\">Roadmap</a>")
 
             table { el ->
                 el.classes("ui very basic selectable small table")
@@ -40,7 +40,7 @@ fun Component.roadmapComponent() {
             }
 
             p().innerHTML("""
-               Our project on Pivotal Tracker gives a more detailed roadmap. 
+               Projections are generated automatically from Pivotal Tracker, which gives a more detailed roadmap. 
                Check it out <a href="https://www.pivotaltracker.com/n/projects/2477110">here</a>.
             """.trimIndent())
         }
