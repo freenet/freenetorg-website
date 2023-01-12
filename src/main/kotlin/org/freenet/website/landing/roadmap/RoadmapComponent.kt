@@ -14,7 +14,7 @@ fun Component.roadmapComponent() {
             h3(fomantic.ui.text).innerHTML("<a name=\"roadmap\">Roadmap</a>")
 
             table { el ->
-                el.classes("ui very basic selectable small table")
+                el.classes("ui very basic selectable unstackable small table")
 
                 thead {
                     tr {
