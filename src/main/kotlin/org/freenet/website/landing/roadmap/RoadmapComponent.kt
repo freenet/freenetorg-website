@@ -4,6 +4,7 @@ import kweb.*
 import kweb.components.Component
 import kweb.plugins.fomanticUI.fomantic
 import kweb.state.render
+import kweb.util.json
 import java.time.format.DateTimeFormatter
 
 private val formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy")
@@ -11,7 +12,7 @@ private val formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy")
 fun Component.roadmapComponent() {
     render(PivotalTracker.releases) { releases ->
         if (releases != null) {
-            h3(fomantic.ui.text).innerHTML("<a name=\"roadmap\">Roadmap</a>")
+            h3(fomantic.ui.text).innerHTML("<a name=\"roadmap\"></a>Roadmap")
 
             table { el ->
                 el.classes("ui very basic selectable unstackable small table")
@@ -28,6 +29,7 @@ fun Component.roadmapComponent() {
                         tr {
                             td {
                                 a { e ->
+                                    e.setAttributes("style" to "text-decoration: none;".json)
                                     e.text(release.name)
                                     e.href = release.url
                                 }
