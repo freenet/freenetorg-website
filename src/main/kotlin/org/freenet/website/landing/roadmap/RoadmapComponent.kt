@@ -42,8 +42,9 @@ fun Component.roadmapComponent() {
             }
 
             p().innerHTML("""
-               Projections are generated automatically from Pivotal Tracker, which gives a more detailed roadmap. 
-               Check it out <a href="https://www.pivotaltracker.com/n/projects/2477110">here</a>.
+               Projections are generated automatically from Pivotal Tracker. 
+               Check it out <a href="https://www.pivotaltracker.com/n/projects/2477110">here</a> to see a detailed
+               roadmap.
             """.trimIndent())
         }
     }
