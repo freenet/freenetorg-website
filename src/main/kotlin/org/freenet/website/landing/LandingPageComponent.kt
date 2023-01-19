@@ -34,19 +34,19 @@ fun Component.landingPageComponent(latestNewsItems : ObservableList<NewsItem>)  
                     )
 
                     p(fomantic.ui.text).text(
-                        """But the Internet has changed a lot since those early days, and so have people's 
-                            expectations. That's why, to meet today's challenges and expectations, we're building 
-                            a new Freenet for 2023, initially known as "Locutus". The Freenet Board of Directors 
-                            announced the decision to rename the original Freenet to "Freenet Classic" in January 2023, 
-                            and Locutus to Freenet."""
+                        """The internet has evolved significantly since its early days and so have user 
+                            expectations. To meet these current challenges, we are developing a new version of 
+                            Freenet for 2023, initially known as "Locutus." In January 2023, the 
+                            Freenet Board of Directors announced that the original Freenet will be renamed to 
+                            "Freenet Classic" and Locutus will be renamed to Freenet.""".trimIndent()
                     )
 
                     p(fomantic.ui.text).text(
-                        """This new Freenet makes it easy for developers to create and deploy 
-                    decentralized alternatives to today's centralized internet services, like instant messaging,
-                    social networking, email, and online stores. These decentralized apps will 
-                    be easy to use, scalable, and secured through cryptography. Freenet will put control back in the 
-                    hands of the user.
+                        """The new version of Freenet makes it easy for developers to create and deploy 
+                            decentralized alternatives to current centralized internet services such as instant 
+                            messaging, social networking, email, and online stores. These decentralized applications 
+                            will be user-friendly, scalable and secured through the use of cryptography. Freenet will 
+                            empower users by giving back control.
                 """.trimMargin()
                     )
 
