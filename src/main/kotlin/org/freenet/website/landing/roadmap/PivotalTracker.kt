@@ -11,7 +11,6 @@ import io.ktor.client.request.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -23,6 +22,7 @@ import mu.KotlinLogging
 import java.time.Duration
 import java.time.LocalDate
 import java.util.*
+import kotlinx.coroutines.time.delay as delay
 
 private val logger = KotlinLogging.logger { }
 
@@ -37,7 +37,7 @@ object PivotalTracker {
             logger.info { "Retrieving releases from PivotalTracker" }
             while (true) {
                 releases.value = getReleases()
-                kotlinx.coroutines.time.delay(Duration.ofHours(24))
+                delay(Duration.ofHours(4))
                 logger.info { "Refreshing releases from PivotalTracker" }
             }
         }
@@ -83,7 +83,7 @@ object PivotalTracker {
             offset += limit
 
             // Avoid hitting rate limit
-            delay(1000)
+            delay(Duration.ofSeconds(1))
         }
 
         val releases: TreeSet<ReleaseWithDate> = TreeSet()
