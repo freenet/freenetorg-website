@@ -26,22 +26,26 @@ fun Component.landingPageComponent(latestNewsItems : ObservableList<NewsItem>)  
                     )
 
                     p(fomantic.ui.text).text(
-                        """23 years ago, we created Freenet - the first distributed, 
-                    decentralized peer-to-peer network. Freenet pioneered technologies like cryptographic contracts and 
-                    small-world networks and still has an active community of users and developers today.
+                        """23 years ago, we created <a href="https://freenetproject.org/">Freenet Classic</a> - the 
+                            first distributed, decentralized peer-to-peer network.  Freenet Classic pioneered 
+                            technologies like cryptographic contracts and small-world networks and still has an active 
+                            community of users and developers today.
                 """.trimMargin()
                     )
 
                     p(fomantic.ui.text).text(
-                        """But the Internet has changed a lot since those early days, and so have people's expectations. 
-                    That's why, to meet today's challenges and expectations, we're building Locutus."""
+                        """But the Internet has changed a lot since those early days, and so have people's 
+                            expectations. That's why, to meet today's challenges and expectations, we're building 
+                            a new Freenet for 2023, initially known as "Locutus". The Freenet Board of Directors 
+                            announced the decision to rename the original Freenet to "Freenet Classic" in January 2023, 
+                            and Locutus to Freenet."""
                     )
 
                     p(fomantic.ui.text).text(
-                        """Locutus makes it easy for developers to create and deploy 
+                        """This new Freenet makes it easy for developers to create and deploy 
                     decentralized alternatives to today's centralized internet services, like instant messaging,
                     social networking, email, and online stores. These decentralized apps will 
-                    be easy to use, scalable, and secured through cryptography. Locutus will put control back in the 
+                    be easy to use, scalable, and secured through cryptography. Freenet will put control back in the 
                     hands of the user.
                 """.trimMargin()
                     )
@@ -51,13 +55,13 @@ fun Component.landingPageComponent(latestNewsItems : ObservableList<NewsItem>)  
                     ul(fomantic.ui.list) {
                         li().innerHTML(
                             """
-                For a video introduction to Locutus watch Ian's talk in July 2022 on
+                For a video introduction to our new Freenet watch Ian's talk in July 2022 on
                 <a href="https://youtu.be/x9g018OYwb4">YouTube</a>.
             """.trimIndent()
                         )
                         li().innerHTML(
-                            """The <a href="https://docs.freenet.org/" rel="nofollow">Locutus Book</a> is a technical
-                        introduction to Locutus including a <a href="https://docs.freenet.org/dev-guide.html">
+                            """The <a href="https://docs.freenet.org/" rel="nofollow">Dev Guide</a> is a technical
+                        introduction to Freehet including a <a href="https://docs.freenet.org/dev-guide.html">
                         development guide</a> on how to build and test a decentralized app"""
                         )
                         li().innerHTML(
@@ -67,13 +71,13 @@ fun Component.landingPageComponent(latestNewsItems : ObservableList<NewsItem>)  
                         )
                         li().innerHTML(
                             """
-                        Visit the Locutus <a href="https://github.com/freenet/locutus">GitHub repository</a> to 
+                        Visit the new Freenet <a href="https://github.com/freenet/locutus">GitHub repository</a> to 
                         browse our source code, and report bugs """
                         )
                         li().innerHTML(
                             """
-                        While Locutus is still in development, the original Freenet "classic" software has a vibrant 
-                        community of users and developers, learn more at <a href="https://freenetproject.org">freenetproject.org</a>
+                        While new Freenet is still in development, the original Freenet Classic software has a vibrant 
+                        community of users and developers, learn more at <a href="https://freenetproject.org">freenetproject.org</a>.
                 """
                         )
                     }
