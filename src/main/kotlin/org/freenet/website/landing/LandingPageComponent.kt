@@ -42,7 +42,7 @@ fun Component.landingPageComponent(latestNewsItems : ObservableList<NewsItem>)  
                     )
 
                     p(fomantic.ui.text).text(
-                        """The new version of Freenet makes it easy for developers to create and deploy 
+                        """ This new Freenet will make it easy for developers to create and deploy 
                             decentralized alternatives to current centralized internet services such as instant 
                             messaging, social networking, email, and online stores. These decentralized applications 
                             will be user-friendly, scalable and secured through the use of cryptography. Freenet will 
