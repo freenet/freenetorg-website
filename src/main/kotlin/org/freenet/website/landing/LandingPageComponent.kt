@@ -25,7 +25,7 @@ fun Component.landingPageComponent(latestNewsItems : ObservableList<NewsItem>)  
                     threatens freedom of speech and democracy.""".trimMargin()
                     )
 
-                    p(fomantic.ui.text).text(
+                    p(fomantic.ui.text).innerHTML(
                         """23 years ago, we created <a href="https://freenetproject.org/">Freenet Classic</a> - the 
                             first distributed, decentralized peer-to-peer network.  Freenet Classic pioneered 
                             technologies like cryptographic contracts and small-world networks and still has an active 
