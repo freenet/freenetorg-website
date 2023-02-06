@@ -15,6 +15,7 @@ name: Build and Deploy Staging to GKE
 on:
   push:
     branches: [ "staging" ]
+  workflow_dispatch:
 
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
