@@ -15,6 +15,7 @@ name: Build and Deploy Production to GKE
 on:
   push:
     branches: [ "production" ]
+  workflow_dispatch:
 
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}

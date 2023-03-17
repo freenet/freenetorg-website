@@ -1,6 +1,6 @@
 # Freenet Org Website Development Notes
 
-## Overview
+## Intro
 
 This is the repository for the Freenet project website. It is built on the [Kweb](https://github.com/kwebio/kweb-core)
 framework in Kotlin, and is hosted on [Google Cloud](https://cloud.google.com/). There is a staging site at 
