@@ -60,9 +60,7 @@ fun Component.landingPageComponent(latestNewsItems : ObservableList<NewsItem>)  
             """.trimIndent()
                         )
                         li().innerHTML(
-                            """The <a href="https://docs.freenet.org/" rel="nofollow">Dev Guide</a> is a technical
-                        introduction to Freehet including a <a href="https://docs.freenet.org/dev-guide.html">
-                        development guide</a> on how to build and test a decentralized app"""
+                            """The Freenet <a href="https://docs.freenet.org/">User Manual</a>"""
                         )
                         li().innerHTML(
                             """
