@@ -32,3 +32,8 @@ inline fun <reified T : Any> Query.getObservableCollection() : ObservableList<T>
 
     return obsList
 }
+
+inline fun <reified T : Any> Query.getFirst() : T {
+    val value = get().get()
+    return value.first().toObject()
+}

@@ -13,6 +13,10 @@ fun Component.routesComponent(
         path("") {
             landingPageComponent(latestNewsItems)
         }
+
+        path("blog") {
+            blogComponent()
+        }
     }
 
 }

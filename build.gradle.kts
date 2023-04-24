@@ -24,18 +24,18 @@ dependencies {
 
     implementation("com.google.guava:guava:31.1-jre")
 
-    implementation("io.kweb:kweb-core:1.3.5")
+    implementation("io.kweb:kweb-core:1.3.8")
 
     implementation("org.slf4j:slf4j-simple:2.0.5")
 
-    implementation("com.google.cloud:google-cloud-firestore:3.7.4")
+    implementation("com.google.cloud:google-cloud-firestore:3.9.1")
 
     implementation("com.github.mfornos:humanize-slim:1.2.2")
 
-    implementation("io.github.microutils:kotlin-logging-jvm:3.0.4")
+    implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
     implementation("com.google.cloud:google-cloud-logging-logback:0.127.10-alpha")
 
-    implementation("org.kohsuke:github-api:1.313")
+    implementation("org.kohsuke:github-api:1.314")
     constraints {
         implementation("com.fasterxml.jackson.core:jackson-databind:2.14.0-rc2") {
             because("""
@@ -49,6 +49,7 @@ dependencies {
     implementation("io.ktor:ktor-client-cio:$ktor_version")
     implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
+    implementation("org.commonmark:commonmark:0.21.0")
 
     testImplementation(platform("org.junit:junit-bom:5.9.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
