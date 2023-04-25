@@ -1,0 +1,16 @@
+{
+  "name": "keygen",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "blind-signatures": "^1.0.7",
+    "terser-webpack-plugin": "^5.3.7"
+  }
+}
