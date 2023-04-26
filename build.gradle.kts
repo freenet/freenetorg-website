@@ -52,6 +52,8 @@ dependencies {
     implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
 
+    implementation("org.bouncycastle:bcprov-jdk15on:1.70")
+
     testImplementation(platform("org.junit:junit-bom:5.9.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
 }
@@ -77,9 +79,9 @@ tasks {
 /// NPM tasks
 ////////////////
 
-tasks.register<Exec>("npmBuildKeygen") {
+tasks.register<Exec>("npmBuild") {
     // Specify the working directory for the task (the subdirectory containing the npm project)
-    workingDir("keygen")
+    workingDir("js_npm")
 
     // Define the command to run (use "cmd" and "/c" on Windows, "sh" and "-c" on Unix-based systems)
     if (System.getProperty("os.name").toLowerCase().contains("windows")) {
@@ -90,19 +92,19 @@ tasks.register<Exec>("npmBuildKeygen") {
 }
 
 // Define a custom Gradle task named "copyJsFile"
-        tasks.register<Copy>("copyKeygenToResources") {
+        tasks.register<Copy>("copyJsToResources") {
             // Specify the source file to copy
-            from("keygen/dist/fn-crypto.js")
+            from("js_npm/dist/freenetorg.js")
             // Specify the destination directory
-            into("src/main/resources/org/freenet/website/id")
+            into("src/main/resources/static")
         }
 
 // Make the "copyJsFile" task depend on the "npmBuild" task
-tasks.named("copyKeygenToResources") {
-    dependsOn("npmBuildKeygen")
+tasks.named("copyJsToResources") {
+    dependsOn("npmBuild")
 }
 
 // Make the standard Gradle "build" task depend on the "copyKeygenToResources" task
 tasks.named("build") {
-    dependsOn("copyKeygenToResources")
+    dependsOn("copyJsToResources")
 }

@@ -1,5 +1,5 @@
 {
-  "name": "keygen",
+  "name": "freenetorg",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -12,5 +12,8 @@
   "devDependencies": {
     "blind-signatures": "^1.0.7",
     "terser-webpack-plugin": "^5.3.7"
+  },
+  "dependencies": {
+    "bip39": "^3.1.0"
   }
 }

@@ -4,7 +4,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 module.exports = {
   entry: './index.js',
   output: {
-    filename: 'fn-crypto.js',
+    filename: 'freenetorg.js',
     path: path.resolve(__dirname, 'dist'),
     library: 'FNCryptoLib',
     libraryTarget: 'umd'

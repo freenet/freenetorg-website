@@ -43,6 +43,10 @@ fun main() {
 
             title().text("Freenet")
 
+            element("script") {
+                it["src"] = "/static/freenet.js"
+            }
+
             rabbitLogoComponent()
 
             configureHeadComponent()
