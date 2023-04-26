@@ -1,5 +1,7 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.github.jengelman.gradle.plugins.shadow.transformers.ServiceFileTransformer
+import org.gradle.api.tasks.Exec
+import org.gradle.api.tasks.Copy
 
 plugins {
     id("maven-publish")
@@ -24,18 +26,18 @@ dependencies {
 
     implementation("com.google.guava:guava:31.1-jre")
 
-    implementation("io.kweb:kweb-core:1.3.5")
+    implementation("io.kweb:kweb-core:1.4.0")
 
     implementation("org.slf4j:slf4j-simple:2.0.5")
 
-    implementation("com.google.cloud:google-cloud-firestore:3.7.4")
+    implementation("com.google.cloud:google-cloud-firestore:3.9.1")
 
     implementation("com.github.mfornos:humanize-slim:1.2.2")
 
-    implementation("io.github.microutils:kotlin-logging-jvm:3.0.4")
+    implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
     implementation("com.google.cloud:google-cloud-logging-logback:0.127.10-alpha")
 
-    implementation("org.kohsuke:github-api:1.313")
+    implementation("org.kohsuke:github-api:1.314")
     constraints {
         implementation("com.fasterxml.jackson.core:jackson-databind:2.14.0-rc2") {
             because("""
@@ -69,5 +71,38 @@ tasks {
             include("org.eclipse.jetty.http.HttpFieldPreEncoder")
         }
     }
+}
 
+////////////////
+/// NPM tasks
+////////////////
+
+tasks.register<Exec>("npmBuildKeygen") {
+    // Specify the working directory for the task (the subdirectory containing the npm project)
+    workingDir("keygen")
+
+    // Define the command to run (use "cmd" and "/c" on Windows, "sh" and "-c" on Unix-based systems)
+    if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+        commandLine("cmd", "/c", "npm run build")
+    } else {
+        commandLine("sh", "-c", "npm run build")
+    }
+}
+
+// Define a custom Gradle task named "copyJsFile"
+        tasks.register<Copy>("copyKeygenToResources") {
+            // Specify the source file to copy
+            from("keygen/dist/fn-crypto.js")
+            // Specify the destination directory
+            into("src/main/resources/org/freenet/website/id")
+        }
+
+// Make the "copyJsFile" task depend on the "npmBuild" task
+tasks.named("copyKeygenToResources") {
+    dependsOn("npmBuildKeygen")
+}
+
+// Make the standard Gradle "build" task depend on the "copyKeygenToResources" task
+tasks.named("build") {
+    dependsOn("copyKeygenToResources")
 }
