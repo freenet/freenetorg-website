@@ -16,7 +16,7 @@ fun Component.roadmapComponent() {
             h3().classes("title").innerHTML("<a name=\"roadmap\"></a>Roadmap")
 
             table { el ->
-                el.classes("table")
+                el.classes("table", "is-hoverable")
 
                 thead {
                     tr {

@@ -15,7 +15,7 @@ fun Component.landingPageComponent(latestNewsItems: ObservableList<NewsItem>) {
         div {
             it.classes("hero-body")
             h1().classes("title", "is-1").text("Freenet")
-            h2().classes("subtitle", "is-1").text("Declare your digital independence")
+            h2().classes("subtitle", "is-medium").text("Declare your digital independence")
         }
     }
 
@@ -56,7 +56,7 @@ fun Component.landingPageComponent(latestNewsItems: ObservableList<NewsItem>) {
                 """.trimMargin()
             )
 
-        h3().classes("title").text("Learn More")
+        h3().classes("title", "is-medium").text("Learn More")
 
         ul {
             li().innerHTML(
@@ -99,18 +99,18 @@ fun Component.landingPageComponent(latestNewsItems: ObservableList<NewsItem>) {
         )
 
         table { table ->
-            table.classes("table")
+            table.classes("table", "is-hoverable")
             tbody {
                 for (wallet in donationWallets) {
                     tr {
                         td().text(wallet.first)
-                        td {
+                        td { td ->
+                            td.classes("has-text-centered")
                             div { div ->
                                 div.classes("control", "has-icons-right")
                                 input(type = InputType.text)
-                                    .classes("input")
+                                    .classes("input", "is-fullwidth")
                                     .set("readonly", "true")
-                                    .set("size", wallet.second.length.toString())
                                     .set("value", wallet.second)
                                     .set("onclick", "this.select()")
                                 span { span ->
