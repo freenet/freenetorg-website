@@ -98,8 +98,8 @@ fun Component.landingPageComponent(latestNewsItems: ObservableList<NewsItem>) {
             Pair("Ethereum", "0x79158A5Dbd9C0737CB27411817BD2759f5b9a9Ae"),
         )
 
-        table {
-            it.classes("table")
+        table { table ->
+            table.classes("table")
             tbody {
                 for (wallet in donationWallets) {
                     tr {
@@ -113,8 +113,8 @@ fun Component.landingPageComponent(latestNewsItems: ObservableList<NewsItem>) {
                                     .set("size", wallet.second.length.toString())
                                     .set("value", wallet.second)
                                     .set("onclick", "this.select()")
-                                span {
-                                    it.classes("icon", "is-small", "is-right")
+                                span { span ->
+                                    span.classes("icon", "is-small", "is-right")
                                     i().classes("fas", "fa-copy")
                                 }
                             }

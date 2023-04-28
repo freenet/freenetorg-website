@@ -57,10 +57,8 @@ fun main() {
             configureHeadComponent()
         }
         doc.body {
-            it.classes("container", "is-fluid")
-
-            div {
-                it.classes("container")
+            section {
+                it.classes("section")
 
                 routesComponent(latestNewsItems)
 
