@@ -3,15 +3,11 @@ package org.freenet.website
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kweb.Kweb
+import kweb.*
 import kweb.components.Component
-import kweb.new
-import kweb.p
-import kweb.plugins.fomanticUI.fomanticUIPlugin
 import kweb.plugins.staticFiles.ResourceFolder
 import kweb.plugins.staticFiles.StaticFilesPlugin
 import kweb.state.ObservableList
-import kweb.title
 import mu.KotlinLogging
 import org.freenet.website.db.db
 import org.freenet.website.landing.dummyNewsItems
@@ -19,6 +15,7 @@ import org.freenet.website.landing.news.NewsItem
 import org.freenet.website.landing.news.retrieveNews
 import org.freenet.website.util.HealthCheckPlugin
 import org.freenet.website.util.recordVisit
+import java.net.URL
 
 private val logger = KotlinLogging.logger { }
 
@@ -34,7 +31,6 @@ fun main() {
         port = 8080,
         debug = isLocalTestingMode,
         plugins = listOf(
-            fomanticUIPlugin,
             HealthCheckPlugin,
             StaticFilesPlugin(ResourceFolder("static"), "/static")
         )
@@ -47,14 +43,29 @@ fun main() {
                 it["src"] = "/static/freenet.js"
             }
 
+            element("script") {
+                it["src"] = "/static/fa.js"
+            }
+
+            element("link") {
+                it["rel"] = "stylesheet"
+                it["href"] = "/static/bulma.min.css"
+            }
+
             rabbitLogoComponent()
 
             configureHeadComponent()
         }
         doc.body {
-            routesComponent(latestNewsItems)
+            it.classes("container", "is-fluid")
 
-            p().classes("page-end-spacer")
+            div {
+                it.classes("container")
+
+                routesComponent(latestNewsItems)
+
+                p().classes("page-end-spacer")
+            }
         }
 
         scope.launch {
@@ -69,10 +80,10 @@ private fun Component.configureHeadComponent() {
         meta["content"] = "width=device-width, initial-scale=1"
         meta["name"] = "viewport"
     }
-    element("link") { link ->
+  /*  element("link") { link ->
         link["rel"] = "stylesheet"
         link["href"] = "/static/homepage.css"
-    }
+    }*/
 
     element("script")["src"] = "https://js.stripe.com/v3/"
     element("script")["src"] = "/static/checkout.js"

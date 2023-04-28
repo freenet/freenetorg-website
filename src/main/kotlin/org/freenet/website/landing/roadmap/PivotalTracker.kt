@@ -5,6 +5,7 @@ package org.freenet.website.landing.roadmap
 import LocalDateSerializer
 import io.ktor.client.*
 import io.ktor.client.call.*
+import io.ktor.client.call.body
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
@@ -61,7 +62,7 @@ object PivotalTracker {
         val projectId = "2477110"
 
         // API token for authentication
-        val token : String = System.getenv("PIVOTAL_API_TOKEN") ?: error("PIVOTAL_API_TOKEN not set")
+        val token: String = System.getenv("PIVOTAL_API_TOKEN") ?: error("PIVOTAL_API_TOKEN not set")
 
         val endpoint = "https://www.pivotaltracker.com/services/v5/projects/$projectId/iterations"
 
@@ -71,9 +72,10 @@ object PivotalTracker {
 
 // Use the client to send a GET request to the endpoint with limit and offset parameters
         while (true) {
-            val paginatedIterations: List<Iteration> = client.get("$endpoint?scope=current_backlog&limit=$limit&offset=$offset") {
-                headers["X-TrackerToken"] = token
-            }.body()
+            val paginatedIterations: List<Iteration> =
+                client.get("$endpoint?scope=current_backlog&limit=$limit&offset=$offset") {
+                    headers["X-TrackerToken"] = token
+                }.body()
 
             if (paginatedIterations.isEmpty()) {
                 break
@@ -106,12 +108,12 @@ object PivotalTracker {
     data class Iteration(val number: Int, val start: LocalDate, val finish: LocalDate, val stories: List<Story>)
 
     @Serializable
-    data class Story(val id: Int, val name: String, @SerialName("story_type") val storyType: String, val url : String)
+    data class Story(val id: Int, val name: String, @SerialName("story_type") val storyType: String, val url: String)
 
     @Serializable
     data class Release(val id: Int, val name: String)
 
-    data class ReleaseWithDate(val storyId: Int, val name: String, val url : String, val date: LocalDate) :
+    data class ReleaseWithDate(val storyId: Int, val name: String, val url: String, val date: LocalDate) :
         Comparable<ReleaseWithDate> {
         override fun compareTo(other: ReleaseWithDate): Int {
             return if (date == other.date) {

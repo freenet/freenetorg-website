@@ -47,12 +47,11 @@ dependencies {
         }
     }
 
-    implementation("io.ktor:ktor-client-core:$ktor_version")
-    implementation("io.ktor:ktor-client-cio:$ktor_version")
-    implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
-
     implementation("org.bouncycastle:bcprov-jdk15on:1.70")
+    implementation("io.ktor:ktor-client-core-jvm:2.3.0")
+    implementation("io.ktor:ktor-client-cio-jvm:2.3.0")
+    implementation("io.ktor:ktor-client-content-negotiation:2.3.0")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.0")
 
     testImplementation(platform("org.junit:junit-bom:5.9.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")

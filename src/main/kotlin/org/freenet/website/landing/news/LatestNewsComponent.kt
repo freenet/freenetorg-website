@@ -4,11 +4,12 @@ import kweb.components.Component
 import kweb.div
 import kweb.h3
 import kweb.plugins.fomanticUI.fomantic
+import kweb.section
 import kweb.state.ObservableList
 import kweb.state.renderEach
 
 fun Component.latestNewsComponent(newsItems: ObservableList<NewsItem>) {
-    h3(fomantic.ui.text).text("Latest News")
+    h3().classes("title").text("Latest News")
     div(fomantic.ui.bulleted.list) {
         renderEach(newsItems) { newsItem ->
             div(fomantic.item) {

@@ -12,10 +12,11 @@ private val formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy")
 fun Component.roadmapComponent() {
     render(PivotalTracker.releases) { releases ->
         if (releases != null) {
-            h3(fomantic.ui.text).innerHTML("<a name=\"roadmap\"></a>Roadmap")
+
+            h3().classes("title").innerHTML("<a name=\"roadmap\"></a>Roadmap")
 
             table { el ->
-                el.classes("ui very basic selectable unstackable small table")
+                el.classes("table")
 
                 thead {
                     tr {
@@ -41,11 +42,13 @@ fun Component.roadmapComponent() {
                 }
             }
 
-            p().innerHTML("""
+            p().innerHTML(
+                """
                Projections are generated automatically from Pivotal Tracker. These are estimates only and may change.
                Look <a href="https://www.pivotaltracker.com/n/projects/2477110">here</a> to see a detailed
                roadmap.
-            """.trimIndent())
+            """.trimIndent()
+            )
         }
     }
 }
