@@ -26,7 +26,7 @@ dependencies {
 
     implementation("com.google.guava:guava:31.1-jre")
 
-    implementation("io.kweb:kweb-core:1.4.0")
+    implementation("io.kweb:kweb-core:1.4.1")
 
     implementation("org.slf4j:slf4j-simple:2.0.5")
 
@@ -34,7 +34,8 @@ dependencies {
 
     implementation("com.github.mfornos:humanize-slim:1.2.2")
 
-    implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
+    implementation("io.github.microutils:kotlin-logging:4.0.0-beta-2")
+
     implementation("com.google.cloud:google-cloud-logging-logback:0.127.10-alpha")
 
     implementation("org.kohsuke:github-api:1.314")

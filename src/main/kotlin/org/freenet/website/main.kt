@@ -8,12 +8,14 @@ import kweb.components.Component
 import kweb.plugins.staticFiles.ResourceFolder
 import kweb.plugins.staticFiles.StaticFilesPlugin
 import kweb.state.ObservableList
-import mu.KotlinLogging
+import kweb.state.render
+import mu.two.KotlinLogging
 import org.freenet.website.db.db
 import org.freenet.website.landing.dummyNewsItems
 import org.freenet.website.landing.news.NewsItem
 import org.freenet.website.landing.news.retrieveNews
 import org.freenet.website.util.HealthCheckPlugin
+import org.freenet.website.util.UrlToPathSegmentsRF
 import org.freenet.website.util.recordVisit
 import java.net.URL
 
@@ -60,7 +62,25 @@ fun main() {
             section {
                 it.classes("section")
 
-                routesComponent(latestNewsItems)
+                val nav = url.map(UrlToPathSegmentsRF)
+                 .map { pathSegments ->
+                     if (pathSegments.isEmpty()) {
+                         NavItem.Home
+                     } else {
+                         when (pathSegments[0]) {
+                            "news" -> NavItem.News
+                             "donate" -> NavItem.Donate
+                             else -> NavItem.Home
+                         }
+                     }
+                 }
+
+                render(nav) { activeNavItem ->
+                    when(activeNavItem) {
+                        NavItem.Home -> homeComponent(scope)
+                        NavItem.Donate -> donateComponent(scope)
+                    }
+                }
 
                 p().classes("page-end-spacer")
             }

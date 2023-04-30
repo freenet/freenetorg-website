@@ -19,7 +19,7 @@ import kotlinx.serialization.UseSerializers
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kweb.state.KVar
-import mu.KotlinLogging
+import mu.two.KotlinLogging
 import java.time.Duration
 import java.time.LocalDate
 import java.util.*

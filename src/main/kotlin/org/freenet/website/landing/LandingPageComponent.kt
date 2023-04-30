@@ -2,14 +2,17 @@ package org.freenet.website.landing
 
 import kweb.*
 import kweb.components.Component
-import kweb.plugins.fomanticUI.fomantic
 import kweb.state.ObservableList
+import org.freenet.website.NavItem
 import org.freenet.website.landing.news.NewsItem
 import org.freenet.website.landing.news.latestNewsComponent
 import org.freenet.website.landing.roadmap.roadmapComponent
+import org.freenet.website.navComponent
 import java.util.*
 
-fun Component.landingPageComponent(latestNewsItems: ObservableList<NewsItem>) {
+fun Component.homeComponent(latestNewsItems: ObservableList<NewsItem>) {
+    navComponent(kvar(NavItem.Home))
+
     section {
         it.classes("hero", "is-small")
         div {

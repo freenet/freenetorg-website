@@ -3,7 +3,7 @@ package org.freenet.website
 import kweb.components.Component
 import kweb.route
 import kweb.state.ObservableList
-import org.freenet.website.landing.landingPageComponent
+import org.freenet.website.landing.homeComponent
 import org.freenet.website.landing.news.NewsItem
 
 fun Component.routesComponent(
@@ -11,7 +11,7 @@ fun Component.routesComponent(
 ) {
     route {
         path("") {
-            landingPageComponent(latestNewsItems)
+            homeComponent(latestNewsItems)
         }
     }
 
