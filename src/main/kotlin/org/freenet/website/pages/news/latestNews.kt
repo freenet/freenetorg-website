@@ -1,14 +1,13 @@
-package org.freenet.website.landing.news
+package org.freenet.website.pages.news
 
 import kweb.components.Component
 import kweb.div
 import kweb.h3
 import kweb.plugins.fomanticUI.fomantic
-import kweb.section
 import kweb.state.ObservableList
 import kweb.state.renderEach
 
-fun Component.latestNewsComponent(newsItems: ObservableList<NewsItem>) {
+fun Component.latestNews(newsItems: ObservableList<NewsItem>) {
     h3().classes("title").text("Latest News")
     div(fomantic.ui.bulleted.list) {
         renderEach(newsItems) { newsItem ->

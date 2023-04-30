@@ -1,4 +1,4 @@
-package org.freenet.website.landing.news
+package org.freenet.website.pages.news
 
 import com.google.cloud.firestore.Firestore
 import com.google.cloud.firestore.Query

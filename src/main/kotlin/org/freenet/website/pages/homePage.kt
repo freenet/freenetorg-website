@@ -1,27 +1,16 @@
-package org.freenet.website.landing
+package org.freenet.website.pages
 
 import kweb.*
 import kweb.components.Component
 import kweb.state.ObservableList
 import org.freenet.website.NavItem
-import org.freenet.website.landing.news.NewsItem
-import org.freenet.website.landing.news.latestNewsComponent
+import org.freenet.website.pages.news.NewsItem
+import org.freenet.website.pages.news.latestNews
 import org.freenet.website.landing.roadmap.roadmapComponent
 import org.freenet.website.navComponent
 import java.util.*
 
-fun Component.homeComponent(latestNewsItems: ObservableList<NewsItem>) {
-    navComponent(kvar(NavItem.Home))
-
-    section {
-        it.classes("hero", "is-small")
-        div {
-            it.classes("hero-body")
-            h1().classes("title", "is-1").text("Freenet")
-            h2().classes("subtitle", "is-medium").text("Declare your digital independence")
-        }
-    }
-
+fun Component.homePage(latestNewsItems: ObservableList<NewsItem>) {
     section {
         it.classes("content", "section")
         p()
@@ -89,7 +78,7 @@ fun Component.homeComponent(latestNewsItems: ObservableList<NewsItem>) {
             )
         }
 
-        latestNewsComponent(latestNewsItems)
+        latestNews(latestNewsItems)
 
         roadmapComponent()
 

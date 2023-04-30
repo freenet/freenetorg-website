@@ -11,13 +11,15 @@ import kweb.state.ObservableList
 import kweb.state.render
 import mu.two.KotlinLogging
 import org.freenet.website.db.db
-import org.freenet.website.landing.dummyNewsItems
-import org.freenet.website.landing.news.NewsItem
-import org.freenet.website.landing.news.retrieveNews
+import org.freenet.website.pages.dummyNewsItems
+import org.freenet.website.pages.homePage
+import org.freenet.website.pages.identityPage
+import org.freenet.website.pages.news.NewsItem
+import org.freenet.website.pages.news.retrieveNews
+import org.freenet.website.pages.roadmapPage
 import org.freenet.website.util.HealthCheckPlugin
 import org.freenet.website.util.UrlToPathSegmentsRF
 import org.freenet.website.util.recordVisit
-import java.net.URL
 
 private val logger = KotlinLogging.logger { }
 
@@ -59,26 +61,21 @@ fun main() {
             configureHeadComponent()
         }
         doc.body {
+            pageTitle()
+
             section {
                 it.classes("section")
 
-                val nav = url.map(UrlToPathSegmentsRF)
-                 .map { pathSegments ->
-                     if (pathSegments.isEmpty()) {
-                         NavItem.Home
-                     } else {
-                         when (pathSegments[0]) {
-                            "news" -> NavItem.News
-                             "donate" -> NavItem.Donate
-                             else -> NavItem.Home
-                         }
-                     }
-                 }
+                val nav = pathToNavItem()
+
+                navComponent(nav)
 
                 render(nav) { activeNavItem ->
                     when(activeNavItem) {
-                        NavItem.Home -> homeComponent(scope)
-                        NavItem.Donate -> donateComponent(scope)
+                        NavItem.Home -> homePage(latestNewsItems)
+                        NavItem.Identity -> identityPage()
+                        NavItem.Roadmap -> roadmapPage()
+                        else -> error("Unknown NavItem: $activeNavItem")
                     }
                 }
 
@@ -93,15 +90,24 @@ fun main() {
 
 }
 
+private fun WebBrowser.pathToNavItem() = url.map(UrlToPathSegmentsRF)
+    .map { pathSegments ->
+        if (pathSegments.isEmpty()) {
+            NavItem.Home
+        } else {
+            when (pathSegments[0]) {
+                "identity" -> NavItem.Identity
+                "roadmap" -> NavItem.Roadmap
+                else -> NavItem.Home
+            }
+        }
+    }
+
 private fun Component.configureHeadComponent() {
     element("meta") { meta ->
         meta["content"] = "width=device-width, initial-scale=1"
         meta["name"] = "viewport"
     }
-  /*  element("link") { link ->
-        link["rel"] = "stylesheet"
-        link["href"] = "/static/homepage.css"
-    }*/
 
     element("script")["src"] = "https://js.stripe.com/v3/"
     element("script")["src"] = "/static/checkout.js"
