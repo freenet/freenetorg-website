@@ -1,7 +1,6 @@
-package org.freenet.website.dev
+package org.freenet.website.pages.dev
 
 import kweb.*
-import kweb.button
 import kweb.components.Component
 
 fun Component.devPage() {

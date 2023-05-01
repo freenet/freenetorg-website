@@ -17,7 +17,7 @@ import org.freenet.website.pages.homePage
 import org.freenet.website.pages.identityPage
 import org.freenet.website.pages.news.NewsItem
 import org.freenet.website.pages.news.retrieveNews
-import org.freenet.website.dev.devPage
+import org.freenet.website.pages.dev.devPage
 import org.freenet.website.util.HealthCheckPlugin
 import org.freenet.website.util.UrlToPathSegmentsRF
 import org.freenet.website.util.recordVisit

@@ -10,40 +10,36 @@ import java.util.*
 fun Component.homePage(latestNewsItems: ObservableList<NewsItem>) {
     h2().classes("title", "is-small").text("Declare your digital independence")
 
-    p()
-        .text(
-            """The internet has grown increasingly centralized over the past few decades, with a handful of 
-                    corporations now controlling most of its infrastructure. This privatization of the public square 
-                    threatens freedom of speech and democracy.""".trimMargin()
-        )
-
-    p()
-        .innerHTML(
-            """23 years ago, we created <a href="https://freenetproject.org/">Freenet Classic</a> - the 
-                            first distributed, decentralized peer-to-peer network.  Freenet Classic pioneered 
-                            technologies like cryptographic contracts and small-world networks and still has an active 
-                            community of users and developers today.
-                """.trimMargin()
-        )
-
-    p()
-        .text(
-            """The internet has evolved significantly since its early days and so have user 
-                            expectations. To meet these current challenges, we are developing a new version of 
-                            Freenet for 2023, initially known as "Locutus." In January 2023, the 
-                            Freenet Board of Directors announced that the original Freenet will be renamed to 
-                            "Freenet Classic" and Locutus will be renamed to Freenet.""".trimIndent()
-        )
-
-    p()
-        .text(
-            """ This new Freenet will make it easy for developers to create and deploy 
-                            decentralized alternatives to current centralized internet services such as instant 
-                            messaging, social networking, email, and online stores. These decentralized applications 
-                            will be user-friendly, scalable and secured through the use of cryptography. Freenet will 
-                            empower users by giving back control.
-                """.trimMargin()
-        )
+    p().innerHTML("""
+        <p>
+        The internet has grown increasingly centralized over the past few decades, with a 
+        handful of corporations now controlling most of its infrastructure. This centralization 
+        threatens freedom of speech and undermines the democratic principles of the internet as 
+        a virtual public square.
+        </p>
+        <p>
+        In 1999, we pioneered the concept of a decentralized internet with the creation of the 
+        original Freenet—a distributed, peer-to-peer network that introduced groundbreaking 
+        technologies like cryptographic contracts and small-world networks.
+        </p>
+        <p>
+        Now, we are proud to introduce Freenet 2023—a completely reimagined and redesigned 
+        version of our decentralized digital ecosystem. Freenet 2023 aims to serve as a drop-in 
+        decentralized replacement for the World Wide Web, offering a powerful and liberating 
+        alternative to the centralized internet.
+        </p>
+        <p>
+        With Freenet 2023, developers can easily create and deploy decentralized alternatives 
+        to current centralized internet services, including instant messaging, social 
+        networking, email, and online stores. These decentralized applications will be 
+        user-friendly, scalable, and secured through cryptography. By giving users control 
+        over their digital experiences, Freenet 2023 fosters a sense of digital autonomy 
+        and promotes a more equitable and inclusive online environment.
+        </p>
+        <p>
+        Embrace the freedom of a decentralized internet with Freenet 2023.
+        </p>
+    """.trimIndent())
 
     h3().classes("title", "is-medium").text("Learn More")
 
