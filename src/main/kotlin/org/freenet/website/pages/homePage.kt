@@ -24,21 +24,19 @@ fun Component.homePage(latestNewsItems: ObservableList<NewsItem>) {
         small-world networks.
         </p>
         <p>
-        Now, we are proud to introduce the new Freenet — a completely reimagined and redesigned 
-        version of our decentralized digital ecosystem. Freenet 2023 aims to serve as a drop-in 
-        decentralized replacement for the World Wide Web, offering a powerful and liberating 
-        alternative to the centralized internet.
+        We are proud to introduce a new Freenet — completely reimagined and redesigned. 
+        Freenet 2023 aims to serve as a drop-in decentralized replacement for the World Wide 
+        Web.
         </p>
         <p>
-        With Freenet 2023, developers can easily create and deploy decentralized alternatives 
+        With the new Freenet, developers can easily create and deploy decentralized alternatives 
         to current centralized internet services, including instant messaging, social 
         networking, email, and online stores. These decentralized applications will be 
-        user-friendly, scalable, and secured through cryptography. By giving users control 
-        over their digital experiences, Freenet 2023 fosters a sense of digital autonomy 
-        and promotes a more equitable and inclusive online environment.
+        user-friendly, scalable, and secured through cryptography. They won't depend on
+        the cloud or other centralized infrastructure.
         </p>
         <p>
-        Embrace the freedom of a decentralized internet with Freenet 2023.
+        Freenet will put control back in he hands of the people.
         </p>
     """.trimIndent())
 
