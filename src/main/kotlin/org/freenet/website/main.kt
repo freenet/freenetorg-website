@@ -5,6 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kweb.*
 import kweb.components.Component
+import kweb.html.HeadElement
 import kweb.plugins.staticFiles.ResourceFolder
 import kweb.plugins.staticFiles.StaticFilesPlugin
 import kweb.state.ObservableList
@@ -16,7 +17,7 @@ import org.freenet.website.pages.homePage
 import org.freenet.website.pages.identityPage
 import org.freenet.website.pages.news.NewsItem
 import org.freenet.website.pages.news.retrieveNews
-import org.freenet.website.pages.roadmapPage
+import org.freenet.website.dev.devPage
 import org.freenet.website.util.HealthCheckPlugin
 import org.freenet.website.util.UrlToPathSegmentsRF
 import org.freenet.website.util.recordVisit
@@ -41,24 +42,7 @@ fun main() {
     ) {
         doc.head {
 
-            title().text("Freenet")
-
-            element("script") {
-                it["src"] = "/static/freenet.js"
-            }
-
-            element("script") {
-                it["src"] = "/static/fa.js"
-            }
-
-            element("link") {
-                it["rel"] = "stylesheet"
-                it["href"] = "/static/bulma.min.css"
-            }
-
-            rabbitLogoComponent()
-
-            configureHeadComponent()
+            configureHead()
         }
         doc.body {
 
@@ -76,7 +60,7 @@ fun main() {
                         when (activeNavItem) {
                             NavItem.Home -> homePage(latestNewsItems)
                             NavItem.Identity -> identityPage()
-                            NavItem.Roadmap -> roadmapPage()
+                            NavItem.Development -> devPage()
                             else -> error("Unknown NavItem: $activeNavItem")
                         }
                     }
@@ -97,14 +81,49 @@ private fun WebBrowser.pathToNavItem() = url.map(UrlToPathSegmentsRF)
             NavItem.Home
         } else {
             when (pathSegments[0]) {
+                "dev" -> NavItem.Development
                 "identity" -> NavItem.Identity
-                "roadmap" -> NavItem.Roadmap
                 else -> NavItem.Home
             }
         }
     }
 
-private fun Component.configureHeadComponent() {
+typealias HeadComponent = ElementCreator<HeadElement>
+
+private fun HeadComponent.configureHead() {
+    title().text("Freenet")
+
+    element("script") {
+        it["src"] = "/static/freenet.js"
+    }
+
+    // Font Awesome - TODO: This is 1.5MB, slim it down to only what we need
+    /*
+    element("script") {
+        it["src"] = "/static/fa/all.min.js"
+    }
+     */
+
+    element("link") {
+        it["rel"] = "stylesheet"
+        it["href"] = "/static/fontawesome/css/fontawesome.min.css"
+    }
+
+    element("link") {
+        it["rel"] = "stylesheet"
+        it["href"] = "/static/fontawesome/css/solid.min.css"
+    }
+
+    element("link") {
+        it["rel"] = "stylesheet"
+        it["href"] = "/static/fontawesome/css/brands.min.css"
+    }
+
+    element("link") {
+        it["rel"] = "stylesheet"
+        it["href"] = "/static/bulma.min.css"
+    }
+
     element("meta") { meta ->
         meta["content"] = "width=device-width, initial-scale=1"
         meta["name"] = "viewport"

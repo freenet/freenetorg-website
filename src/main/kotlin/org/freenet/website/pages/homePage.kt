@@ -3,16 +3,12 @@ package org.freenet.website.pages
 import kweb.*
 import kweb.components.Component
 import kweb.state.ObservableList
-import org.freenet.website.NavItem
 import org.freenet.website.pages.news.NewsItem
 import org.freenet.website.pages.news.latestNews
-import org.freenet.website.landing.roadmap.roadmapComponent
-import org.freenet.website.navComponent
-import org.freenet.website.pageTitle
 import java.util.*
 
 fun Component.homePage(latestNewsItems: ObservableList<NewsItem>) {
-    pageTitle()
+    h2().classes("title", "is-small").text("Declare your digital independence")
 
     p()
         .text(

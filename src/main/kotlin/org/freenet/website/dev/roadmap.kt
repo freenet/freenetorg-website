@@ -1,15 +1,14 @@
-package org.freenet.website.landing.roadmap
+package org.freenet.website.dev
 
 import kweb.*
 import kweb.components.Component
-import kweb.plugins.fomanticUI.fomantic
 import kweb.state.render
 import kweb.util.json
 import java.time.format.DateTimeFormatter
 
 private val formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy")
 
-fun Component.roadmapComponent() {
+fun Component.roadmap() {
     render(PivotalTracker.releases) { releases ->
         h3().classes("title").text("Roadmap")
         if (releases != null) {
@@ -48,9 +47,9 @@ fun Component.roadmapComponent() {
             """.trimIndent()
             )
         } else {
-            h2 { h2 ->
-                h2.classes("subtitle")
-                h2.text("Loading...")
+            h3 { h3 ->
+                h3.classes("subtitle")
+                h3.text("Loading...")
             }
         }
     }

@@ -1,6 +1,6 @@
 @file:UseSerializers(LocalDateSerializer::class)
 
-package org.freenet.website.landing.roadmap
+package org.freenet.website.dev
 
 import LocalDateSerializer
 import io.ktor.client.*
