@@ -11,8 +11,7 @@ import org.freenet.website.navComponent
 import java.util.*
 
 fun Component.homePage(latestNewsItems: ObservableList<NewsItem>) {
-    section {
-        it.classes("content", "section")
+
         p()
             .text(
                 """The internet has grown increasingly centralized over the past few decades, with a handful of 
@@ -80,8 +79,6 @@ fun Component.homePage(latestNewsItems: ObservableList<NewsItem>) {
 
         latestNews(latestNewsItems)
 
-        roadmapComponent()
-
         h3().text("Support Our Work")
 
         val donationWallets = listOf(
@@ -116,7 +113,6 @@ fun Component.homePage(latestNewsItems: ObservableList<NewsItem>) {
             }
         }
     }
-}
 
 val dummyNewsItems = ObservableList(
     listOf(

@@ -7,7 +7,7 @@ import kweb.state.KVar
 
 fun Component.navComponent(activeItem : KVal<NavItem>) {
     div { div ->
-        div.classes("tabs", "is-centered")
+        div.classes("tabs")
         ul {
             for (ni in NavItem.values()) {
                 li { li ->

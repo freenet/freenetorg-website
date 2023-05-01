@@ -61,25 +61,28 @@ fun main() {
             configureHeadComponent()
         }
         doc.body {
-            pageTitle()
 
             section {
-                it.classes("section")
+                it.classes("section", "content")
 
-                val nav = pathToNavItem()
+                div { div ->
+                    div.classes("container")
 
-                navComponent(nav)
+                    pageTitle()
 
-                render(nav) { activeNavItem ->
-                    when(activeNavItem) {
-                        NavItem.Home -> homePage(latestNewsItems)
-                        NavItem.Identity -> identityPage()
-                        NavItem.Roadmap -> roadmapPage()
-                        else -> error("Unknown NavItem: $activeNavItem")
+                    val nav = pathToNavItem()
+
+                    navComponent(nav)
+
+                    render(nav) { activeNavItem ->
+                        when (activeNavItem) {
+                            NavItem.Home -> homePage(latestNewsItems)
+                            NavItem.Identity -> identityPage()
+                            NavItem.Roadmap -> roadmapPage()
+                            else -> error("Unknown NavItem: $activeNavItem")
+                        }
                     }
                 }
-
-                p().classes("page-end-spacer")
             }
         }
 
