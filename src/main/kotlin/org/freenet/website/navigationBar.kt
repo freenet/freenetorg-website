@@ -13,7 +13,17 @@ fun Component.navComponent(activeItem : KVal<NavItem>) {
                 li { li ->
                     li.classes(activeItem.map { if (it == ni) "is-active" else "" })
                     a(preventDefault = true) {
-                        it.text(ni.asText)
+                        if (ni.icon != null) {
+                            span { span ->
+                                span.classes("icon", "is-small")
+                                i { i ->
+                                    i.classes("fas", "fa-${ni.icon}")
+                                }
+                            }
+                            span().text(ni.asText)
+                        } else {
+                            it.text(ni.asText)
+                        }
                         it.href = ni.link
                     }
                 }
@@ -22,8 +32,8 @@ fun Component.navComponent(activeItem : KVal<NavItem>) {
     }
 }
 
-enum class NavItem(val asText : String, val link : String) {
-    Home("Freenet", "/"),
+enum class NavItem(val asText : String, val link : String, val icon : String? = null) {
+    Home("Freenet", "/", "dove"),
     Documentation("Documentation", "https://docs.freenet.org/"),
     Development("Github", "https://github.com/freenet/locutus"),
     Roadmap("Roadmap", "/roadmap"),
