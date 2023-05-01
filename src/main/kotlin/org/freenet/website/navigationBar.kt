@@ -23,7 +23,7 @@ fun Component.navComponent(activeItem : KVal<NavItem>) {
 }
 
 enum class NavItem(val asText : String, val link : String) {
-    Home("Home", "/"),
+    Home("Freenet", "/"),
     Documentation("Documentation", "https://docs.freenet.org/"),
     Development("Github", "https://github.com/freenet/locutus"),
     Roadmap("Roadmap", "/roadmap"),

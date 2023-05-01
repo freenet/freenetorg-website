@@ -68,8 +68,6 @@ fun main() {
                 div { div ->
                     div.classes("container")
 
-                    pageTitle()
-
                     val nav = pathToNavItem()
 
                     navComponent(nav)

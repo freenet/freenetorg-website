@@ -11,10 +11,8 @@ private val formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy")
 
 fun Component.roadmapComponent() {
     render(PivotalTracker.releases) { releases ->
+        h3().classes("title").text("Roadmap")
         if (releases != null) {
-
-            h3().classes("title").innerHTML("<a name=\"roadmap\"></a>Roadmap")
-
             table { el ->
                 el.classes("table", "is-hoverable")
 
@@ -49,6 +47,11 @@ fun Component.roadmapComponent() {
                roadmap.
             """.trimIndent()
             )
+        } else {
+            h2 { h2 ->
+                h2.classes("subtitle")
+                h2.text("Loading...")
+            }
         }
     }
 }
