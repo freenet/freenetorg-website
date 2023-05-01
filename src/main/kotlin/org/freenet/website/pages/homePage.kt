@@ -14,16 +14,17 @@ fun Component.homePage(latestNewsItems: ObservableList<NewsItem>) {
         <p>
         The internet has grown increasingly centralized over the past few decades, with a 
         handful of corporations now controlling most of its infrastructure. This centralization 
-        threatens freedom of speech and undermines the democratic principles of the internet as 
-        a virtual public square.
+        threatens freedom of speech and undermines democratic principles. The public square
+        is now privately owned.
         </p>
         <p>
         In 1999, we pioneered the concept of a decentralized internet with the creation of the 
-        original Freenet—a distributed, peer-to-peer network that introduced groundbreaking 
-        technologies like cryptographic contracts and small-world networks.
+        <a href="/static/freenet-2001.pdf">original Freenet</a>—a distributed, peer-to-peer 
+        network that introduced groundbreaking technologies like cryptographic contracts and 
+        small-world networks.
         </p>
         <p>
-        Now, we are proud to introduce Freenet 2023—a completely reimagined and redesigned 
+        Now, we are proud to introduce the new Freenet — a completely reimagined and redesigned 
         version of our decentralized digital ecosystem. Freenet 2023 aims to serve as a drop-in 
         decentralized replacement for the World Wide Web, offering a powerful and liberating 
         alternative to the centralized internet.
