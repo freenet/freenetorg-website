@@ -37,5 +37,5 @@ enum class NavItem(val asText : String, val link : String, val icon : String? = 
     Documentation("Learn", "https://docs.freenet.org/", "book"),
     Development("Dev", "https://github.com/freenet/locutus", "code"),
     Roadmap("Roadmap", "/roadmap", "map"),
-    Identity("Claim Identity", "/identity", "key"),
+    Identity("Reserve Identity", "/identity", "key"),
 }
