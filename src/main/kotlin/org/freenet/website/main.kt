@@ -12,6 +12,7 @@ import kweb.state.ObservableList
 import kweb.state.render
 import mu.two.KotlinLogging
 import org.freenet.website.db.db
+import org.freenet.website.pages.dev.PivotalTracker
 import org.freenet.website.pages.dummyNewsItems
 import org.freenet.website.pages.homePage
 import org.freenet.website.pages.identityPage
@@ -29,6 +30,9 @@ val isLocalTestingMode: Boolean = System.getenv("FREENET_SITE_LOCAL_TESTING").eq
 fun main() {
 
     val scope = CoroutineScope(Dispatchers.IO)
+
+    // Initial retrieval of PT releases to avoid a delay the first time it's used
+    PivotalTracker.releases
 
     logger.info("Starting Freenet Site, isLocalTestingMode: $isLocalTestingMode")
 

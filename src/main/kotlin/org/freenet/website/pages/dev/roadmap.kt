@@ -12,6 +12,13 @@ fun Component.roadmap() {
     render(PivotalTracker.releases) { releases ->
         h3().classes("title").text("Roadmap")
         if (releases != null) {
+            p().innerHTML(
+                """
+               Projected milestones completion dates, these are estimates only and will change in realtime. 
+               See the <a href="https://www.pivotaltracker.com/n/projects/2477110">project</a> in Pivotal
+               Tracker for details.
+            """.trimIndent()
+            )
             table { el ->
                 el.classes("table", "is-hoverable")
 
@@ -39,13 +46,6 @@ fun Component.roadmap() {
                 }
             }
 
-            p().innerHTML(
-                """
-               Projections are generated automatically from Pivotal Tracker. These are estimates only and may change.
-               Look <a href="https://www.pivotaltracker.com/n/projects/2477110">here</a> to see a detailed
-               roadmap.
-            """.trimIndent()
-            )
         } else {
             h3 { h3 ->
                 h3.classes("subtitle")
