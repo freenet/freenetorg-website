@@ -10,34 +10,37 @@ import java.util.*
 fun Component.homePage(latestNewsItems: ObservableList<NewsItem>) {
     h2().classes("title", "is-small").text("Declare your digital independence")
 
+    val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+
     p().innerHTML("""
         <p>
-        The internet has grown increasingly centralized over the past few decades, with a 
-        handful of corporations now controlling most of its infrastructure. This centralization 
-        threatens freedom of speech and undermines democratic principles. The public square
-        is now privately owned.
+        The internet's growing centralization endangers free speech and democracy, 
+        as a handful of corporations dominate its infrastructure. In $currentYear, 
+        the public square is in private hands.
         </p>
         <p>
-        In 1999, we pioneered the concept of a decentralized internet with the creation of the 
-        <a href="/static/freenet-2001.pdf">original Freenet</a>—a distributed, peer-to-peer 
-        network that introduced groundbreaking technologies like cryptographic contracts and 
+        In 1999, we pioneered with the <a href="/static/freenet-original.pdf">original 
+        Freenet</a>—the first scalable, decentralized, peer-to-peer network that 
+        introduced groundbreaking concepts like cryptographic contracts and 
         small-world networks.
         </p>
         <p>
-        We are proud to introduce a new Freenet — completely reimagined and redesigned. 
-        Freenet 2023 aims to serve as a drop-in decentralized replacement for the World Wide 
-        Web.
+        Continuing this legacy, we're thrilled to introduce Freenet $currentYear—a 
+        decentralized platform to replace the World Wide Web. While building on the 
+        original, Freenet $currentYear emphasizes user-friendliness, real-time 
+        communication, and interoperability.
         </p>
         <p>
-        With the new Freenet, developers can easily create and deploy decentralized alternatives 
-        to current centralized internet services, including instant messaging, social 
-        networking, email, and online stores. These decentralized applications will be 
-        user-friendly, scalable, and secured through cryptography. They won't depend on
-        the cloud or other centralized infrastructure.
+        Freenet $currentYear empowers developers to build decentralized alternatives 
+        to centralized services, including messaging, social media, email, and 
+        e-commerce. Our decentralized applications (dApps) are user-friendly, 
+        scalable, interoperable, and secured with cryptography—liberating you 
+        from centralized control.
         </p>
         <p>
-        Freenet will put control back in he hands of the people.
+        Are you rmit eady to experience a truly open and decentralized web?
         </p>
+
     """.trimIndent())
 
     h3().classes("title", "is-medium").text("Learn More")
