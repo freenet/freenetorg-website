@@ -15,11 +15,11 @@ fun Component.homePage(latestNewsItems: ObservableList<NewsItem>) {
     p().innerHTML("""
         <p>
         The internet's growing centralization endangers free speech and democracy, 
-        as a handful of corporations dominate its infrastructure. In $currentYear, 
-        the public square is in private hands.
+        as a handful of corporations now dominate its infrastructure. In $currentYear, 
+        the public square is privately owned.
         </p>
         <p>
-        In 1999, we pioneered with the <a href="/static/freenet-original.pdf">original 
+        In 1999, we pioneered the <a href="/static/freenet-original.pdf">original 
         Freenet</a>—the first scalable, decentralized, peer-to-peer network that 
         introduced groundbreaking concepts like cryptographic contracts and 
         small-world networks.
