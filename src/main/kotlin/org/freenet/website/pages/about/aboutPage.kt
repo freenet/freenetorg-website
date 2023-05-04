@@ -28,8 +28,8 @@ who are interested in freedom of speech online.
 fun Component.aboutPage() {
     h1().text("About Freenet")
 
-    div { div ->
-        div.classes("container")
+    section { div ->
+        div.classes("section")
         h3 { h3 ->
             h3.classes("title")
             h3.text("Contents")
