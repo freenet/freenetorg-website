@@ -52,7 +52,7 @@ fun Component.aboutPage() {
                 li {
                     a { a ->
                         a["href"] = "#p2p_network"
-                        a.text(" P2P Network")
+                        a.text(" Freenet Network Topology")
                     }
                 }
             }
