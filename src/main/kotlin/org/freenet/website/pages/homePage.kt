@@ -41,9 +41,6 @@ fun Component.homePage(latestNewsItems: ObservableList<NewsItem>) {
         scalable, interoperable, and secured with cryptography—liberating you 
         from centralized control.
         </p>
-        <p>
-        Are you rmit eady to experience a truly open and decentralized web?
-        </p>
 
     """.trimIndent())
 
