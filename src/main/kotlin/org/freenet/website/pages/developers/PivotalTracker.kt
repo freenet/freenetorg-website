@@ -1,6 +1,6 @@
 @file:UseSerializers(LocalDateSerializer::class)
 
-package org.freenet.website.pages.dev
+package org.freenet.website.pages.developers
 
 import LocalDateSerializer
 import io.ktor.client.*

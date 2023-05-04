@@ -38,6 +38,8 @@ dependencies {
 
     implementation("com.google.cloud:google-cloud-logging-logback:0.127.10-alpha")
 
+    implementation("org.jsoup:jsoup:1.16.1")
+
     implementation("org.kohsuke:github-api:1.314")
     constraints {
         implementation("com.fasterxml.jackson.core:jackson-databind:2.14.0-rc2") {

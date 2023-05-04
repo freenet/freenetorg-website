@@ -1,4 +1,4 @@
-package org.freenet.website.pages.id
+package org.freenet.website.pages.joinUs
 import org.bouncycastle.crypto.engines.RSAEngine
 import org.bouncycastle.crypto.params.RSAKeyParameters
 import java.math.BigInteger

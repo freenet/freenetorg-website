@@ -7,6 +7,10 @@ import org.freenet.website.pages.news.NewsItem
 import org.freenet.website.pages.news.latestNews
 import java.util.*
 
+/**
+ * The main landing page, which provides an overview of Freenet, its mission,
+ * and its features.
+ */
 fun Component.homePage(latestNewsItems: ObservableList<NewsItem>) {
     h2().classes("title", "is-small").text("Declare your digital independence")
 

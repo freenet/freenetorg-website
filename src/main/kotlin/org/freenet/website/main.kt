@@ -1,5 +1,6 @@
 package org.freenet.website
 
+import org.freenet.website.pages.about.aboutPage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -12,16 +13,17 @@ import kweb.state.ObservableList
 import kweb.state.render
 import mu.two.KotlinLogging
 import org.freenet.website.db.db
-import org.freenet.website.pages.dev.PivotalTracker
+import org.freenet.website.pages.developers.PivotalTracker
 import org.freenet.website.pages.dummyNewsItems
 import org.freenet.website.pages.homePage
-import org.freenet.website.pages.identityPage
+import org.freenet.website.pages.joinUs.joinUsPage
 import org.freenet.website.pages.news.NewsItem
 import org.freenet.website.pages.news.retrieveNews
-import org.freenet.website.pages.dev.devPage
+import org.freenet.website.pages.developers.developersPage
 import org.freenet.website.util.HealthCheckPlugin
 import org.freenet.website.util.UrlToPathSegmentsRF
 import org.freenet.website.util.recordVisit
+import org.freenet.website.pages.resources.resourcesPage
 
 private val logger = KotlinLogging.logger { }
 
@@ -62,9 +64,11 @@ fun main() {
 
                     render(nav) { activeNavItem ->
                         when (activeNavItem) {
+                            NavItem.About -> aboutPage()
                             NavItem.Home -> homePage(latestNewsItems)
-                            NavItem.Identity -> identityPage()
-                            NavItem.Development -> devPage()
+                            NavItem.Developers -> developersPage()
+                            NavItem.JoinUs -> joinUsPage()
+                            NavItem.Resources -> resourcesPage()
                             else -> error("Unknown NavItem: $activeNavItem")
                         }
                     }
@@ -85,8 +89,10 @@ private fun WebBrowser.pathToNavItem() = url.map(UrlToPathSegmentsRF)
             NavItem.Home
         } else {
             when (pathSegments[0]) {
-                "dev" -> NavItem.Development
-                "identity" -> NavItem.Identity
+                "about" -> NavItem.About
+                "dev" -> NavItem.Developers
+                "join" -> NavItem.JoinUs
+                "resources" -> NavItem.Resources
                 else -> NavItem.Home
             }
         }

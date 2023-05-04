@@ -32,8 +32,9 @@ fun Component.navComponent(activeItem : KVal<NavItem>) {
 }
 
 enum class NavItem(val html : String, val link : String, val icon : String? = null) {
-    Home("<b>Freenet</b>", "/", "dove"),
-    Documentation("Learn", "https://docs.freenet.org/", "book"),
-    Development("Dev", "/dev", "code"),
-    Identity("Reserve Identity", "/identity", "key"),
+    Home("<b>Freenet</b>", "/", "home"),
+    About("About", "/about", "info-circle"),
+    Developers("Developers", "/dev", "code"),
+    JoinUs("Join Us", "/join", "users"),
+    Resources("Resources", "/resources", "book"),
 }
