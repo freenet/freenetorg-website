@@ -1,24 +1,29 @@
 package org.freenet.website
 
+import org.freenet.website.pages.about.aboutPage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kweb.Kweb
+import kweb.*
 import kweb.components.Component
-import kweb.new
-import kweb.p
-import kweb.plugins.fomanticUI.fomanticUIPlugin
+import kweb.html.HeadElement
 import kweb.plugins.staticFiles.ResourceFolder
 import kweb.plugins.staticFiles.StaticFilesPlugin
 import kweb.state.ObservableList
-import kweb.title
-import mu.KotlinLogging
+import kweb.state.render
+import mu.two.KotlinLogging
 import org.freenet.website.db.db
-import org.freenet.website.landing.dummyNewsItems
-import org.freenet.website.landing.news.NewsItem
-import org.freenet.website.landing.news.retrieveNews
+import org.freenet.website.pages.developers.PivotalTracker
+import org.freenet.website.pages.dummyNewsItems
+import org.freenet.website.pages.homePage
+import org.freenet.website.pages.joinUs.joinUsPage
+import org.freenet.website.pages.news.NewsItem
+import org.freenet.website.pages.news.retrieveNews
+import org.freenet.website.pages.developers.developersPage
 import org.freenet.website.util.HealthCheckPlugin
+import org.freenet.website.util.UrlToPathSegmentsRF
 import org.freenet.website.util.recordVisit
+import org.freenet.website.pages.resources.resourcesPage
 
 private val logger = KotlinLogging.logger { }
 
@@ -28,29 +33,47 @@ fun main() {
 
     val scope = CoroutineScope(Dispatchers.IO)
 
+    // Initial retrieval of PT releases to avoid a delay the first time it's used
+    PivotalTracker.releases
+
     logger.info("Starting Freenet Site, isLocalTestingMode: $isLocalTestingMode")
 
     Kweb(
         port = 8080,
         debug = isLocalTestingMode,
         plugins = listOf(
-            fomanticUIPlugin,
             HealthCheckPlugin,
             StaticFilesPlugin(ResourceFolder("static"), "/static")
         )
     ) {
         doc.head {
 
-            title().text("Freenet")
-
-            rabbitLogoComponent()
-
-            configureHeadComponent()
+            configureHead()
         }
         doc.body {
-            routesComponent(latestNewsItems)
 
-            p().classes("page-end-spacer")
+            section {
+                it.classes("section", "content")
+
+                div { div ->
+                    div.classes("container")
+
+                    val nav = pathToNavItem()
+
+                    navComponent(nav)
+
+                    render(nav) { activeNavItem ->
+                        when (activeNavItem) {
+                            NavItem.About -> aboutPage()
+                            NavItem.Home -> homePage(latestNewsItems)
+                            NavItem.Developers -> developersPage()
+                            NavItem.JoinUs -> joinUsPage()
+                            NavItem.Resources -> resourcesPage()
+                            else -> error("Unknown NavItem: $activeNavItem")
+                        }
+                    }
+                }
+            }
         }
 
         scope.launch {
@@ -60,14 +83,60 @@ fun main() {
 
 }
 
-private fun Component.configureHeadComponent() {
+private fun WebBrowser.pathToNavItem() = url.map(UrlToPathSegmentsRF)
+    .map { pathSegments ->
+        if (pathSegments.isEmpty()) {
+            NavItem.Home
+        } else {
+            when (pathSegments[0]) {
+                "about" -> NavItem.About
+                "dev" -> NavItem.Developers
+                "join" -> NavItem.JoinUs
+                "resources" -> NavItem.Resources
+                else -> NavItem.Home
+            }
+        }
+    }
+
+typealias HeadComponent = ElementCreator<HeadElement>
+
+private fun HeadComponent.configureHead() {
+    title().text("Freenet")
+
+    element("script") {
+        it["src"] = "/static/freenet.js"
+    }
+
+    // Font Awesome - TODO: This is 1.5MB, slim it down to only what we need
+    /*
+    element("script") {
+        it["src"] = "/static/fa/all.min.js"
+    }
+     */
+
+    element("link") {
+        it["rel"] = "stylesheet"
+        it["href"] = "/static/fontawesome/css/fontawesome.min.css"
+    }
+
+    element("link") {
+        it["rel"] = "stylesheet"
+        it["href"] = "/static/fontawesome/css/solid.min.css"
+    }
+
+    element("link") {
+        it["rel"] = "stylesheet"
+        it["href"] = "/static/fontawesome/css/brands.min.css"
+    }
+
+    element("link") {
+        it["rel"] = "stylesheet"
+        it["href"] = "/static/bulma.min.css"
+    }
+
     element("meta") { meta ->
         meta["content"] = "width=device-width, initial-scale=1"
         meta["name"] = "viewport"
-    }
-    element("link") { link ->
-        link["rel"] = "stylesheet"
-        link["href"] = "/static/homepage.css"
     }
 
     element("script")["src"] = "https://js.stripe.com/v3/"
