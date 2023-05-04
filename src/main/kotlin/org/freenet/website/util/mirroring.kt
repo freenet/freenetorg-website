@@ -36,6 +36,14 @@ private fun cleanUserManualPage(doc : Document) {
         val absoluteUrl = anchor.absUrl("href")
         anchor.attr("href", absoluteUrl)
     }
+
+    // Downgrade headers
+    doc.select("h2").forEach { h2 ->
+        h2.tagName("h3")
+    }
+
+    // Upgrade first header
+    doc.select("h3").first()?.tagName("h2")
 }
 
 private fun updateHeaderText(document: Document, headingTag: String) {
