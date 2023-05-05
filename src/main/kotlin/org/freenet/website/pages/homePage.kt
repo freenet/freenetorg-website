@@ -35,8 +35,9 @@ networks, and was analogous to a shared hard disk.
 <p>
 Building on this legacy, we present Freenet $currentYear— a drop-in decentralized
 replacement for the world wide web. Freenet $currentYear is analogous to a global 
-shared computer, a platform for sophisticated decentralized software systems, 
-but which looks just like the web users are already familiar with.
+shared computer, a platform for sophisticated decentralized software systems. Designed
+for simplicity and accessibility, Freenet $currentYear can be used seamlessly through 
+your web browser, providing an experience that feels just like using the traditional web.
 </p>
 <p>
 Freenet $currentYear allows developers to create decentralized alternatives to 
