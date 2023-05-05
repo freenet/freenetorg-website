@@ -19,27 +19,31 @@ fun Component.homePage(latestNewsItems: ObservableList<NewsItem>) {
     p().innerHTML("""
 
 <p>
-The increasing centralization of the internet poses a threat to free speech and  
-democracy. In $currentYear, a few corporations control most internet services
-and infrastructure, effectively privatizing the public square.
+The increasing centralization of the internet poses a fundamental threat to individual
+freedom. In $currentYear, a few corporations control most internet services
+and infrastructure. These corporations wield immense power over most of us with little 
+oversight, enabling them to censor content, suppress dissent, and exclude 
+users from essential platforms—all with profound implications for 
+individuals and democratic values. We need a solution urgently.
 </p>
 <p>
-In 1999, we blazed a trail with the <a href="/static/freenet-original.pdf">original 
+In 1999, we created the <a href="/static/freenet-original.pdf">original 
 Freenet</a>—the world's first scalable, decentralized, peer-to-peer network. 
 It introduced revolutionary ideas such as cryptographic contracts and small-world 
-networks, functioning like a shared hard disk.
+networks, and was analogous to a shared hard disk.
 </p>
 <p>
-Building on this legacy, we present Freenet $currentYear—a comprehensive redesign 
-and a decentralized platform to revolutionize the World Wide Web. Freenet 
-$currentYear serves as a global shared computer, a platform for advanced 
-completely decentralized software systems.
+Building on this legacy, we present Freenet $currentYear— a drop-in decentralized
+replacement for the world wide web. Freenet $currentYear is analogous to a global 
+shared computer, a platform for sophisticated decentralized software systems
+that interoperate seamlessly, yet from the user's point of view it looks like the
+world wide web they're familiar with.
 </p>
 <p>
 Freenet $currentYear allows developers to create decentralized alternatives to 
 centralized services, including messaging, social media, email, and e-commerce. 
 Our user-friendly decentralized applications (dApps) are scalable, interoperable, 
-and secured with cryptography—liberating us all from centralized control.
+and secured with cryptography.
 </p>
 
 
