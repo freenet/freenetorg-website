@@ -24,7 +24,7 @@ freedom. In $currentYear, a few corporations control most internet services
 and infrastructure. These corporations wield immense power over most of us with little 
 accountability, enabling them to censor content, suppress dissent, and exclude 
 users from services they depend on —all with profound implications for 
-democratic values. We need a solution urgently.
+democracy. We need a solution urgently.
 </p>
 <p>
 In 1999, we created the <a href="/static/freenet-original.pdf">original 
