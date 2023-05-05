@@ -14,7 +14,7 @@ fun retrieveNews(db: Firestore): ObservableList<NewsItem> {
 
 }
 
-data class NewsItem(val date: Date, val description : String, val important : Boolean) {
+open class NewsItem(val date: Date, val description : String, val important : Boolean) {
     // Required for Firestore toObject
     @Suppress("unused")
     constructor() : this(Date(), "", false)

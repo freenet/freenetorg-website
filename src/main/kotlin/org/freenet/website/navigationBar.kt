@@ -36,5 +36,5 @@ enum class NavItem(val html : String, val link : String, val icon : String? = nu
     About("About", "/about", "info-circle"),
     Developers("Developers", "/dev", "code"),
     JoinUs("Join Us", "/join", "users"),
-    Resources("Resources", "/resources", "book"),
+    News("News", "/news", "book"),
 }
