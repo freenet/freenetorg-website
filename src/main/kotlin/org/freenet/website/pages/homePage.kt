@@ -19,7 +19,7 @@ fun Component.homePage(latestNewsItems: ObservableList<NewsItem>) {
     p().innerHTML("""
 
 <p>
-The increasing centralization of the internet poses a fundamental threat to individual
+The centralization of the internet poses a fundamental threat to individual
 freedom. In $currentYear, a few corporations control most internet services
 and infrastructure. These corporations wield immense power over most of us with little 
 accountability, enabling them to censor content, suppress dissent, and exclude 
