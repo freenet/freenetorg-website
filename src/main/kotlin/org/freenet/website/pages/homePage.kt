@@ -30,9 +30,7 @@ fun Component.homePage(latestNewsItems: ObservableList<NewsItem>) {
         </p>
         <p>
         Continuing this legacy, we're thrilled to introduce Freenet $currentYear—a 
-        decentralized platform to replace the World Wide Web. While building on the 
-        original, Freenet $currentYear emphasizes user-friendliness, real-time 
-        communication, and interoperability.
+        decentralized platform to replace the World Wide Web.
         </p>
         <p>
         Freenet $currentYear empowers developers to build decentralized alternatives 

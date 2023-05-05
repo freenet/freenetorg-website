@@ -1,4 +1,4 @@
-package org.freenet.website.pages.resources
+package org.freenet.website.pages.news
 
 import kweb.components.Component
 import kweb.section
@@ -10,7 +10,7 @@ import kweb.section
  * the YouTube video of Ian's talk and the original Freenet Classic
  * website.
  */
-fun Component.resourcesPage() {
+fun Component.newsPage() {
     section { section ->
         section.classes("section")
         section.innerHTML("""

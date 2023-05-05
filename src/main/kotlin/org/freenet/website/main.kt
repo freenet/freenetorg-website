@@ -20,10 +20,10 @@ import org.freenet.website.pages.joinUs.joinUsPage
 import org.freenet.website.pages.news.NewsItem
 import org.freenet.website.pages.news.retrieveNews
 import org.freenet.website.pages.developers.developersPage
+import org.freenet.website.pages.news.newsPage
 import org.freenet.website.util.HealthCheckPlugin
 import org.freenet.website.util.UrlToPathSegmentsRF
 import org.freenet.website.util.recordVisit
-import org.freenet.website.pages.resources.resourcesPage
 
 private val logger = KotlinLogging.logger { }
 
@@ -68,7 +68,7 @@ fun main() {
                             NavItem.Home -> homePage(latestNewsItems)
                             NavItem.Developers -> developersPage()
                             NavItem.JoinUs -> joinUsPage()
-                            NavItem.Resources -> resourcesPage()
+                            NavItem.News -> newsPage()
                             else -> error("Unknown NavItem: $activeNavItem")
                         }
                     }
@@ -92,7 +92,7 @@ private fun WebBrowser.pathToNavItem() = url.map(UrlToPathSegmentsRF)
                 "about" -> NavItem.About
                 "dev" -> NavItem.Developers
                 "join" -> NavItem.JoinUs
-                "resources" -> NavItem.Resources
+                "resources" -> NavItem.News
                 else -> NavItem.Home
             }
         }
