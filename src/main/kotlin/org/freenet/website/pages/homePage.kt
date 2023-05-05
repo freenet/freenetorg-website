@@ -5,6 +5,7 @@ import kweb.components.Component
 import kweb.state.ObservableList
 import org.freenet.website.pages.news.NewsItem
 import org.freenet.website.pages.news.latestNews
+import org.freenet.website.util.iconButton
 import java.util.*
 
 /**
@@ -12,11 +13,12 @@ import java.util.*
  * and its features.
  */
 fun Component.homePage(latestNewsItems: ObservableList<NewsItem>) {
-    h2().classes("title", "is-small").text("Declare your digital independence")
+    h2().classes("title", "is-normal").text("Declare your digital independence")
 
     val currentYear = Calendar.getInstance().get(Calendar.YEAR)
 
-    p().innerHTML("""
+    p().innerHTML(
+        """
 
 <p>
 The centralization of the internet poses a fundamental threat to individual
@@ -47,37 +49,10 @@ and secured with cryptography.
 </p>
 
 
-    """.trimIndent())
+    """.trimIndent()
+    )
 
-    h3().classes("title", "is-medium").text("Learn More")
-
-    ul {
-        li().innerHTML(
-            """
-                For a video introduction to our new Freenet watch Ian's talk in July 2022 on
-                <a href="https://youtu.be/x9g018OYwb4">YouTube</a>.
-            """.trimIndent()
-        )
-        li().innerHTML(
-            """The Freenet <a href="https://docs.freenet.org/">User Manual</a>"""
-        )
-        li().innerHTML(
-            """
-                    Have a question or idea? Chat with us on 
-                    <a href="https://matrix.to/#/#freenet-locutus:matrix.org">Matrix</a>"""
-        )
-        li().innerHTML(
-            """
-                        Visit the new Freenet <a href="https://github.com/freenet/locutus">GitHub repository</a> to 
-                        browse our source code, and report bugs """
-        )
-        li().innerHTML(
-            """
-                        While new Freenet is still in development, the original Freenet Classic software has a vibrant 
-                        community of users and developers, learn more at <a href="https://freenetproject.org">freenetproject.org</a>.
-                """
-        )
-    }
+    learnMoreLinks()
 
     latestNews(latestNewsItems)
 
@@ -105,7 +80,7 @@ and secured with cryptography.
                                 .set("value", wallet.second)
                                 .set("onclick", "this.select()")
                             span { span ->
-                                span.classes("icon", "is-small", "is-right")
+                                span.classes("icon", "is-normal", "is-right")
                                 i().classes("fas", "fa-copy")
                             }
                         }
@@ -115,6 +90,41 @@ and secured with cryptography.
         }
     }
 }
+
+private fun Component.learnMoreLinks() {
+    div { div ->
+        div.classes("buttons")
+        // Video Introduction
+        iconButton(
+            html = "Watch Ian's Talk",
+            href = "https://www.youtube.com/watch?v=video_link",
+            icon = arrayOf("fas", "fa-video"),
+            buttonClasses = arrayOf("button", "is-medium-blue")
+        )
+        // User Manual
+        iconButton(
+            html = "Read User Manual",
+            href = "https://docs.freenet.org/user_manual.html",
+            icon = arrayOf("fas", "fa-book"),
+            buttonClasses = arrayOf("button", "is-medium-teal")
+        )
+        // Community Chat
+        iconButton(
+            html = "Chat on Matrix",
+            href = "https://matrix.to/#/freenet:matrix.org",
+            icon = arrayOf("fas", "fa-comments"),
+            buttonClasses = arrayOf("button", "is-medium-purple")
+        )
+        // GitHub Repository
+        iconButton(
+            html = "Visit GitHub",
+            href = "https://github.com/freenet/freenet",
+            icon = arrayOf("fab", "fa-github"),
+            buttonClasses = arrayOf("button", "is-medium-orange")
+        )
+    }
+}
+
 
 val dummyNewsItems = ObservableList(
     listOf(

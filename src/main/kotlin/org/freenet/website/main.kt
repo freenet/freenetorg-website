@@ -43,7 +43,7 @@ fun main() {
         debug = isLocalTestingMode,
         plugins = listOf(
             HealthCheckPlugin,
-            StaticFilesPlugin(ResourceFolder("static"), "/static")
+            StaticFilesPlugin(ResourceFolder("static"), "/static",)
         )
     ) {
         doc.head {
@@ -107,13 +107,6 @@ private fun HeadComponent.configureHead() {
         it["src"] = "/static/freenet.js"
     }
 
-    // Font Awesome - TODO: This is 1.5MB, slim it down to only what we need
-    /*
-    element("script") {
-        it["src"] = "/static/fa/all.min.js"
-    }
-     */
-
     element("link") {
         it["rel"] = "stylesheet"
         it["href"] = "/static/fontawesome/css/fontawesome.min.css"
@@ -134,13 +127,18 @@ private fun HeadComponent.configureHead() {
         it["href"] = "/static/bulma.min.css"
     }
 
+    element("link") {
+        it["rel"] = "stylesheet"
+        it["href"] = "/static/freenetorg.css"
+    }
+
     element("meta") { meta ->
         meta["content"] = "width=device-width, initial-scale=1"
         meta["name"] = "viewport"
     }
 
-    element("script")["src"] = "https://js.stripe.com/v3/"
-    element("script")["src"] = "/static/checkout.js"
+  //  element("script")["src"] = "https://js.stripe.com/v3/"
+  //  element("script")["src"] = "/static/checkout.js"
 }
 
 /*
