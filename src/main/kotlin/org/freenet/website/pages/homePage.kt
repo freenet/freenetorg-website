@@ -22,9 +22,9 @@ fun Component.homePage(latestNewsItems: ObservableList<NewsItem>) {
 The increasing centralization of the internet poses a fundamental threat to individual
 freedom. In $currentYear, a few corporations control most internet services
 and infrastructure. These corporations wield immense power over most of us with little 
-oversight, enabling them to censor content, suppress dissent, and exclude 
-users from essential platforms—all with profound implications for 
-individuals and democratic values. We need a solution urgently.
+accountability, enabling them to censor content, suppress dissent, and exclude 
+users from services they depend on —all with profound implications for 
+democratic values. We need a solution urgently.
 </p>
 <p>
 In 1999, we created the <a href="/static/freenet-original.pdf">original 
