@@ -20,7 +20,7 @@ fun Component.homePage(latestNewsItems: ObservableList<NewsItem>) {
 
 <p>
 The increasing centralization of the internet poses a threat to free speech and  
-democracy. In the modern era, a few corporations control most internet services
+democracy. In $currentYear, a few corporations control most internet services
 and infrastructure, effectively privatizing the public square.
 </p>
 <p>
