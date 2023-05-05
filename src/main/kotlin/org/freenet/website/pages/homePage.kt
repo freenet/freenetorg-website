@@ -20,8 +20,8 @@ fun Component.homePage(latestNewsItems: ObservableList<NewsItem>) {
 
 <p>
 The increasing centralization of the internet poses a threat to free speech and  
-democracy. In the modern era, a few corporations dominate the digital landscape, 
-effectively privatizing the public square.
+democracy. In the modern era, a few corporations control most internet services
+and infrastructure, effectively privatizing the public square.
 </p>
 <p>
 In 1999, we blazed a trail with the <a href="/static/freenet-original.pdf">original 
