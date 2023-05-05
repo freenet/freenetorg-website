@@ -97,14 +97,14 @@ private fun Component.learnMoreLinks() {
         // Video Introduction
         iconButton(
             html = "Watch Ian's Talk",
-            href = "https://www.youtube.com/watch?v=video_link",
+            href = "https://www.youtube.com/watch?v=d31jmv5Tx5k",
             icon = arrayOf("fas", "fa-video"),
             buttonClasses = arrayOf("button", "is-medium-blue")
         )
         // User Manual
         iconButton(
             html = "Read User Manual",
-            href = "https://docs.freenet.org/user_manual.html",
+            href = "https://docs.freenet.org/",
             icon = arrayOf("fas", "fa-book"),
             buttonClasses = arrayOf("button", "is-medium-teal")
         )
@@ -118,7 +118,7 @@ private fun Component.learnMoreLinks() {
         // GitHub Repository
         iconButton(
             html = "Visit GitHub",
-            href = "https://github.com/freenet/freenet",
+            href = "https://github.com/freenet/locutus",
             icon = arrayOf("fab", "fa-github"),
             buttonClasses = arrayOf("button", "is-medium-orange")
         )
