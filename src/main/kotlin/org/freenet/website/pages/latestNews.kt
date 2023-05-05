@@ -1,12 +1,12 @@
-package org.freenet.website.pages.news
+package org.freenet.website.pages
 
 import kweb.components.Component
 import kweb.div
-import kweb.h2
 import kweb.h3
 import kweb.plugins.fomanticUI.fomantic
 import kweb.state.ObservableList
 import kweb.state.renderEach
+import org.freenet.website.pages.resources.NewsItem
 
 fun Component.latestNews(newsItems: ObservableList<NewsItem>) {
     h3().text("Latest News")

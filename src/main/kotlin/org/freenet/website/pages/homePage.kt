@@ -3,8 +3,7 @@ package org.freenet.website.pages
 import kweb.*
 import kweb.components.Component
 import kweb.state.ObservableList
-import org.freenet.website.pages.news.NewsItem
-import org.freenet.website.pages.news.latestNews
+import org.freenet.website.pages.resources.NewsItem
 import org.freenet.website.util.iconButton
 import java.util.*
 
