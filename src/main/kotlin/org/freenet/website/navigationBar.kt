@@ -4,34 +4,38 @@ import kweb.*
 import kweb.components.Component
 import kweb.state.KVal
 
-fun Component.navComponent(activeItem : KVal<NavItem>) {
-    div { div ->
-        div.classes("tabs")
-        ul {
+fun Component.navComponent(activeItem: KVal<NavItem>) {
+    nav { nav ->
+        nav.classes("navbar", "has-shadow", "is-spaced")
+        nav["role"] = "navigation"
+        nav["aria-label"] = "main navigation"
+
+        div { div ->
+            div.classes("navbar-brand")
             for (ni in NavItem.values()) {
-                li { li ->
-                    li.classes(activeItem.map { if (it == ni) "is-active" else "" })
-                    a(preventDefault = true) {
-                        if (ni.icon != null) {
-                            span { span ->
-                                span.classes("icon", "is-small")
-                                i { i ->
-                                    i.classes("fas", "fa-${ni.icon}")
-                                }
+                a { a ->
+                    a.classes(activeItem.map { if (it == ni) "navbar-item is-active" else "navbar-item" })
+                    if (ni.icon != null) {
+                        span { span ->
+                            span.classes("icon", "is-small")
+                            i { i ->
+                                i.classes("fas", "fa-${ni.icon}")
                             }
-                            span().innerHTML(ni.html)
-                        } else {
-                            it.innerHTML(ni.html)
                         }
-                        it.href = ni.link
+                        // Add a space between the icon and the text
+                        span().innerHTML("&nbsp;&nbsp;")
+                        span().innerHTML(ni.html)
+                    } else {
+                        a.innerHTML(ni.html)
                     }
+                    a.href = ni.link
                 }
             }
         }
     }
 }
 
-enum class NavItem(val html : String, val link : String, val icon : String? = null) {
+enum class NavItem(val html: String, val link: String, val icon: String? = null) {
     Home("<b>Freenet</b>", "/", "home"),
     About("About", "/about", "info-circle"),
     Developers("Developers", "/dev", "code"),

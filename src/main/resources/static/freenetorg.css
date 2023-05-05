@@ -107,3 +107,8 @@ p.page-end-spacer {
     background-color: #cc5e00;
     color: #ffffff;
 }
+
+.navbar-brand-with-border {
+    border-bottom: 1px solid #dbdbdb; /* Adjust the color and thickness of the border as needed */
+    display: inline-block; /* Make the container inline to fit the content width */
+}
