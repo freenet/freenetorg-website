@@ -2,6 +2,7 @@ package org.freenet.website.pages.joinUs
 
 import kweb.*
 import kweb.components.Component
+import org.freenet.website.util.iconButton
 import org.freenet.website.util.workInProgress
 
 /**
@@ -13,9 +14,22 @@ import org.freenet.website.util.workInProgress
  * can support the project.
  */
 fun Component.joinUsPage() {
+    socialLinks()
+
     donationCryptoWallets()
 
     workInProgress()
+}
+
+private fun Component.socialLinks() {
+    h3().text("Connect With Us")
+
+    div { div ->
+        div.classes("buttons")
+        iconButton("Twitter", "https://twitter.com/freenetorg", arrayOf("fab", "fa-twitter"), buttonClasses = arrayOf("button", "is-medium-blue"))
+        iconButton("Matrix", "https://matrix.to/#/#freenet-locutus:matrix.org", arrayOf("fas", "fa-comment"), buttonClasses = arrayOf("button", "is-medium-purple"))
+        iconButton("Reddit", "https://www.reddit.com/r/freenet/", arrayOf("fab", "fa-reddit"), buttonClasses = arrayOf("button", "is-medium-orange"))
+    }
 }
 
 private fun Component.donationCryptoWallets() {

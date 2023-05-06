@@ -76,7 +76,7 @@ private fun Component.learnMoreLinks() {
         // Community Chat
         iconButton(
             html = "Chat on Matrix",
-            href = "https://matrix.to/#/freenet:matrix.org",
+            href = "https://matrix.to/#/#freenet-locutus:matrix.org",
             icon = arrayOf("fas", "fa-comments"),
             buttonClasses = arrayOf("button", "is-medium-purple")
         )
