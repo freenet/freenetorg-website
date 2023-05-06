@@ -23,7 +23,7 @@ fun Component.homePage(latestNewsItems: ObservableList<NewsItem>) {
 The centralization of the internet poses a fundamental threat to individual
 freedom. In $currentYear, a few corporations control most internet services
 and infrastructure. These corporations wield immense power over most of us with little 
-accountability, enabling them to censor content, suppress dissent, and exclude 
+accountability, enabling them to censor content, exploit our data, and exclude 
 users from services they depend on —all with profound implications for 
 democracy. We need a solution urgently.
 </p>
@@ -46,7 +46,6 @@ centralized services, including messaging, social media, email, and e-commerce.
 Our user-friendly decentralized applications (dApps) are scalable, interoperable, 
 and secured with cryptography.
 </p>
-
 
     """.trimIndent()
     )
