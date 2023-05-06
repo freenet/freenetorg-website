@@ -2,6 +2,7 @@ package org.freenet.website.pages.resources
 
 import kweb.components.Component
 import kweb.section
+import org.freenet.website.util.workInProgress
 
 /**
  * This tab could provide additional resources for visitors, such as video
@@ -11,15 +12,5 @@ import kweb.section
  * website.
  */
 fun Component.resourcesPage() {
-    section { section ->
-        section.classes("section")
-        section.innerHTML("""
-                <div class="container">
-                  <div class="notification is-warning">
-                    <p class="title is-4">Under Construction</p>
-                    <p class="subtitle is-6">We're working hard to improve our website. Please check back soon!</p>
-                  </div>
-                </div>
-        """.trimIndent())
-    }
+    workInProgress()
 }
