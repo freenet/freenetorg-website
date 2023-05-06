@@ -1,9 +1,8 @@
 package org.freenet.website.pages.joinUs
 
+import kweb.*
 import kweb.components.Component
-import kweb.h1
-import kweb.p
-import kweb.section
+import org.freenet.website.util.workInProgress
 
 /**
  * This tab could focus on community engagement and provide information
@@ -14,15 +13,43 @@ import kweb.section
  * can support the project.
  */
 fun Component.joinUsPage() {
-    section { section ->
-        section.classes("section")
-        section.innerHTML("""
-                <div class="container">
-                  <div class="notification is-warning">
-                    <p class="title is-4">Under Construction</p>
-                    <p class="subtitle is-6">We're working hard to improve our website. Please check back soon!</p>
-                  </div>
-                </div>
-        """.trimIndent())
+    donationCryptoWallets()
+
+    workInProgress()
+}
+
+private fun Component.donationCryptoWallets() {
+    h3().text("Support Our Work")
+
+    val donationWallets = listOf(
+        Pair("Bitcoin", "3M3fbA7RDYdvYeaoR69cDCtVJqEodo9vth"),
+        Pair("Zcash", "t1VHw1PHgzvMqEEd31ZBt3Vyy2UrG4J8utB"),
+        Pair("Ethereum", "0x79158A5Dbd9C0737CB27411817BD2759f5b9a9Ae"),
+    )
+
+    table { table ->
+        table.classes("table", "is-hoverable")
+        tbody {
+            for (wallet in donationWallets) {
+                tr {
+                    td().text(wallet.first)
+                    td { td ->
+                        td.classes("has-text-centered")
+                        div { div ->
+                            div.classes("control", "has-icons-right")
+                            input(type = InputType.text)
+                                .classes("input", "is-fullwidth")
+                                .set("readonly", "true")
+                                .set("value", wallet.second)
+                                .set("onclick", "this.select()")
+                            span { span ->
+                                span.classes("icon", "is-normal", "is-right")
+                                i().classes("fas", "fa-copy")
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
