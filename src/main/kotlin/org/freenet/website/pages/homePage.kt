@@ -58,43 +58,76 @@ and secured with cryptography.
 
 private fun Component.learnMoreLinks() {
     div { div ->
-        div.classes("buttons")
+        div.classes("columns", "is-multiline")
         // Video Introduction
-        iconButton(
+        iconButtonWithDescription(
             html = "Watch Ian's Talk",
             href = "https://www.youtube.com/watch?v=d31jmv5Tx5k",
             icon = arrayOf("fas", "fa-video"),
-            buttonClasses = arrayOf("button", "is-medium-blue")
+            buttonClasses = arrayOf("button", "is-medium-blue"),
+            description = "Watch Ian's talk to learn more about the project."
         )
         // User Manual
-        iconButton(
+        iconButtonWithDescription(
             html = "Read User Manual",
             href = "https://docs.freenet.org/",
             icon = arrayOf("fas", "fa-book"),
-            buttonClasses = arrayOf("button", "is-medium-teal")
+            buttonClasses = arrayOf("button", "is-medium-teal"),
+            description = "Read the user manual for detailed instructions on how to use the software."
         )
         // Community Chat
-        iconButton(
+        iconButtonWithDescription(
             html = "Chat on Matrix",
             href = "https://matrix.to/#/#freenet-locutus:matrix.org",
             icon = arrayOf("fas", "fa-comments"),
-            buttonClasses = arrayOf("button", "is-medium-purple")
+            buttonClasses = arrayOf("button", "is-medium-purple"),
+            description = "Join our Matrix chat room to connect with the community and ask questions."
         )
         // GitHub Repository
-        iconButton(
+        iconButtonWithDescription(
             html = "Visit GitHub",
             href = "https://github.com/freenet/locutus",
             icon = arrayOf("fab", "fa-github"),
-            buttonClasses = arrayOf("button", "is-medium-orange")
+            buttonClasses = arrayOf("button", "is-medium-orange"),
+            description = "Visit our GitHub repository to explore the source code and contribute."
         )
     }
 }
 
+fun Component.iconButtonWithDescription(
+    html: String,
+    href: String,
+    icon: Array<String>,
+    buttonClasses: Array<String> = arrayOf("button"),
+    description: String
+) {
+    div { column ->
+        column.classes("column", "is-half")
+        div { level ->
+            level.classes("level")
+            div { levelLeft ->
+                levelLeft.classes("level-left")
+                a { a ->
+                    a.classes(*buttonClasses)
+                    a.href = href
+                    span { span ->
+                        span.classes("icon")
+                        i { i ->
+                            i.classes(*icon)
+                        }
+                    }
+                    span { span ->
+                        span.innerHTML(html)
+                    }
+                }
+            }
+            div { levelRight ->
+                levelRight.classes("level-right")
+                p { p ->
+                    p.innerHTML(description)
+                }
+            }
+        }
+    }
+}
 
-val dummyNewsItems = ObservableList(
-    listOf(
-        NewsItem(Date(), "This is the first news item", true),
-        NewsItem(Date(), "This is the second news item", false),
-        NewsItem(Date(), "This is the third news item", true),
-    )
-)

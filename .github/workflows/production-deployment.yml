@@ -77,12 +77,19 @@ jobs:
         cd deployment/base/
         curl -sfLo kustomize https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
         chmod u+x ./kustomize
-    # Deploy the Docker image to the GKE cluster
+      # Substitute the GITHUB_TOKEN environment variable in the deployment.yaml file
+    - name: Substitute GITHUB_TOKEN
+      run: |-
+        sudo apt-get install -y gettext
+        envsubst < deployment.yaml > deployment_with_token.yaml
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Deploy the Docker image to the GKE cluster
     - name: Deploy
       run: |-
         # replacing the image name in the k8s template
         cd deployment/prod/
         ../base/kustomize edit set image $GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA
-        ../base/kustomize build . | kubectl apply -f -
+        ../base/kustomize build . | kubectl apply -f deployment_with_token.yaml
         kubectl rollout status deployment/$DEPLOYMENT_NAME -n $NAMESPACE
         kubectl get services -o wide

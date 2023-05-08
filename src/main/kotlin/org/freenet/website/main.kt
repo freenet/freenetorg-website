@@ -13,7 +13,7 @@ import kweb.state.ObservableList
 import kweb.state.render
 import mu.two.KotlinLogging
 import org.freenet.website.db.db
-import org.freenet.website.pages.developers.PivotalTracker
+import org.freenet.website.apis.PivotalTracker
 import org.freenet.website.pages.dummyNewsItems
 import org.freenet.website.pages.homePage
 import org.freenet.website.pages.joinUs.joinUsPage
