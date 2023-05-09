@@ -1,10 +1,10 @@
 package org.freenet.website.pages.joinUs
+
+import kweb.components.Component
 import org.bouncycastle.crypto.engines.RSAEngine
 import org.bouncycastle.crypto.params.RSAKeyParameters
 import java.math.BigInteger
-import java.util.Base64
-
-import kweb.components.Component
+import java.util.*
 
 fun Component.idComponent() {
     
