@@ -29,6 +29,7 @@ fun Component.faqPage() {
                     li {
                         a { a ->
                             a["href"] = "#faq-$ix"
+
                             a.innerHTML(heading)
                         }
                     }
