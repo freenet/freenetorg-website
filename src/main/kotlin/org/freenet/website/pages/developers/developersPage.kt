@@ -1,7 +1,9 @@
 package org.freenet.website.pages.developers
 
-import kweb.*
 import kweb.components.Component
+import kweb.div
+import kweb.h2
+import kweb.p
 import org.freenet.website.util.iconButton
 
 /**

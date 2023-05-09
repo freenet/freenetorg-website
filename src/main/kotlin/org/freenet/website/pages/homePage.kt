@@ -1,9 +1,9 @@
 package org.freenet.website.pages
 
-import kweb.*
 import kweb.components.Component
-import kweb.state.ObservableList
-import org.freenet.website.pages.resources.NewsItem
+import kweb.div
+import kweb.h2
+import kweb.p
 import org.freenet.website.util.iconButton
 import java.util.*
 
@@ -11,7 +11,7 @@ import java.util.*
  * The main landing page, which provides an overview of Freenet, its mission,
  * and its features.
  */
-fun Component.homePage(latestNewsItems: ObservableList<NewsItem>) {
+fun Component.homePage() {
     h2().classes("title", "is-normal").text("Declare your digital independence")
 
     val currentYear = Calendar.getInstance().get(Calendar.YEAR)
@@ -52,7 +52,7 @@ and secured with cryptography.
 
     learnMoreLinks()
 
-    latestNews(latestNewsItems)
+    latestNews()
 
 }
 
@@ -89,12 +89,3 @@ private fun Component.learnMoreLinks() {
         )
     }
 }
-
-
-val dummyNewsItems = ObservableList(
-    listOf(
-        NewsItem(Date(), "This is the first news item", true),
-        NewsItem(Date(), "This is the second news item", false),
-        NewsItem(Date(), "This is the third news item", true),
-    )
-)

@@ -1,6 +1,5 @@
 package org.freenet.website
 
-import org.freenet.website.pages.about.aboutPage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -9,18 +8,14 @@ import kweb.components.Component
 import kweb.html.HeadElement
 import kweb.plugins.staticFiles.ResourceFolder
 import kweb.plugins.staticFiles.StaticFilesPlugin
-import kweb.state.ObservableList
 import kweb.state.render
 import mu.two.KotlinLogging
-import org.freenet.website.db.db
+import org.freenet.website.pages.about.aboutPage
 import org.freenet.website.pages.developers.PivotalTracker
-import org.freenet.website.pages.dummyNewsItems
+import org.freenet.website.pages.developers.developersPage
 import org.freenet.website.pages.homePage
 import org.freenet.website.pages.joinUs.joinUsPage
-import org.freenet.website.pages.resources.NewsItem
-import org.freenet.website.pages.resources.retrieveNews
-import org.freenet.website.pages.developers.developersPage
-import org.freenet.website.pages.resources.resourcesPage
+import org.freenet.website.pages.faq.faqPage
 import org.freenet.website.util.HealthCheckPlugin
 import org.freenet.website.util.UrlToPathSegmentsRF
 import org.freenet.website.util.recordVisit
@@ -65,10 +60,10 @@ fun main() {
                     render(nav) { activeNavItem ->
                         when (activeNavItem) {
                             NavItem.About -> aboutPage()
-                            NavItem.Home -> homePage(latestNewsItems)
+                            NavItem.Home -> homePage()
                             NavItem.Developers -> developersPage()
                             NavItem.JoinUs -> joinUsPage()
-                            NavItem.Resources -> resourcesPage()
+                            NavItem.Faq -> faqPage()
                             else -> error("Unknown NavItem: $activeNavItem")
                         }
                     }
@@ -92,7 +87,7 @@ private fun WebBrowser.pathToNavItem() = url.map(UrlToPathSegmentsRF)
                 "about" -> NavItem.About
                 "dev" -> NavItem.Developers
                 "join" -> NavItem.JoinUs
-                "resources" -> NavItem.Resources
+                "faq" -> NavItem.Faq
                 else -> NavItem.Home
             }
         }
@@ -139,20 +134,6 @@ private fun HeadComponent.configureHead() {
 
   //  element("script")["src"] = "https://js.stripe.com/v3/"
   //  element("script")["src"] = "/static/checkout.js"
-}
-
-/*
- * These are the same for all users so we only need one globally
- */
-private val latestNewsItems: ObservableList<NewsItem> = run {
-    val latestNewsItems = if (db != null) {
-        logger.info("Retrieving Latest News")
-        retrieveNews(db)
-    } else {
-        logger.info("Using dummy news as Firestore is not available")
-        dummyNewsItems
-    }
-    latestNewsItems
 }
 
 fun Component.rabbitLogoComponent() {

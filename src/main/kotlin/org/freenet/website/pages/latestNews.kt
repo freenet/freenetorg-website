@@ -1,24 +1,21 @@
 package org.freenet.website.pages
 
-import kweb.*
 import kweb.components.Component
-import kweb.plugins.fomanticUI.fomantic
-import kweb.state.ObservableList
-import kweb.state.renderEach
-import org.freenet.website.pages.resources.NewsItem
+import kweb.div
+import kweb.state.render
+import mu.two.KotlinLogging
+import org.freenet.website.util.retrievePage
 
-fun Component.latestNews(newsItems: ObservableList<NewsItem>) {
-    h3().text("Latest News")
+private val logger = KotlinLogging.logger { }
 
-    ul {
+private val latestNewsHtml = retrievePage("https://raw.githubusercontent.com/wiki/freenet/locutus/News.md")
 
-        renderEach(newsItems) { newsItem ->
-            val prettyDate = humanize.Humanize.formatDate(newsItem.date, "MMMM d, yyyy")
-            li().innerHTML(
-                """
-                <span class="has-text-weight-bold">$prettyDate</span>
-                <span>${newsItem.description}</span>
-            """.trimIndent())
+fun Component.latestNews() {
+    render(latestNewsHtml) { latestNewsHtml ->
+        if (latestNewsHtml == null) {
+            div().text("Loading latest news...")
+        } else {
+            div().innerHTML(latestNewsHtml)
         }
     }
 }
