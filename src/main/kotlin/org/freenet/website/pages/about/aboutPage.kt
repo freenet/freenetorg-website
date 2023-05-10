@@ -26,53 +26,45 @@ small-world network. It could also address the concerns of users
 who are interested in freedom of speech online.
  */
 fun Component.aboutPage() {
-    h1().text("About Freenet")
+    section { section ->
+        section.classes("section")
+        h1().classes("title").text("About Freenet")
 
-    section { div ->
-        div.classes("section")
         h3 { h3 ->
             h3.classes("title")
             h3.text("Contents")
         }
-        div { div ->
-            div.classes("content")
-            ul {
-                li {
-                    a { a ->
-                        a["href"] = "#introduction_html"
-                        a.text("Introduction")
-                    }
+        ul {
+            li {
+                a { a ->
+                    a["href"] = "#introduction_html"
+                    a.text("Introduction")
                 }
-                li {
-                    a { a ->
-                        a["href"] = "#components_html"
-                        a.text("Building Decentralized Applications on Freenet")
-                    }
+            }
+            li {
+                a { a ->
+                    a["href"] = "#components_html"
+                    a.text("Building Decentralized Applications on Freenet")
                 }
-                li {
-                    a { a ->
-                        a["href"] = "#p2p_network"
-                        a.text(" Freenet Network Topology")
-                    }
+            }
+            li {
+                a { a ->
+                    a["href"] = "#p2p_network"
+                    a.text(" Freenet Network Topology")
                 }
             }
         }
+    }
 
-        fun renderPage(html : KVar<String?>) {
-            render(html) { html ->
-                section { section ->
-                    section.classes("section")
-                    if (html == null) {
-                        h1().text("Loading...")
-                    } else {
-                        element("main").innerHTML(html)
-                    }
-                }
-            }
+    renderPage(introPageHtml)
+    renderPage(componentPageHtml)
+    renderPage(p2pNetworkPageHtml)
+}
+
+private fun Component.renderPage(html: KVar<String?>) {
+    render(html) { html ->
+        if (html != null) {
+            section().classes("section").innerHTML(html)
         }
-
-        renderPage(introPageHtml)
-        renderPage(componentPageHtml)
-        renderPage(p2pNetworkPageHtml)
     }
 }
