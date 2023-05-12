@@ -59,15 +59,7 @@ fun main() {
                     navComponent(nav)
 
                     render(nav) { activeNavItem ->
-                        when (activeNavItem) {
-                            NavItem.About -> aboutPage()
-                            NavItem.Home -> homePage()
-                            NavItem.Developers -> developersPage()
-                            NavItem.Community -> joinUsPage()
-                            NavItem.Faq -> faqPage()
-                            NavItem.ClaimId -> claimIdPage()
-                            else -> error("Unknown NavItem: $activeNavItem")
-                        }
+                        activeNavItem.page(this)
                     }
                 }
             }
@@ -83,12 +75,29 @@ fun main() {
 private fun WebBrowser.pathToNavItem() = url.map(UrlToPathSegmentsRF)
     .map { pathSegments ->
         if (pathSegments.isEmpty()) {
-            NavItem.Home
+            NavigationNode.Home
         } else {
-            val path = pathSegments[0]
-            NavItem.values().find { it.link.drop(1) == path } ?: NavItem.Home
+            val path = "/" + pathSegments[0]
+            findNodeByPath(navigationMenu, path) ?: NavigationNode.Home
         }
     }
+
+fun findNodeByPath(nodes: List<NavigationNode>, path: String): NavigationNode? {
+    for (node in nodes) {
+        when (node) {
+            is NavigationNode.Dropdown -> {
+                findNodeByPath(node.children, path)?.let { return it }
+            }
+            else -> {
+                if (node.path == path) {
+                    return node
+                }
+            }
+        }
+    }
+    return null
+}
+
 
 typealias HeadComponent = ElementCreator<HeadElement>
 
@@ -99,30 +108,11 @@ private fun HeadComponent.configureHead() {
         it["src"] = "/static/freenet.js"
     }
 
-    element("link") {
-        it["rel"] = "stylesheet"
-        it["href"] = "/static/fontawesome/css/fontawesome.min.css"
-    }
-
-    element("link") {
-        it["rel"] = "stylesheet"
-        it["href"] = "/static/fontawesome/css/solid.min.css"
-    }
-
-    element("link") {
-        it["rel"] = "stylesheet"
-        it["href"] = "/static/fontawesome/css/brands.min.css"
-    }
-
-    element("link") {
-        it["rel"] = "stylesheet"
-        it["href"] = "/static/bulma.min.css"
-    }
-
-    element("link") {
-        it["rel"] = "stylesheet"
-        it["href"] = "/static/freenetorg.css"
-    }
+    addStylesheet("/static/fontawesome/css/fontawesome.min.css")
+    addStylesheet("/static/fontawesome/css/solid.min.css")
+    addStylesheet("/static/fontawesome/css/brands.min.css")
+    addStylesheet("/static/bulma.min.css")
+    addStylesheet("/static/freenetorg.css")
 
     element("meta") { meta ->
         meta["content"] = "width=device-width, initial-scale=1"
@@ -133,10 +123,9 @@ private fun HeadComponent.configureHead() {
     //  element("script")["src"] = "/static/checkout.js"
 }
 
-fun Component.rabbitLogoComponent() {
-    element("link").new { link ->
-        link["rel"] = "icon"
-        link["href"] = "/static/rabbit-logo.svg"
-        link["type"] = "image/svg+xml"
+private fun HeadComponent.addStylesheet(href: String) {
+    element("link") {
+        it["rel"] = "stylesheet"
+        it["href"] = href
     }
 }
