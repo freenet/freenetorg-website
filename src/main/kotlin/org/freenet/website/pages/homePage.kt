@@ -59,9 +59,8 @@ and secured with cryptography.
 private fun Component.learnMoreLinks() {
     div { div ->
         div.classes("buttons")
-        // Video Introduction
         iconButton(
-            html = "Watch Ian's Talk",
+            html = "Watch Intro Talk",
             href = "https://www.youtube.com/watch?v=d31jmv5Tx5k",
             icon = arrayOf("fas", "fa-video"),
             buttonClasses = arrayOf("button", "is-medium-blue")

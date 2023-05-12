@@ -60,7 +60,9 @@ p.page-end-spacer {
     padding-bottom: 200px;
 }
 
-/* Custom dark blue button */
+/* Custom dark blue buttonI'd like you to suggest how to improve the structure of my website. The website is for Freenet which is an open source drop-in decentralized replacement for the World Wide Web. The website has five tabs across the top. Freenet which is the homepage, About, Developers, Join Us, and FAQ. The homepage Freenet has a subtitle, Declare your digital independence, and four paragraphs introducing Freenet. It then has four prominent call to actions, Watch Ian's talk, Read user manual, Chat on Matrix, Visit GitHub. And then beneath those it has latest news with just bullet points, one line each, the date and the news. The About tab contains a longer introduction to Freenet aimed more at software developers with diagrams and going into detail about the different components of the system and how to build software on top of Freenet. The Developers tab has four buttons at the top, one for architecture which brings you to the user manual describing Freenet's architecture which is actually the same information that's under the About tab. On the Developers tab there's then a tutorial button which links to a different part of the user manual. There is a GitHub link which takes the user to our GitHub project and there's a crates.io link which takes users to our crates page because Freenet's developed in Rust. Underneath those four buttons is our roadmap. This is a table containing upcoming milestones and the date when we project those milestones will be reached. The fourth tab is called Join Us. On the Join Us tab there is a Connect with Us section which has buttons which take you to our Twitter, our Matrix chat room and to our subreddit. And then there's another heading saying Support Our Work which contains links to our Bitcoin, Ethereum, Zcash and Ethereum wallet in a table. And then there's another construction box underneath that because this page is incomplete. The fifth tab is our FAQ. It just answers the heading question and then an answer below it. Right now there are just three questions. What is Freenet? What is the project's history? How are Licudis and Fred different? Licudis and Fred are two different pieces of software under the Freenet umbrella. So that's a description of the current website structure and content. Could you please summarise what I've told you first and then offer suggestions for improvement in particular whether we should change the tabs, what each of the tabs is called or where different pieces of information are and also if there's anything important missing from what I've just described for an open source software project like this.
+
+ */
 .button.is-dark-blue {
     background-color: #1a3d6d;
     color: #ffffff;
@@ -111,4 +113,8 @@ p.page-end-spacer {
 .navbar-brand-with-border {
     border-bottom: 1px solid #dbdbdb; /* Adjust the color and thickness of the border as needed */
     display: inline-block; /* Make the container inline to fit the content width */
+}
+
+.is-primary {
+    color: #008282 !important;
 }

@@ -11,6 +11,7 @@ import kweb.plugins.staticFiles.StaticFilesPlugin
 import kweb.state.render
 import mu.two.KotlinLogging
 import org.freenet.website.pages.about.aboutPage
+import org.freenet.website.pages.claimId.claimIdPage
 import org.freenet.website.pages.developers.PivotalTracker
 import org.freenet.website.pages.developers.developersPage
 import org.freenet.website.pages.homePage
@@ -38,7 +39,7 @@ fun main() {
         debug = isLocalTestingMode,
         plugins = listOf(
             HealthCheckPlugin,
-            StaticFilesPlugin(ResourceFolder("static"), "/static",)
+            StaticFilesPlugin(ResourceFolder("static"), "/static")
         )
     ) {
         doc.head {
@@ -62,8 +63,9 @@ fun main() {
                             NavItem.About -> aboutPage()
                             NavItem.Home -> homePage()
                             NavItem.Developers -> developersPage()
-                            NavItem.JoinUs -> joinUsPage()
+                            NavItem.Community -> joinUsPage()
                             NavItem.Faq -> faqPage()
+                            NavItem.ClaimId -> claimIdPage()
                             else -> error("Unknown NavItem: $activeNavItem")
                         }
                     }
@@ -83,13 +85,8 @@ private fun WebBrowser.pathToNavItem() = url.map(UrlToPathSegmentsRF)
         if (pathSegments.isEmpty()) {
             NavItem.Home
         } else {
-            when (pathSegments[0]) {
-                "about" -> NavItem.About
-                "dev" -> NavItem.Developers
-                "join" -> NavItem.JoinUs
-                "faq" -> NavItem.Faq
-                else -> NavItem.Home
-            }
+            val path = pathSegments[0]
+            NavItem.values().find { it.link.drop(1) == path } ?: NavItem.Home
         }
     }
 
@@ -132,8 +129,8 @@ private fun HeadComponent.configureHead() {
         meta["name"] = "viewport"
     }
 
-  //  element("script")["src"] = "https://js.stripe.com/v3/"
-  //  element("script")["src"] = "/static/checkout.js"
+    //  element("script")["src"] = "https://js.stripe.com/v3/"
+    //  element("script")["src"] = "/static/checkout.js"
 }
 
 fun Component.rabbitLogoComponent() {

@@ -14,10 +14,10 @@ fun Component.navComponent(activeItem: KVal<NavItem>) {
             div.classes("navbar-brand")
             for (ni in NavItem.values()) {
                 a { a ->
-                    a.classes(activeItem.map { if (it == ni) "navbar-item is-active" else "navbar-item" })
+                    a.classes(activeItem.map { if (it == ni) "navbar-item is-active ${ni.cssClass}" else "navbar-item ${ni.cssClass}" })
                     if (ni.icon != null) {
                         span { span ->
-                            span.classes("icon",) // "is-small")
+                            span.classes("icon")
                             i { i ->
                                 i.classes("fas", "fa-${ni.icon}")
                             }
@@ -35,10 +35,11 @@ fun Component.navComponent(activeItem: KVal<NavItem>) {
     }
 }
 
-enum class NavItem(val html: String, val link: String, val icon: String? = null) {
+enum class NavItem(val html: String, val link: String, val icon: String? = null, val cssClass: String = "") {
     Home("<b>Freenet</b>", "/", "home"),
     About("About", "/about", "info-circle"),
     Developers("Developers", "/dev", "code"),
-    JoinUs("Join Us", "/join", "users"),
+    Community("Community", "/community", "users"),
     Faq("FAQ", "/faq", "book"),
+    ClaimId("Claim Identity", "/claim-id", "id-card", "is-primary"),
 }

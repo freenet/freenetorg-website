@@ -5,6 +5,7 @@ import kweb.components.Component
 import kweb.state.KVar
 import kweb.state.render
 import org.freenet.website.util.getUserManualPage
+import org.freenet.website.util.iconButton
 
 private val introPageHtml = getUserManualPage("https://docs.freenet.org/introduction.html") { document ->
     document.select("main h1").first()!!.tagName("h2").id("introduction_html")
