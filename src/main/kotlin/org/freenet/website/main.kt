@@ -54,21 +54,8 @@ fun main() {
                 div { div ->
                     div.classes("container")
 
-                    val nav = pathToNavItem()
+                    renderNavBarAndPage(url.map(UrlToPathSegmentsRF))
 
-                    navComponent(nav)
-
-                    render(nav) { activeNavItem ->
-                        when (activeNavItem) {
-                            NavItem.About -> aboutPage()
-                            NavItem.Home -> homePage()
-                            NavItem.Developers -> developersPage()
-                            NavItem.Community -> joinUsPage()
-                            NavItem.Faq -> faqPage()
-                            NavItem.ClaimId -> claimIdPage()
-                            else -> error("Unknown NavItem: $activeNavItem")
-                        }
-                    }
                 }
             }
         }
@@ -79,16 +66,6 @@ fun main() {
     }
 
 }
-
-private fun WebBrowser.pathToNavItem() = url.map(UrlToPathSegmentsRF)
-    .map { pathSegments ->
-        if (pathSegments.isEmpty()) {
-            NavItem.Home
-        } else {
-            val path = pathSegments[0]
-            NavItem.values().find { it.link.drop(1) == path } ?: NavItem.Home
-        }
-    }
 
 typealias HeadComponent = ElementCreator<HeadElement>
 
