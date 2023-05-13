@@ -11,7 +11,7 @@ import org.freenet.website.pages.joinUs.joinUsPage
 
 data class Page(
     val urlPath: String,
-    val tabHtml: String,
+    val tabHtml: String?,
     val link: String,
     val icon: String,
     val additionalClasses: String = "",
@@ -44,7 +44,7 @@ fun Component.renderNavBarAndPage(urlPath: KVal<List<String>>) {
             div.classes("navbar-brand")
            // div().classes("navbar-start")
             // Create navbar-item for each page in the list
-            pages.values.forEach { page ->
+            pages.values.filter {it.tabHtml != null}.forEach { page ->
                 tab(page, currentPage.map { it == page })
             }
         }
@@ -71,7 +71,7 @@ private fun Component.tab(page: Page, isActive: KVal<Boolean>) {
         }
         // Add a space between the icon and the text
         span().innerHTML("&nbsp;")
-        span().innerHTML(page.tabHtml)
+        span().innerHTML(page.tabHtml ?: error("tabHtml shouldn't be null"))
         a.href = page.link
     }
 }
