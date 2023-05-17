@@ -78,37 +78,3 @@ tasks {
         }
     }
 }
-
-////////////////
-/// NPM tasks
-////////////////
-
-tasks.register<Exec>("npmBuild") {
-    // Specify the working directory for the task (the subdirectory containing the npm project)
-    workingDir("js_npm")
-
-    // Define the command to run (use "cmd" and "/c" on Windows, "sh" and "-c" on Unix-based systems)
-    if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-        commandLine("cmd", "/c", "npm run build")
-    } else {
-        commandLine("sh", "-c", "npm run build")
-    }
-}
-
-// Define a custom Gradle task named "copyJsFile"
-        tasks.register<Copy>("copyJsToResources") {
-            // Specify the source file to copy
-            from("js_npm/dist/freenetorg.js")
-            // Specify the destination directory
-            into("src/main/resources/static")
-        }
-
-// Make the "copyJsFile" task depend on the "npmBuild" task
-tasks.named("copyJsToResources") {
-    dependsOn("npmBuild")
-}
-
-// Make the standard Gradle "build" task depend on the "copyKeygenToResources" task
-tasks.named("build") {
-    dependsOn("copyJsToResources")
-}

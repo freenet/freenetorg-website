@@ -1,12 +1,13 @@
-package org.freenet.website
+package org.freenet.website.pages
 
 import kweb.*
 import kweb.components.Component
 import kweb.state.KVal
 import kweb.state.render
 import org.freenet.website.pages.about.aboutPage
+import org.freenet.website.pages.claimId.claimIdPage
 import org.freenet.website.pages.developers.developersPage
-import org.freenet.website.pages.homePage
+import org.freenet.website.pages.home.homePage
 import org.freenet.website.pages.joinUs.joinUsPage
 
 data class Page(
@@ -19,10 +20,11 @@ data class Page(
 )
 
 val pages = mapOf(
-    "" to Page("", "<b>Freenet</b>", "/", "home", renderer = Component::homePage),
-    "about" to Page("about", "About", "/about", "info-circle", renderer = Component::aboutPage),
-    "dev" to Page("dev", "Developers", "/dev", "code", renderer = Component::developersPage),
-    "join" to Page("join", "Join Us", "/join", "user-plus", renderer = Component::joinUsPage)
+    "" to Page(urlPath = "", tabHtml = "<b>Freenet</b>", link = "/", icon = "home", renderer = Component::homePage),
+    "about" to Page(urlPath = "about", tabHtml = "About", link = "/about", icon = "info-circle", renderer = Component::aboutPage),
+    "dev" to Page(urlPath = "dev", tabHtml = "Developers", link = "/dev", icon = "code", renderer = Component::developersPage),
+    "join" to Page(urlPath = "join", tabHtml = "Join Us", link = "/join", icon = "user-plus", renderer = Component::joinUsPage),
+    "claim" to Page(urlPath = "claim", tabHtml = null, link = "/claim", icon = "id-card", renderer = Component::claimIdPage),
 )
 
 fun Component.renderNavBarAndPage(urlPath: KVal<List<String>>) {

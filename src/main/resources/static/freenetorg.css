@@ -110,11 +110,13 @@ p.page-end-spacer {
     color: #ffffff;
 }
 
+/* Custom medium green button */
+.button.is-medium-green {
+    background-color: #00824d;
+    color: #ffffff;
+}
+
 .navbar-brand-with-border {
     border-bottom: 1px solid #dbdbdb; /* Adjust the color and thickness of the border as needed */
     display: inline-block; /* Make the container inline to fit the content width */
-}
-
-.is-primary {
-    color: #008282 !important;
 }

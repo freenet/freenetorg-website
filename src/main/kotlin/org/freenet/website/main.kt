@@ -8,15 +8,9 @@ import kweb.components.Component
 import kweb.html.HeadElement
 import kweb.plugins.staticFiles.ResourceFolder
 import kweb.plugins.staticFiles.StaticFilesPlugin
-import kweb.state.render
 import mu.two.KotlinLogging
-import org.freenet.website.pages.about.aboutPage
-import org.freenet.website.pages.claimId.claimIdPage
 import org.freenet.website.pages.developers.PivotalTracker
-import org.freenet.website.pages.developers.developersPage
-import org.freenet.website.pages.homePage
-import org.freenet.website.pages.joinUs.joinUsPage
-import org.freenet.website.pages.faq.faqPage
+import org.freenet.website.pages.renderNavBarAndPage
 import org.freenet.website.util.HealthCheckPlugin
 import org.freenet.website.util.UrlToPathSegmentsRF
 import org.freenet.website.util.recordVisit
@@ -72,48 +66,42 @@ typealias HeadComponent = ElementCreator<HeadElement>
 private fun HeadComponent.configureHead() {
     title().text("Freenet")
 
-    element("script") {
-        it["src"] = "/static/freenet.js"
-    }
+    // Order matters, dependencies come first
+    addScript("/static/jquery.min.js")
+    addScript("/static/qrcode.min.js")
 
-    element("link") {
-        it["rel"] = "stylesheet"
-        it["href"] = "/static/fontawesome/css/fontawesome.min.css"
-    }
+    // TODO: This was compiled with --with-all, but it should only include
+    // TODO: features we're using
+    addScript("/static/sjcl.min.js")
+    addScript("/static/id.js")
 
-    element("link") {
-        it["rel"] = "stylesheet"
-        it["href"] = "/static/fontawesome/css/solid.min.css"
-    }
+    // addScript("/static/crypto-js.min.js")
+    //  addScript("/static/jsbn.js")
+    // addScript("/static/jsrsasign-all-min.js")
 
-    element("link") {
-        it["rel"] = "stylesheet"
-        it["href"] = "/static/fontawesome/css/brands.min.css"
-    }
-
-    element("link") {
-        it["rel"] = "stylesheet"
-        it["href"] = "/static/bulma.min.css"
-    }
-
-    element("link") {
-        it["rel"] = "stylesheet"
-        it["href"] = "/static/freenetorg.css"
-    }
+    listOf(
+        "/static/fontawesome/css/fontawesome.min.css",
+        "/static/fontawesome/css/solid.min.css",
+        "/static/fontawesome/css/brands.min.css",
+        "/static/bulma.min.css",
+        "/static/freenetorg.css"
+    ).forEach { addStylesheet(it) }
 
     element("meta") { meta ->
         meta["content"] = "width=device-width, initial-scale=1"
         meta["name"] = "viewport"
     }
-
-    //  element("script")["src"] = "https://js.stripe.com/v3/"
-    //  element("script")["src"] = "/static/checkout.js"
 }
 
-fun Component.rabbitLogoComponent() {
-    element("link").new { link ->
-        link["rel"] = "icon"
-        link["href"] = "/static/rabbit-logo.svg"
-        link["type"] = "image/svg+xml"
+private fun HeadComponent.addScript(src: String) {
+    element("script") {
+        it["src"] = src
+    }
+}
+
+private fun HeadComponent.addStylesheet(href: String) {
+    element("link") {
+        it["rel"] = "stylesheet"
+        it["href"] = href
     }
 }

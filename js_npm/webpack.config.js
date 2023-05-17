@@ -7,12 +7,13 @@ module.exports = {
     filename: 'freenetorg.js',
     path: path.resolve(__dirname, 'dist'),
     library: 'FNCryptoLib',
-    libraryTarget: 'umd'
+    libraryTarget: 'umd',
+    globalObject: 'this', // This allows the library to be used in various environments.
   },
-  target: 'node',
+  target: 'web', // Change target to 'web' for browser environment
   optimization: {
     minimize: true,
     minimizer: [new TerserPlugin()]
   },
-  mode: 'development'
+  mode: 'production' // Change to 'development' for development mode
 };
