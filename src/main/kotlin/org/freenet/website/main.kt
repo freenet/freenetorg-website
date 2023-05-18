@@ -71,13 +71,12 @@ private fun HeadComponent.configureHead() {
     addScript("/static/qrcode.min.js")
 
     // TODO: This was compiled with --with-all, but it should only include
-    // TODO: features we're using
+    // TODO: features we're using2
     addScript("/static/sjcl.min.js")
-    addScript("/static/id.js")
 
-    // addScript("/static/crypto-js.min.js")
-    //  addScript("/static/jsbn.js")
-    // addScript("/static/jsrsasign-all-min.js")
+    addScript("/static/id.js")
+    addScript("/static/checkout.js")
+    addScript("https://js.stripe.com/v3/")
 
     listOf(
         "/static/fontawesome/css/fontawesome.min.css",

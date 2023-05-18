@@ -21,6 +21,7 @@ fun recordVisit(httpRequestInfo: HttpRequestInfo) {
     if (db != null && httpRequestInfo.requestedUrl.contains("freenet.org") && httpRequestInfo.userAgent?.contains("Google") != true) {
         val visit = Visit(
             time = Date(),
+            // Hash for user privacy
             remoteHostHash = httpRequestInfo.remoteHost.hashCode(),
             userAgent = httpRequestInfo.userAgent ?: "unknown",
             visitUrl = httpRequestInfo.requestedUrl,

@@ -1,4 +1,4 @@
-// I assume that this is the entry point where you want to start the key generation process.
+// Called when user presses "Generate Key" button
 async function beginGeneration() {
     let kp = generateUserECCKeyPair();
     let kpBase64 = publicKeyToBase64(kp.userECPublicKey);
