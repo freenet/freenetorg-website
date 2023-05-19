@@ -19,7 +19,7 @@ fun Component.faqPage() {
             var faqNumber = 0
             val headings = ArrayList<String>()
             jsoupDoc.select("h1").forEach { h1 ->
-                h1.id("faq-$faqNumber}")
+                h1.id("faq-$faqNumber")
                 headings += h1.html()
                 faqNumber++
             }
