@@ -25,7 +25,7 @@ fun Component.iconButton(html : String, href : String, icon : Array<String>, but
 
     }
 }
-
+/*
 fun Component.workInProgress() {
     section { section ->
         section.classes("section")
@@ -38,4 +38,4 @@ fun Component.workInProgress() {
                 </div>
         """.trimIndent())
     }
-}
+}*/

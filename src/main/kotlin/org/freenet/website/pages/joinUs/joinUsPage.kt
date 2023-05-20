@@ -3,7 +3,6 @@ package org.freenet.website.pages.joinUs
 import kweb.*
 import kweb.components.Component
 import org.freenet.website.util.iconButton
-import org.freenet.website.util.workInProgress
 
 /**
  * This tab could focus on community engagement and provide information
@@ -17,8 +16,6 @@ fun Component.joinUsPage() {
     socialLinks()
 
     donationCryptoWallets()
-
-    workInProgress()
 }
 
 private fun Component.socialLinks() {

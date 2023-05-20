@@ -4,7 +4,6 @@ import kweb.*
 import kweb.components.Component
 import kweb.state.render
 import org.freenet.website.util.retrievePage
-import org.freenet.website.util.workInProgress
 import org.jsoup.Jsoup
 
 
