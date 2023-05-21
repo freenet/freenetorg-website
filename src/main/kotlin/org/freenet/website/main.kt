@@ -64,7 +64,7 @@ fun main() {
                             NavItem.Developers -> developersPage()
                             NavItem.JoinUs -> joinUsPage()
                             NavItem.Faq -> faqPage()
-                            else -> error("Unknown NavItem: $activeNavItem")
+                            else -> error("Unknown Item: $activeNavItem")
                         }
                     }
                 }
