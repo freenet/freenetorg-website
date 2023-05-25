@@ -26,10 +26,10 @@ val isLocalTestingMode: Boolean = System.getenv("FREENET_SITE_LOCAL_TESTING").eq
 
 fun main() {
 
-    val scope = CoroutineScope(Dispatchers.IO)
-
     // Initial retrieval of PT releases to avoid a delay the first time it's used
     PivotalTracker.releases
+
+    val scope = CoroutineScope(Dispatchers.IO)
 
     logger.info("Starting Freenet Site, isLocalTestingMode: $isLocalTestingMode")
 
