@@ -75,7 +75,6 @@ fun main() {
             recordVisit(this@Kweb.httpRequestInfo)
         }
     }
-
 }
 
 private fun WebBrowser.pathToNavItem() = url.map(UrlToPathSegmentsRF)
