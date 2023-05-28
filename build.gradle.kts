@@ -15,6 +15,7 @@ group = "org.freenet.website"
 version = "1.2-SNAPSHOT"
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
@@ -26,7 +27,7 @@ dependencies {
 
     implementation("com.google.guava:guava:31.1-jre")
 
-    implementation("io.kweb:kweb-core:1.4.5")
+    implementation("io.kweb:kweb-core:1.4.6")
 
     implementation("org.slf4j:slf4j-simple:2.0.5")
 

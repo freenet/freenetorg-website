@@ -99,10 +99,6 @@ typealias HeadComponent = ElementCreator<HeadElement>
 private fun HeadComponent.configureHead() {
     title().text("Freenet")
 
-    element("script") {
-        it["src"] = "/static/freenet.js"
-    }
-
     element("link") {
         it["rel"] = "stylesheet"
         it["href"] = "/static/fontawesome/css/fontawesome.min.css"
