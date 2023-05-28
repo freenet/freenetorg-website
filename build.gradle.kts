@@ -26,7 +26,7 @@ dependencies {
 
     implementation("com.google.guava:guava:31.1-jre")
 
-    implementation("io.kweb:kweb-core:1.4.5")
+    implementation("io.kweb:kweb-core:1.4.4")
 
     implementation("org.slf4j:slf4j-simple:2.0.5")
 
