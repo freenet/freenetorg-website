@@ -5,7 +5,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kweb.*
 import kweb.components.Component
-import kweb.config.KwebDefaultConfiguration
 import kweb.html.HeadElement
 import kweb.plugins.staticFiles.ResourceFolder
 import kweb.plugins.staticFiles.StaticFilesPlugin
