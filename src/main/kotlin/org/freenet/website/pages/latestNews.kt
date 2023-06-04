@@ -19,3 +19,4 @@ fun Component.latestNews() {
         }
     }
 }
+

@@ -5,6 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kweb.*
 import kweb.components.Component
+import kweb.config.KwebDefaultConfiguration
 import kweb.html.HeadElement
 import kweb.plugins.staticFiles.ResourceFolder
 import kweb.plugins.staticFiles.StaticFilesPlugin
@@ -19,6 +20,7 @@ import org.freenet.website.pages.faq.faqPage
 import org.freenet.website.util.HealthCheckPlugin
 import org.freenet.website.util.UrlToPathSegmentsRF
 import org.freenet.website.util.recordVisit
+import java.time.Duration
 
 private val logger = KotlinLogging.logger { }
 
@@ -33,6 +35,12 @@ fun main() {
 
     logger.info("Starting Freenet Site, isLocalTestingMode: $isLocalTestingMode")
 
+    // TODO: Remove
+    val cfg = object : KwebDefaultConfiguration() {
+        override val clientStateTimeout: Duration
+            get() = Duration.ofHours(1)
+    }
+
     Kweb(
         port = 8080,
         debug = isLocalTestingMode,
@@ -40,6 +48,7 @@ fun main() {
             HealthCheckPlugin,
             StaticFilesPlugin(ResourceFolder("static"), "/static",)
         ),
+        kwebConfig = cfg,
     ) {
         doc.head {
 

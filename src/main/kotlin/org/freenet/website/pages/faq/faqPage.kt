@@ -6,7 +6,8 @@ import kweb.state.render
 import org.freenet.website.util.retrievePage
 import org.jsoup.Jsoup
 
-
+// TODO: Move code below to shared KVar
+// TODO:
 private val faqHtml = retrievePage("https://raw.githubusercontent.com/wiki/freenet/locutus/Frequently-Asked-Questions.md")
 
 fun Component.faqPage() {

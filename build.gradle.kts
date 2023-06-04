@@ -5,10 +5,10 @@ import org.gradle.api.tasks.Copy
 
 plugins {
     id("maven-publish")
-    id("org.jetbrains.kotlin.jvm") version "1.8.0"
+    id("org.jetbrains.kotlin.jvm") version "1.9.0-Beta"
     id("application")
     id("com.github.johnrengelman.shadow") version "7.1.2"
-    kotlin("plugin.serialization") version "1.8.0"
+    kotlin("plugin.serialization") version "1.9.0-Beta"
 }
 
 group = "org.freenet.website"
@@ -59,6 +59,9 @@ dependencies {
 
     implementation("org.commonmark:commonmark:0.21.0")
 
+    // TODO: Remove
+    testImplementation("org.seleniumhq.selenium:selenium-java:4.9.1")
+
     testImplementation(platform("org.junit:junit-bom:5.9.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
 }
@@ -78,38 +81,4 @@ tasks {
             include("org.eclipse.jetty.http.HttpFieldPreEncoder")
         }
     }
-}
-
-////////////////
-/// NPM tasks
-////////////////
-
-tasks.register<Exec>("npmBuild") {
-    // Specify the working directory for the task (the subdirectory containing the npm project)
-    workingDir("js_npm")
-
-    // Define the command to run (use "cmd" and "/c" on Windows, "sh" and "-c" on Unix-based systems)
-    if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-        commandLine("cmd", "/c", "npm run build")
-    } else {
-        commandLine("sh", "-c", "npm run build")
-    }
-}
-
-// Define a custom Gradle task named "copyJsFile"
-        tasks.register<Copy>("copyJsToResources") {
-            // Specify the source file to copy
-            from("js_npm/dist/freenetorg.js")
-            // Specify the destination directory
-            into("src/main/resources/static")
-        }
-
-// Make the "copyJsFile" task depend on the "npmBuild" task
-tasks.named("copyJsToResources") {
-    dependsOn("npmBuild")
-}
-
-// Make the standard Gradle "build" task depend on the "copyKeygenToResources" task
-tasks.named("build") {
-    dependsOn("copyJsToResources")
 }
