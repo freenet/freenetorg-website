@@ -14,6 +14,7 @@ import mu.two.KotlinLogging
 import org.freenet.website.pages.about.aboutPage
 import org.freenet.website.pages.developers.PivotalTracker
 import org.freenet.website.pages.developers.developersPage
+import org.freenet.website.pages.faq.faqHtml
 import org.freenet.website.pages.homePage
 import org.freenet.website.pages.joinUs.joinUsPage
 import org.freenet.website.pages.faq.faqPage
@@ -32,6 +33,9 @@ fun main() {
     PivotalTracker.releases
 
     val scope = CoroutineScope(Dispatchers.IO)
+
+    // Force load of faqHtml, this mechanism needs to be replaced
+    faqHtml.value
 
     logger.info("Starting Freenet Site, isLocalTestingMode: $isLocalTestingMode")
 
