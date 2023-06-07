@@ -4,19 +4,13 @@ import kweb.components.Component
 import kweb.div
 import kweb.state.render
 import mu.two.KotlinLogging
-import org.freenet.website.util.retrievePage
+import retrieveMDPage
 
 private val logger = KotlinLogging.logger { }
 
-private val latestNewsHtml = retrievePage("https://raw.githubusercontent.com/wiki/freenet/locutus/News.md")
 
 fun Component.latestNews() {
-    render(latestNewsHtml) { latestNewsHtml ->
-        if (latestNewsHtml == null) {
-            div().text("Loading latest news...")
-        } else {
-            div().innerHTML(latestNewsHtml)
-        }
-    }
+    val latestNewsHtml = retrieveMDPage("https://raw.githubusercontent.com/wiki/freenet/locutus/News.md")
+    div().innerHTML(latestNewsHtml)
 }
 
