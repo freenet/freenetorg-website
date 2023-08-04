@@ -1,18 +1,34 @@
 package org.freenet.website.pages.claimId
 
+import kotlinx.serialization.json.jsonObject
 import kweb.*
 import kweb.components.Component
+import kweb.state.KVar
 
 fun Component.claimIdPage() {
+
+    val hashToSign = KVar("Hola")
+    val QRCode = KVar("")
+
+    browser.onMessage { msg ->
+        val message = msg!!.jsonObject
+        when (message["messageKey"].toString()) {
+            "\"publicKey\"" -> { hashToSign.value = message["data"].toString() }
+            "qrCode" -> {QRCode.value = message["data"].toString()}
+        }
+    }
+
     h1().text("Claim your Freenet ID")
 
-    step1()
+    step1(hashToSign)
 
     step2()
 
+    //step3()
+
 }
 
-private fun Component.step1() {
+private fun Component.step1(hashToSign : KVar<String>) {
     section { section ->
         section.classes("section")
 
@@ -35,7 +51,8 @@ private fun Component.step1() {
         button { button ->
             button.classes("button", "is-medium-green", "generate-button")
             button.on.click {
-                browser.callJsFunction("beginGeneration();")
+                browser.callJsFunction("generateUserKey();")
+                println("StateStuff publicKey = ${hashToSign.value}")
             }
             span { span ->
                 span.classes("icon")
@@ -44,10 +61,58 @@ private fun Component.step1() {
             span().innerHTML("&nbsp;")
             span().text("Generate Key")
         }
+
+
+        p().text(hashToSign)
     }
 }
 
 private fun Component.step2() {
+    section { section ->
+        section.classes("section")
+
+        h1 { h1 ->
+            h1.classes("title")
+            h1.innerHTML("Step 2")
+        }
+        h2 { h2 ->
+            h2.classes("subtitle")
+            h2.innerHTML("Contribute via Stripe")
+        }
+        p().innerHTML(
+            """
+                Now that you have your keys, it's time to give your voice some weight in our ecosystem. This is done through a meaningful contribution.
+                This donation not only supports our mission, but it also lends credibility to your anonymous identity.
+                Your contribution is a signal of your commitment to good behavior on our platform.
+                The next step will unlock upon completion of your donation.
+        """.trimIndent()
+        )
+
+        val stripeButton = button { button ->
+            button.classes("button", "is-medium-green", "generate-button")
+            span { span ->
+                span.classes("icon")
+                i().classes("fas", "fa-key")
+            }
+            span().innerHTML("&nbsp;")
+            span().text("Generate Key")
+        }
+        stripeButton.on.click {
+            p().text(stripeStuff())
+            step3()
+        }
+    }
+}
+
+private fun stripeStuff() : String {
+    return "Payment completed"
+}
+
+fun signBlindedKey() : String {
+    return "signedKey"
+}
+
+private fun Component.step3() {
     section { section ->
         section.classes("section")
 
@@ -78,6 +143,15 @@ private fun Component.step2() {
             }
             span().innerHTML("&nbsp;")
             span().text("Generate Key")
+
+
         }
+
+
+        browser.onMessage {
+            p().text("Hola")
+        }
+
+
     }
 }

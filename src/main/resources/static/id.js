@@ -1,3 +1,8 @@
+let rsaPublicKey = "-----BEGIN RSA PUBLIC KEY-----"
+    + "MEgCQQCo9+BpMRYQ/dL3DS2CyJxRF+j6ctbT3/Qp84+KeFhnii7NT7fELilKUSnx"
+    + "S30WAvQCCo2yU1orfgqr41mM70MBAgMBAAE="
+    + "-----END RSA PUBLIC KEY-----"
+
 // Called when user presses "Generate Key" button
 async function beginGeneration() {
     let kp = generateUserECCKeyPair();
@@ -8,6 +13,21 @@ async function beginGeneration() {
     });
     await generateAndStoreKeys(kp);
 }
+
+function generateUserKey() {
+    let kp = generateUserECCKeyPair();
+    let kpBase64 = publicKeyToBase64(kp.userECPublicKey);
+    localStorage.setItem("userECPublicKey", kp.userECPublicKey);
+    localStorage.setItem("userECPrivateKey", kp.userECPrivateKey);
+    let message = {
+        "messageKey": "publicKey",
+        "data": kpBase64
+    }
+    sendMessage(message)
+}
+
+
+
 
 async function generateAndStoreKeys(kp) {
     let publicKeyHash = hashPublicKey(kp.userECPublicKey);
@@ -23,6 +43,7 @@ async function generateAndStoreKeys(kp) {
         localStorage.setItem("userECPublicKey", kp.userECPublicKey);
         localStorage.setItem("userECPrivateKey", kp.userECPrivateKey);
         localStorage.setItem("userECPublicKeyCert", userECPublicKeyCert);
+        //potentially clear local storage on completed donation
     }
 }
 
