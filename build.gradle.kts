@@ -5,10 +5,10 @@ import org.gradle.api.tasks.Copy
 
 plugins {
     id("maven-publish")
-    id("org.jetbrains.kotlin.jvm") version "1.9.0-Beta"
     id("application")
     id("com.github.johnrengelman.shadow") version "7.1.2"
     kotlin("plugin.serialization") version "1.9.0-Beta"
+    kotlin("jvm") version "1.9.10"
 }
 
 group = "org.freenet.website"

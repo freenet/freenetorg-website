@@ -32,6 +32,22 @@ private fun Component.socialLinks() {
 private fun Component.donationCryptoWallets() {
     h3().text("Support Our Work")
 
+    h4().text("Donate via PayPal or Credit Card")
+
+    div().classes("content").innerHTML("""
+<form action="https://www.paypal.com/donate" method="post" target="_top">
+<input type="hidden" name="hosted_button_id" value="EQ9E7DPHB6ETY" />
+<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
+<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
+</form>
+    """.trimIndent())
+
+    h4().text("Donate via Cryptocurrency")
+
+    p().innerHTML("Freenet is <b>not</b> a cryptocurrency, but we do accept cryptocurrency donations." +
+            " For donations over $5,000 please contact us before sending. For smaller donations, " +
+            "please use the following wallets:")
+
     val donationWallets = listOf(
         Pair("Bitcoin", "3M3fbA7RDYdvYeaoR69cDCtVJqEodo9vth"),
         Pair("Zcash", "t1VHw1PHgzvMqEEd31ZBt3Vyy2UrG4J8utB"),
