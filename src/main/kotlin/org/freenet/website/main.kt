@@ -4,7 +4,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kweb.*
-import kweb.components.Component
 import kweb.html.HeadElement
 import kweb.plugins.staticFiles.ResourceFolder
 import kweb.plugins.staticFiles.StaticFilesPlugin
@@ -76,6 +75,7 @@ private fun HeadComponent.configureHead() {
 
     addScript("/static/id.js")
     addScript("/static/checkout.js")
+    addScript("/static/forge.all.min.js")
     addScript("https://js.stripe.com/v3/")
 
     listOf(
