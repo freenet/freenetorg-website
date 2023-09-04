@@ -14,15 +14,16 @@ function generateUserKey() {
     let kpBase64 = publicKeyToBase64(kp.userECPublicKey);
     localStorage.setItem("userECPublicKey", kp.userECPublicKey);
     localStorage.setItem("userECPrivateKey", kp.userECPrivateKey);
+    console.log("publicKey ", kp.userECPublicKey);
     //let modulus = generateModulus(4096);
     let hashedKey = hashPublicKey(kp.userECPublicKey);
     let blindedKey = blind(hashedKey);
-    //let unblindedKey = unblind(blindedKey)
+    let unblindedKey = unblind(blindedKey);
     let message = {
         "messageKey": "publicKey",
         "data": hashedKey,
-        "blindedKey": blindedKey
-        //"unblindedKey": unblindedKey
+        "blindedKey": blindedKey,
+        "unblindedKey": unblindedKey
         //"blindedKey": blindedKey.blindedPublicKeyHash
     };
     sendMessage(message);
@@ -53,11 +54,14 @@ function blind(publicKeyHash) {
     const modulus = keypair.publicKey.n;
     const exponent = keypair.publicKey.e;
 
+    localStorage.setItem("blindModulus", modulus);
+
     // Convert publicKeyHash to forge BigInteger
     //let publicKeyHashBn = forge.jsbn.BigInteger(publicKeyHash);
 
     // Generate a random blinding factor
     const blindingFactor = forge.random.getBytesSync(24); // Generate random bytes
+    localStorage.setItem("blindingFactor", blindingFactor);
     let blindingFactorBigInt = new forge.jsbn.BigInteger(forge.util.bytesToHex(blindingFactor), 16);
 
     // Compute reModN = blindingFactor^exponent mod modulus
@@ -70,19 +74,25 @@ function blind(publicKeyHash) {
 }
 
 
-/*function unblind(blindedValue, blindingFactor, modulus) {
+function unblind(blindedValue) {
+
+    const modulusString = localStorage.getItem("blindModulus");
+    const modulus = new forge.jsbn.BigInteger(modulusString, 16);
+    console.log("unblind modules ", modulus);
+    const blindingFactor = localStorage.getItem("blindingFactor");
     // Convert inputs to forge BigIntegers
     blindedValue = new forge.jsbn.BigInteger(blindedValue, 16);
-    blindingFactor = new forge.jsbn.BigInteger(blindingFactor, 16);
+    let blindingFactorBigInt = new forge.jsbn.BigInteger(forge.util.bytesToHex(blindingFactor), 16);
+
 
     // Compute the modular inverse of the blinding factor
-    const blindingFactorInv = blindingFactor.modInverse(modulus);
+    const blindingFactorInv = blindingFactorBigInt.modInverse(modulus);
 
     // Compute the unblinded value
     const unblindedValue = blindedValue.multiply(blindingFactorInv).mod(modulus);
 
     return unblindedValue.toString(16); // Return as hexadecimal string
-}*/
+}
 
 
 
