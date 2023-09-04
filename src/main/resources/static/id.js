@@ -25,8 +25,8 @@ function generateUserKey() {
     let message = {
         "messageKey": "publicKey",
         "data": hashedKey,
-        "blindedKey": blindedKey,
-        "unblindedKey": unblindedKey
+        "blindedKey": blindedKey
+        //"unblindedKey": unblindedKey
         //"blindedKey": blindedKey.blindedPublicKeyHash
     };
     sendMessage(message);
@@ -84,9 +84,9 @@ function blind(publicKeyHash) {
     return blindedHash.toString(16); // Return as hexadecimal string
 }
 
-const forge = require('node-forge');
+//const forge = require('node-forge');
 
-function unblind(blindedValue, blindingFactor, modulus) {
+/*function unblind(blindedValue, blindingFactor, modulus) {
     // Convert inputs to forge BigIntegers
     blindedValue = new forge.jsbn.BigInteger(blindedValue, 16);
     blindingFactor = new forge.jsbn.BigInteger(blindingFactor, 16);
@@ -98,7 +98,7 @@ function unblind(blindedValue, blindingFactor, modulus) {
     const unblindedValue = blindedValue.multiply(blindingFactorInv).mod(modulus);
 
     return unblindedValue.toString(16); // Return as hexadecimal string
-}
+}*/
 
 
 
