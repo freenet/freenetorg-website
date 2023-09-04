@@ -14,14 +14,10 @@ function generateUserKey() {
     let kpBase64 = publicKeyToBase64(kp.userECPublicKey);
     localStorage.setItem("userECPublicKey", kp.userECPublicKey);
     localStorage.setItem("userECPrivateKey", kp.userECPrivateKey);
-    console.log("stored stuff");
     //let modulus = generateModulus(4096);
     let hashedKey = hashPublicKey(kp.userECPublicKey);
-    console.log("hashedKey done");
-    console.log("blind generate start");
     let blindedKey = blind(hashedKey);
     //let unblindedKey = unblind(blindedKey)
-    console.log("blinding done");
     let message = {
         "messageKey": "publicKey",
         "data": hashedKey,
@@ -42,49 +38,37 @@ function hashPublicKey(userECPublicKey) {
     }
 
     // Compute the SHA-256 hash
-    console.log("begin hashing");
     const md = forge.md.sha256.create();
     md.update(bytes);
     const hash = md.digest();
-    console.log("hash done");
 
     // Convert the hash to a BigInteger
     const hashBigInt = new forge.jsbn.BigInteger(hash.toHex(), 16);
-    console.log("hashBigInt done");
 
     return hashBigInt;
 }
 
 function blind(publicKeyHash) {
-    console.log("blind start");
     const keypair = forge.pki.rsa.generateKeyPair({bits: 2048, e: 0x10001});
-    console.log("blind keypair made");
     const modulus = keypair.publicKey.n;
     const exponent = keypair.publicKey.e;
-    console.log("mod and exp done");
 
     // Convert publicKeyHash to forge BigInteger
     //let publicKeyHashBn = forge.jsbn.BigInteger(publicKeyHash);
-    console.log("bigIntConversion")
 
     // Generate a random blinding factor
     const blindingFactor = forge.random.getBytesSync(24); // Generate random bytes
-    console.log("blindingFactor generated")
     let blindingFactorBigInt = new forge.jsbn.BigInteger(forge.util.bytesToHex(blindingFactor), 16);
-    console.log("blinding factor made");
 
     // Compute reModN = blindingFactor^exponent mod modulus
     let reModN = blindingFactorBigInt.modPow(exponent, modulus);
-    console.log("reModN done");
 
     // Compute blindedHash = publicKeyHash * reModN mod modulus
     let blindedHash = publicKeyHash.multiply(reModN).mod(modulus);
-    console.log("blind mulmod done");
 
     return blindedHash.toString(16); // Return as hexadecimal string
 }
 
-//const forge = require('node-forge');
 
 /*function unblind(blindedValue, blindingFactor, modulus) {
     // Convert inputs to forge BigIntegers
