@@ -7,20 +7,25 @@ import kweb.state.KVar
 
 fun Component.claimIdPage() {
 
-    val hashToSign = KVar("Hola")
-    val QRCode = KVar("")
+
+    val blindedHash = KVar("")
+    val unblinded = KVar("")
+
 
     browser.onMessage { msg ->
         val message = msg!!.jsonObject
         when (message["messageKey"].toString()) {
-            "\"publicKey\"" -> { hashToSign.value = message["data"].toString() }
-            "qrCode" -> {QRCode.value = message["data"].toString()}
+            "\"publicKey\"" -> {
+                blindedHash.value = message["blindedKey"].toString()
+                unblinded.value = message["unblindedKey"].toString()
+
+            }
         }
     }
 
     h1().text("Claim your Freenet ID")
 
-    step1(hashToSign)
+    step1(blindedHash, unblinded)
 
     step2()
 
@@ -28,7 +33,7 @@ fun Component.claimIdPage() {
 
 }
 
-private fun Component.step1(hashToSign : KVar<String>) {
+private fun Component.step1(blindedHash : KVar<String>, unblinded: KVar<String>) {
     section { section ->
         section.classes("section")
 
@@ -52,7 +57,6 @@ private fun Component.step1(hashToSign : KVar<String>) {
             button.classes("button", "is-medium-green", "generate-button")
             button.on.click {
                 browser.callJsFunction("generateUserKey();")
-                println("StateStuff publicKey = ${hashToSign.value}")
             }
             span { span ->
                 span.classes("icon")
@@ -63,7 +67,8 @@ private fun Component.step1(hashToSign : KVar<String>) {
         }
 
 
-        p().text(hashToSign)
+        p().text(blindedHash)
+        p().text(unblinded)
     }
 }
 

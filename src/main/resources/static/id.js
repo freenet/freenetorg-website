@@ -1,30 +1,15 @@
 // Called when user presses "Generate Key" button
-async function beginGeneration() {
+function generateUserKey() {//this should be renamed something like beginGeneration
     let kp = generateUserECCKeyPair();
-    let kpBase64 = publicKeyToBase64(kp.userECPublicKey);
-    console.log("User EC Public Key: " + kpBase64);
-    let qrcode = new QRCode(document.getElementsByClassName("qrcode")[0], {
-        text: kpBase64,
-    });
-    await generateAndStoreKeys(kp);
-}
-
-function generateUserKey() {
-    let kp = generateUserECCKeyPair();
-    let kpBase64 = publicKeyToBase64(kp.userECPublicKey);
+    //let kpBase64 = publicKeyToBase64(kp.userECPublicKey);
     localStorage.setItem("userECPublicKey", kp.userECPublicKey);
     localStorage.setItem("userECPrivateKey", kp.userECPrivateKey);
-    console.log("publicKey ", kp.userECPublicKey);
-    //let modulus = generateModulus(4096);
+
     let hashedKey = hashPublicKey(kp.userECPublicKey);
     let blindedKey = blind(hashedKey);
-    let unblindedKey = unblind(blindedKey);
     let message = {
         "messageKey": "publicKey",
-        "data": hashedKey,
         "blindedKey": blindedKey,
-        "unblindedKey": unblindedKey
-        //"blindedKey": blindedKey.blindedPublicKeyHash
     };
     sendMessage(message);
 }
@@ -50,14 +35,13 @@ function hashPublicKey(userECPublicKey) {
 }
 
 function blind(publicKeyHash) {
+    //TODO this takes a few seconds on my fairly high end desktop.
+    // This function should probably be re-written to use async to avoid blocking the DOM thread on lower end devices
     const keypair = forge.pki.rsa.generateKeyPair({bits: 2048, e: 0x10001});
     const modulus = keypair.publicKey.n;
     const exponent = keypair.publicKey.e;
-
     localStorage.setItem("blindModulus", modulus);
 
-    // Convert publicKeyHash to forge BigInteger
-    //let publicKeyHashBn = forge.jsbn.BigInteger(publicKeyHash);
 
     // Generate a random blinding factor
     const blindingFactor = forge.random.getBytesSync(24); // Generate random bytes
@@ -75,10 +59,8 @@ function blind(publicKeyHash) {
 
 
 function unblind(blindedValue) {
-
     const modulusString = localStorage.getItem("blindModulus");
     const modulus = new forge.jsbn.BigInteger(modulusString, 16);
-    console.log("unblind modules ", modulus);
     const blindingFactor = localStorage.getItem("blindingFactor");
     // Convert inputs to forge BigIntegers
     blindedValue = new forge.jsbn.BigInteger(blindedValue, 16);
@@ -96,7 +78,18 @@ function unblind(blindedValue) {
 
 
 
-
+//TODO
+//The code below this point is not used. I left it here because I may use some of it.
+// Called when user presses "Generate Key" button
+async function beginGeneration() {
+    let kp = generateUserECCKeyPair();
+    let kpBase64 = publicKeyToBase64(kp.userECPublicKey);
+    console.log("User EC Public Key: " + kpBase64);
+    let qrcode = new QRCode(document.getElementsByClassName("qrcode")[0], {
+        text: kpBase64,
+    });
+    await generateAndStoreKeys(kp);
+}
 
 async function generateAndStoreKeys(kp) {
     let publicKeyHash = hashPublicKey(kp.userECPublicKey);
@@ -135,97 +128,6 @@ function generateUserECCKeyPair() {
 
     return {userECPublicKey: pub, userECPrivateKey: sec};
 }
-
-/*function hashPublicKey(userECPublicKey) {
-    let hasher = new sjcl.misc.hmac(userECPublicKey, sjcl.hash.sha256);
-    return hasher.digest();
-}*/
-
-
-
-/*function hashPublicKey(userECPublicKey) {
-    // Convert the public key to a bitArray (if it's not already)
-    let bitArray;
-    if (typeof userECPublicKey === 'string') {
-        bitArray = sjcl.codec.utf8String.toBits(userECPublicKey);
-    } else {
-        bitArray = userECPublicKey;  // Assuming it's already a bitArray
-    }
-
-    // Compute the SHA-256 hash
-    console.log("begin hashing")
-    let hashBitArray = sjcl.hash.sha256.hash(bitArray);
-    console.log("hashBitArray done")
-
-    let hashBn = sjcl.bn.fromBits(hashBitArray)
-    console.log("hashBN done")
-
-    return hashBn;
-}*/
-
-
-// function blind(publicKeyHash, freenetRSAPublicKey) {
-//     let blindingFactor = sjcl.bn.random(freenetRSAPublicKey, 10);
-//     let blindedPublicKeyHash = publicKeyHash.mulmod(blindingFactor, freenetRSAPublicKey);
-//
-//     return {blindedPublicKeyHash: blindedPublicKeyHash, blindingFactor};
-// }
-
-/*function unblind(blindedSignature, blindingFactor, freenetRSAPublicKey) {
-    return blindedSignature
-        .mulmod(
-            blindingFactor.inverseMod(freenetRSAPublicKey),
-            freenetRSAPublicKey
-        );
-}*/
-
-/*function blind(publicKeyHash) {
-    console.log("blind function start");
-    //const keypair = forge.pki.rsa.generateKeyPair({bits: 2048, e: 0x10001});
-    console.log("blind function end");
-    return "hola";
-}*/
-
-/*function blind(publicKeyHash) {
-    console.log("blind start");
-    const keypair = forge.pki.rsa.generateKeyPair({bits: 2048, e: 0x10001});
-    console.log("blind keypair made")
-    const modulus = keypair.publicKey.n;
-    const exponent = keypair.publicKey.e;
-
-    let blindingFactor = sjcl.bn.random(modulus);
-    console.log("blinding factor made")
-
-    let reModN = blindingFactor.powermod(exponent, modulus);
-    console.log("reModN done")
-
-    let blindedHash = publicKeyHash.mulmod(reModN, modulus)
-    console.log("blind mulmod done")
-
-    return blindedHash;
-}*/
-
-/*function blind(publicKeyHash, modulus) {
-    if (typeof sjcl === 'undefined' || !sjcl.bn) {
-        throw new Error('sjcl library or its bn module is not available');
-    }
-
-    // Ensure that publicKeyHash is an instance of sjcl.bn
-    if (!(publicKeyHash instanceof sjcl.bn)) {
-        throw new Error('publicKeyHash is not an instance of sjcl.bn');
-    }
-
-    // Generate a random blinding factor. Ensure it's less than the modulus
-    let blindingFactor = new sjcl.bn.random(modulus);
-
-    // Blind the publicKeyHash using modular multiplication
-    let blindedPublicKeyHash = publicKeyHash.mulmod(blindingFactor, modulus);
-
-    return {
-        blindedPublicKeyHash: blindedPublicKeyHash,
-        blindingFactor: blindingFactor
-    };
-}*/
 
 function createUserECPublicKeyCertificate(unblindedSignature, freenetRSACertPEM) {
     let userECPublicKeyCert = "-----BEGIN CERTIFICATE-----\n";
@@ -295,13 +197,6 @@ function base64ToPublicKey(publicKeyBase64) {
 }
 
 /*
-let userECKeyPair = generateUserECCKeyPair();
-let userECPublicKeyHash = hashPublicKey(userECKeyPair.userECPublicKey);
-
-// Assuming freenetRSAPublicKey is available and you have the blindedSignature
-let blindedPublicKeyHashData = blind(userECPublicKeyHash, freenetRSAPublicKey);
-let unblindedSignature = unblind(blindedSignature, blindedPublicKeyHashData.blindingFactor, freenetRSAPublicKey);
-
 // Assuming you have the freenetRSACertPEM
 let userECPublicKeyCert = createUserECPublicKeyCertificate(unblindedSignature, freenetRSACertPEM);
 
