@@ -1,8 +1,10 @@
 package org.freenet.website.pages.claimId
 
+import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonObject
 import kweb.*
 import kweb.components.Component
+import kweb.plugins.fomanticUI.fomantic
 import kweb.state.KVar
 
 fun Component.claimIdPage() {
@@ -25,7 +27,7 @@ fun Component.claimIdPage() {
 
     h1().text("Claim your Freenet ID")
 
-    step1(blindedHash, unblinded)
+    step1(blindedHash)
 
     step2()
 
@@ -33,7 +35,7 @@ fun Component.claimIdPage() {
 
 }
 
-private fun Component.step1(blindedHash : KVar<String>, unblinded: KVar<String>) {
+private fun Component.step1(blindedHash : KVar<String>) {
     section { section ->
         section.classes("section")
 
@@ -67,8 +69,8 @@ private fun Component.step1(blindedHash : KVar<String>, unblinded: KVar<String>)
         }
 
 
+        //sample line to display blinded hash when received from client
         p().text(blindedHash)
-        p().text(unblinded)
     }
 }
 
@@ -109,11 +111,14 @@ private fun Component.step2() {
     }
 }
 
+
 private fun stripeStuff() : String {
+    //TODO implement Stripe checkout form
     return "Payment completed"
 }
 
 fun signBlindedKey() : String {
+    //placeholder function where Crypto.kt will be called to perform the server side signature
     return "signedKey"
 }
 
