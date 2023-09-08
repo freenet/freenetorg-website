@@ -35,7 +35,7 @@ private fun Component.learnMoreLinks() {
         // Video Introduction
         iconButton(
             html = "Watch Ian's Talk",
-            href = "https://www.youtube.com/watch?v=d31jmv5Tx5k",
+            href = "https://youtu.be/yBtyNIqZios?si=vnFje0OQFYkni7NZ",
             icon = arrayOf("fas", "fa-video"),
             buttonClasses = arrayOf("button", "is-medium-blue")
         )
