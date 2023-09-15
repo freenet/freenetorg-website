@@ -56,7 +56,7 @@ private fun Component.learnMoreLinks() {
         // GitHub Repository
         iconButton(
             html = "Visit GitHub",
-            href = "https://github.com/freenet/locutus",
+            href = "https://github.com/freenet/freenet-core",
             icon = arrayOf("fab", "fa-github"),
             buttonClasses = arrayOf("button", "is-medium-orange")
         )

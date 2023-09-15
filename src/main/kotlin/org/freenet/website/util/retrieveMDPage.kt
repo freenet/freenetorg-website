@@ -21,7 +21,7 @@ private val notFound = """
         <div class="container has-text-centered">
             <h1 class="title">Oops, our website is having some issues.</h1>
             <p class="subtitle">Please 
-                <a href="https://matrix.to/#/#freenet-locutus:matrix.org">let us know</a>
+                <a href="https://matrix.to/#/#freenet-freenet-core:matrix.org">let us know</a>
                 if you see this consistently.
             </p>
         </div>

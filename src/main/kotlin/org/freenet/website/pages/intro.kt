@@ -8,7 +8,7 @@ import retrieveMDPage
 private val logger = KotlinLogging.logger { }
 
 fun Component.intro() {
-    val introHtml = retrieveMDPage("https://raw.githubusercontent.com/wiki/freenet/locutus/Intro.md")
+    val introHtml = retrieveMDPage("https://raw.githubusercontent.com/wiki/freenet/freenet-core/Intro.md")
 
     div().innerHTML(introHtml)
 }

@@ -8,7 +8,7 @@ import retrieveMDPage
 
 fun Component.faqPage() {
     val faqHtml =
-        retrieveMDPage("https://raw.githubusercontent.com/wiki/freenet/locutus/Frequently-Asked-Questions.md")
+        retrieveMDPage("https://raw.githubusercontent.com/wiki/freenet/freenet-core/Frequently-Asked-Questions.md")
     val jsoupDoc = Jsoup.parse(faqHtml)
     var faqNumber = 0
     val headings = ArrayList<String>()
