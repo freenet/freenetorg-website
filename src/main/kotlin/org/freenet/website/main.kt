@@ -1,5 +1,6 @@
 package org.freenet.website
 
+import com.stripe.Stripe
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -11,6 +12,7 @@ import mu.two.KotlinLogging
 import org.freenet.website.pages.developers.PivotalTracker
 import org.freenet.website.pages.renderNavBarAndPage
 import org.freenet.website.util.HealthCheckPlugin
+import org.freenet.website.util.StripeRoutePlugin
 import org.freenet.website.util.UrlToPathSegmentsRF
 import org.freenet.website.util.recordVisit
 
@@ -32,7 +34,8 @@ fun main() {
         debug = isLocalTestingMode,
         plugins = listOf(
             HealthCheckPlugin,
-            StaticFilesPlugin(ResourceFolder("static"), "/static")
+            StaticFilesPlugin(ResourceFolder("static"), "/static"),
+            StripeRoutePlugin()
         )
     ) {
         doc.head {
@@ -74,9 +77,9 @@ private fun HeadComponent.configureHead() {
     addScript("/static/sjcl.min.js")
 
     addScript("/static/id.js")
-    addScript("/static/checkout.js")
     addScript("/static/forge.all.min.js")
     addScript("https://js.stripe.com/v3/")
+    addScript("/static/checkout.js")
 
     listOf(
         "/static/fontawesome/css/fontawesome.min.css",
