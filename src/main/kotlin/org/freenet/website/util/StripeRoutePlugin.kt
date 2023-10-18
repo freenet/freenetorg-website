@@ -15,9 +15,7 @@ import kweb.plugins.KwebPlugin
 class StripeRoutePlugin : KwebPlugin() {
 
     data class UserInfo (
-        val username : String,
-        val email : String,
-        val donationAmount : Long,
+        val donation : String
     )
 
     internal class CreatePaymentResponse(private val clientSecret: String)
@@ -29,15 +27,9 @@ class StripeRoutePlugin : KwebPlugin() {
             val requestBody = call.receiveText()
             val postBody : UserInfo = gson.fromJson(requestBody, UserInfo::class.java)
             println(postBody)
-            val customerParams = CustomerCreateParams.builder().setEmail(postBody.email).build()
-            val customer = Customer.create(customerParams)
             val params : PaymentIntentCreateParams = PaymentIntentCreateParams.builder()
-                .setAmount(postBody.donationAmount * 100)
-                .setCustomer(customer.id)
-                .setReceiptEmail(customer.email)
-                .setDescription("Reservation for ${postBody.username}")
+                .setAmount(100)
                 .setCurrency("USD")
-                .putMetadata("username", postBody.username)
                 .setAutomaticPaymentMethods(
                     PaymentIntentCreateParams.AutomaticPaymentMethods
                         .builder()
@@ -46,6 +38,7 @@ class StripeRoutePlugin : KwebPlugin() {
                 ).build()
 
             val paymentIntent = PaymentIntent.create(params)
+            println("paymentIntent created")
 
             val paymentResponse = CreatePaymentResponse(paymentIntent.clientSecret)
             call.respond(gson.toJson(paymentResponse))
