@@ -35,8 +35,7 @@ function hashPublicKey(userECPublicKey) {
 }
 
 function blind(publicKeyHash) {
-    //TODO this takes a few seconds on my fairly high end desktop.
-    // This function should probably be re-written to use async to avoid blocking the DOM thread on lower end devices
+    //TODO this keypair should use Freenet's publically available public key, instead of generating a keypair.
     const keypair = forge.pki.rsa.generateKeyPair({bits: 2048, e: 0x10001});
     const modulus = keypair.publicKey.n;
     const exponent = keypair.publicKey.e;
