@@ -34,4 +34,9 @@ spec:
                 secretKeyRef:
                   name: pivotal-api-key
                   key: pivotal-tracker-api-token
+            - name: GITHUB_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: github-token
+                  key: github-discussions-api-token
       serviceAccountName: freenet-service-account

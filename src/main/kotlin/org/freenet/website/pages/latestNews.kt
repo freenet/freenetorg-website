@@ -2,7 +2,6 @@ package org.freenet.website.pages
 
 import kweb.components.Component
 import kweb.div
-import kweb.state.render
 import mu.two.KotlinLogging
 import retrieveMDPage
 
