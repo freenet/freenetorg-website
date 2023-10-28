@@ -82,7 +82,8 @@ private fun getOrdinal(n: Int): String {
         11, 12, 13 -> n.toString() + "th"
         else -> {
             val lastDigit = n % 10
-            n.toString() + suffixes.getOrNull(lastDigit.coerceIn(1..3) - 1).orEmpty()
+            val suffix = if (lastDigit in 1..3) suffixes[lastDigit - 1] else "th"
+            n.toString() + suffix
         }
     }
 }
