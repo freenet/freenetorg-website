@@ -43,6 +43,10 @@ sealed class NavItem(val html: String, val link: String, val icon: String? = nul
     data object JoinUs : NavItem("Join Us", "/join", "users", "Freenet: Join Us")
     data object Faq : NavItem("FAQ", "/faq", "book", "Freenet: FAQ")
     class Blog(val number: Int?) : NavItem("Blog", "/blog", "blog") {
-        override val title = "Freenet Blog: ${GitHubDiscussions?.discussions?.discussionsByNumber?.get(number)?.title ?: "Not Found"}"
+        override val title = if (number == null) {
+            "Freenet Blog"
+        } else {
+            "Freenet Blog: ${GitHubDiscussions?.discussions?.discussionsByNumber?.get(number)?.title ?: "Not Found"}"
+        }
     }
 }
