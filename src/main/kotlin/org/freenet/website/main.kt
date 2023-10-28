@@ -9,9 +9,12 @@ import kweb.config.KwebDefaultConfiguration
 import kweb.html.HeadElement
 import kweb.plugins.staticFiles.ResourceFolder
 import kweb.plugins.staticFiles.StaticFilesPlugin
+import kweb.state.KVal
 import kweb.state.render
 import mu.two.KotlinLogging
 import org.freenet.website.pages.about.aboutPage
+import org.freenet.website.pages.blog.GitHubDiscussions
+import org.freenet.website.pages.blog.blogPage
 import org.freenet.website.pages.developers.PivotalTracker
 import org.freenet.website.pages.developers.developersPage
 import org.freenet.website.pages.homePage
@@ -26,10 +29,11 @@ private val logger = KotlinLogging.logger { }
 
 val isLocalTestingMode: Boolean = System.getenv("FREENET_SITE_LOCAL_TESTING").equals("true", true)
 
-fun main() {
+suspend fun main() {
 
-    // Initial retrieval of PT releases to avoid a delay the first time it's used
+    // Initialize singletons to avoid a delay the first time they are used
     PivotalTracker.releases
+    GitHubDiscussions.getDiscussions()
 
     val scope = CoroutineScope(Dispatchers.IO)
 
@@ -50,9 +54,11 @@ fun main() {
         ),
         kwebConfig = cfg,
     ) {
+        val nav = pathToNavItem()
+
         doc.head {
 
-            configureHead()
+            configureHead(nav.map { it.title ?: "Freenet" })
         }
         doc.body {
 
@@ -62,17 +68,16 @@ fun main() {
                 div { div ->
                     div.classes("container")
 
-                    val nav = pathToNavItem()
-
                     navComponent(nav)
 
                     render(nav) { activeNavItem ->
                         when (activeNavItem) {
-                            NavItem.About -> aboutPage()
-                            NavItem.Home -> homePage()
-                            NavItem.Developers -> developersPage()
-                            NavItem.JoinUs -> joinUsPage()
-                            NavItem.Faq -> faqPage()
+                            is NavItem.About -> aboutPage()
+                            is NavItem.Home -> homePage()
+                            is NavItem.Developers -> developersPage()
+                            is NavItem.JoinUs -> joinUsPage()
+                            is NavItem.Faq -> faqPage()
+                            is NavItem.Blog -> blogPage(activeNavItem.number)
                             else -> error("Unknown Item: $activeNavItem")
                         }
                     }
@@ -96,6 +101,7 @@ private fun WebBrowser.pathToNavItem() = url.map(UrlToPathSegmentsRF)
                 "dev" -> NavItem.Developers
                 "join" -> NavItem.JoinUs
                 "faq" -> NavItem.Faq
+                "blog" -> NavItem.Blog(if (pathSegments.size > 1) pathSegments[1].toIntOrNull() else null)
                 else -> NavItem.Home
             }
         }
@@ -103,8 +109,8 @@ private fun WebBrowser.pathToNavItem() = url.map(UrlToPathSegmentsRF)
 
 typealias HeadComponent = ElementCreator<HeadElement>
 
-private fun HeadComponent.configureHead() {
-    title().text("Freenet")
+private fun HeadComponent.configureHead(title : KVal<String>) {
+    title().text(title)
 
     element("link") {
         it["rel"] = "stylesheet"
