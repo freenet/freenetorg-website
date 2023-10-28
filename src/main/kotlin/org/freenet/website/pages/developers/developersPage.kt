@@ -3,6 +3,7 @@ package org.freenet.website.pages.developers
 import kweb.components.Component
 import kweb.div
 import kweb.h2
+import kweb.h3
 import kweb.p
 import org.freenet.website.util.iconButton
 

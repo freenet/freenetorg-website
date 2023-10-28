@@ -12,13 +12,11 @@ import kweb.plugins.staticFiles.StaticFilesPlugin
 import kweb.state.KVal
 import kweb.state.render
 import mu.two.KotlinLogging
-import org.freenet.website.pages.about.aboutPage
 import org.freenet.website.pages.blog.GitHubDiscussions
 import org.freenet.website.pages.blog.blogPage
 import org.freenet.website.pages.developers.PivotalTracker
 import org.freenet.website.pages.developers.developersPage
 import org.freenet.website.pages.homePage
-import org.freenet.website.pages.joinUs.joinUsPage
 import org.freenet.website.pages.faq.faqPage
 import org.freenet.website.util.HealthCheckPlugin
 import org.freenet.website.util.UrlToPathSegmentsRF
@@ -72,10 +70,8 @@ suspend fun main() {
 
                     render(nav) { activeNavItem ->
                         when (activeNavItem) {
-                            is NavItem.About -> aboutPage()
                             is NavItem.Home -> homePage()
                             is NavItem.Developers -> developersPage()
-                            is NavItem.JoinUs -> joinUsPage()
                             is NavItem.Faq -> faqPage()
                             is NavItem.Blog -> blogPage(activeNavItem.number)
                             else -> error("Unknown Item: $activeNavItem")
@@ -97,9 +93,7 @@ private fun WebBrowser.pathToNavItem() = url.map(UrlToPathSegmentsRF)
             NavItem.Home
         } else {
             when (pathSegments[0]) {
-                "about" -> NavItem.About
                 "dev" -> NavItem.Developers
-                "join" -> NavItem.JoinUs
                 "faq" -> NavItem.Faq
                 "blog" -> NavItem.Blog(if (pathSegments.size > 1) pathSegments[1].toIntOrNull() else null)
                 else -> NavItem.Home
