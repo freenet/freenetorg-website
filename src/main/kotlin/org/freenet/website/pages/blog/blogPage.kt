@@ -56,7 +56,7 @@ fun Component.blogPage(number: Int? = null) {
                     }
                     div {
                         it.classes("subtitle", "is-6")
-                        it.text(discussion.createdAt.asFriendlyDate())
+                        it.innerHTML(discussion.createdAt.asFriendlyDate())
                     }
                     div {
                         it.classes("content")
@@ -76,17 +76,18 @@ private fun formatForUrl(title: String): String {
 }
 
 
-private fun getOrdinal(n: Int): String {
+private fun getOrdinalWithSuperscript(n: Int): String {
     val suffixes = arrayOf("th", "st", "nd", "rd")
-    return when (n % 100) {
-        11, 12, 13 -> n.toString() + "th"
-        else -> n.toString() + suffixes[n % 10.coerceIn(1..3)]
+    val suffix = when (n % 100) {
+        11, 12, 13 -> "th"
+        else -> suffixes.getOrNull((n % 10).coerceIn(1..3) - 1).orEmpty()
     }
+    return "<span>${n}<sup>${suffix}</sup></span>"
 }
 
 fun Instant.asFriendlyDate(): String {
     val localDate = this.atZone(ZoneId.systemDefault()).toLocalDate()
-    val day = getOrdinal(localDate.dayOfMonth)
+    val day = getOrdinalWithSuperscript(localDate.dayOfMonth)
     val month = localDate.month.getDisplayName(TextStyle.FULL, Locale.US)
     val year = localDate.year
     return "$day $month, $year"
