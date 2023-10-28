@@ -77,12 +77,16 @@ private fun formatForUrl(title: String): String {
 
 
 private fun getOrdinal(n: Int): String {
-    val suffixes = arrayOf("th", "st", "nd", "rd")
     return when (n % 100) {
         11, 12, 13 -> n.toString() + "th"
         else -> {
             val lastDigit = n % 10
-            val suffix = if (lastDigit in 1..3) suffixes[lastDigit - 1] else "th"
+            val suffix = when (lastDigit) {
+                1 -> "st"
+                2 -> "nd"
+                3 -> "rd"
+                else -> "th"
+            }
             n.toString() + suffix
         }
     }
