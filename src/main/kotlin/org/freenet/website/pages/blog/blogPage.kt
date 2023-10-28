@@ -76,18 +76,20 @@ private fun formatForUrl(title: String): String {
 }
 
 
-private fun getOrdinalWithSuperscript(n: Int): String {
+private fun getOrdinal(n: Int): String {
     val suffixes = arrayOf("th", "st", "nd", "rd")
-    val suffix = when (n % 100) {
-        11, 12, 13 -> "th"
-        else -> suffixes.getOrNull((n % 10).coerceIn(1..3) - 1).orEmpty()
+    return when (n % 100) {
+        11, 12, 13 -> n.toString() + "th"
+        else -> {
+            val lastDigit = n % 10
+            n.toString() + suffixes.getOrNull(lastDigit.coerceIn(1..3) - 1).orEmpty()
+        }
     }
-    return "<span>${n}<sup>${suffix}</sup></span>"
 }
 
 fun Instant.asFriendlyDate(): String {
     val localDate = this.atZone(ZoneId.systemDefault()).toLocalDate()
-    val day = getOrdinalWithSuperscript(localDate.dayOfMonth)
+    val day = getOrdinal(localDate.dayOfMonth)
     val month = localDate.month.getDisplayName(TextStyle.FULL, Locale.US)
     val year = localDate.year
     return "$day $month, $year"
