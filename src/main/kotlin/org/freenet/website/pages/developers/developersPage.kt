@@ -29,8 +29,7 @@ fun Component.developersPage() {
 private fun Component.devLinks() {
     div { div ->
         div.classes("buttons")
-        iconButton("Core Concepts", "https://docs.freenet.org/components/overview.html", arrayOf("fas", "fa-sitemap"))
-        iconButton("Tutorial", "https://docs.freenet.org/tutorial.html", arrayOf("fab", "fa-readme"))
+        iconButton("User Manual", "https://docs.freenet.org/", arrayOf("fas", "fa-book"))
         iconButton("Github", "https://github.com/freenet/freenet-core", arrayOf("fab", "fa-github"))
         iconButton("Crates.io", "https://crates.io/crates/locutus", arrayOf("fa-brands", "fa-rust"))
     }
