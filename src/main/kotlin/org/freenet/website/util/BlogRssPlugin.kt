@@ -28,13 +28,15 @@ class BlogRssPlugin : KwebPlugin() {
         val rss = StringBuilder()
         rss.append("""
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
+<rss version="2.0" xmlns:sy="http://purl.org/rss/1.0/modules/syndication/">
     <channel>
         <title>Freenet Blog</title>
         <link>https://freenet.org/blog</link>
         <description>News and updates from the Freenet Project</description>
         <language>en-us</language>
         <ttl>1440</ttl>
+        <sy:updatePeriod>daily</sy:updatePeriod>
+        <sy:updateFrequency>1</sy:updateFrequency>
         """.trimIndent())
         val discussions = GitHubDiscussions.discussions
         if (discussions != null) {
