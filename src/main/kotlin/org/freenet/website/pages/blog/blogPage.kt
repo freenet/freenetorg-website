@@ -26,7 +26,7 @@ fun Component.blogPage(number: Int? = null) {
                     h3 { it.text("Loading, please refresh page.") }
                 } else {
                     discussions.discussions.forEach { discussion ->
-                        a(href = "/blog/${discussion.number}/${formatForUrl(discussion.title)}.html") {
+                        a(href = discussion.freenetUrlPath) {
                             it["style"] = "color: #000000;"
                             div {
                                 it.classes("box")
@@ -69,7 +69,7 @@ fun Component.blogPage(number: Int? = null) {
     }
 }
 
-private fun formatForUrl(title: String): String {
+fun formatForUrl(title: String): String {
     return title.lowercase(Locale.getDefault())
         .replace(Regex("\\s"), "-")
         .replace(Regex("[^a-z0-9-]"), "")

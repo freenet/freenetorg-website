@@ -18,6 +18,7 @@ import org.freenet.website.pages.developers.PivotalTracker
 import org.freenet.website.pages.developers.developersPage
 import org.freenet.website.pages.homePage
 import org.freenet.website.pages.faq.faqPage
+import org.freenet.website.util.BlogRssPlugin
 import org.freenet.website.util.HealthCheckPlugin
 import org.freenet.website.util.UrlToPathSegmentsRF
 import org.freenet.website.util.recordVisit
@@ -47,6 +48,7 @@ suspend fun main() {
         port = 8080,
         debug = isLocalTestingMode,
         plugins = listOf(
+            BlogRssPlugin(),
             HealthCheckPlugin,
             StaticFilesPlugin(ResourceFolder("static"), "/static",)
         ),
@@ -136,7 +138,14 @@ private fun HeadComponent.configureHead(title : KVal<String>) {
         meta["name"] = "viewport"
     }
 
-  //  element("script")["src"] = "https://js.stripe.com/v3/"
+    element("link") {
+        it["rel"] = "alternate"
+        it["type"] = "application/rss+xml"
+        it["title"] = "Freenet Blog RSS Feed"
+        it["href"] = "https://freenet.org/blog.rss"
+    }
+
+    //  element("script")["src"] = "https://js.stripe.com/v3/"
   //  element("script")["src"] = "/static/checkout.js"
 }
 

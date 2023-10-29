@@ -27,7 +27,7 @@ object GitHubDiscussions {
 
     @Volatile var discussions: DiscussionStore? = null
 
-    data class DiscussionStore(val discussions : List<Discussion>) {
+    data class DiscussionStore(val discussions : List<Discussion>, val generated : Instant = Instant.now()) {
         val discussionsByNumber = discussions.associateBy { it.number }
     }
 
@@ -35,7 +35,14 @@ object GitHubDiscussions {
         scope.launch(Dispatchers.IO) {
             while(true) {
                 logger.info { "Retrieving discussions from GitHub" }
-                discussions = DiscussionStore(getDiscussions())
+                val newDiscussions = getDiscussions()
+                val curDiscussions = discussions
+                if (curDiscussions != null && newDiscussions == curDiscussions.discussions) {
+                    logger.debug { "Discussions unchanged" }
+                } else {
+                    logger.info { "Discussions updated" }
+                    discussions = DiscussionStore(newDiscussions)
+                }
                 logger.info { "Github discussions retrieved" }
                 delay(Duration.ofHours(1))
             }
@@ -130,7 +137,11 @@ object GitHubDiscussions {
         val url: String,
         val createdAt: Instant,
         val bodyHTML: String,
-    )
+    ) {
+        val freenetUrlPath : String by lazy {
+            "/blog/${number}/${formatForUrl(title)}.html"
+        }
+    }
 
     @Serializable
     data class GraphQLRequest(
