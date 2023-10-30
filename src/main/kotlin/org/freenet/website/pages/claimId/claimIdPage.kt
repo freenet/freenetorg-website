@@ -6,12 +6,14 @@ import kweb.*
 import kweb.components.Component
 import kweb.plugins.fomanticUI.fomantic
 import kweb.state.KVar
+import kweb.state.render
 
 fun Component.claimIdPage() {
 
 
     val blindedHash = KVar("")
-    val unblinded = KVar("")
+    val unblinded = KVar("") // <--- Not right, the server can never see the unblinded key (ian)
+    val finalCertificate = KVar("")
 
 
     browser.onMessage { msg ->
@@ -20,6 +22,7 @@ fun Component.claimIdPage() {
             "\"publicKey\"" -> {
                 blindedHash.value = message["blindedKey"].toString()
                 unblinded.value = message["unblindedKey"].toString()
+                finalCertificate.value = message["certificate"].toString()
 
             }
         }
@@ -29,7 +32,23 @@ fun Component.claimIdPage() {
 
     step1(blindedHash)
 
-    step2()
+    button(fomantic.ui.primary.button).text("Hola").on.click {
+        //step2(blindedHash)
+        renderCheckout("hola")
+
+
+        //TODO JS code needs to add is-active to this modal to display it.
+        /*div { div ->
+            div.classes("modal")
+            div { divContent ->
+                divContent.classes("modal-content")
+                    renderCheckout("Hola")
+            }
+        }*/
+
+    }
+
+    //step2()
 
     //step3()
 
@@ -74,7 +93,7 @@ private fun Component.step1(blindedHash : KVar<String>) {
     }
 }
 
-private fun Component.step2() {
+private fun Component.step2(blindedHash : KVar<String>) {
     section { section ->
         section.classes("section")
 
@@ -105,8 +124,10 @@ private fun Component.step2() {
             span().text("Generate Key")
         }
         stripeButton.on.click {
+            p().text(signBlindedKey(blindedHash.value))
+            /*renderCheckout("Hola")
             p().text(stripeStuff())
-            step3()
+            step3()*/
         }
     }
 }
@@ -117,9 +138,11 @@ private fun stripeStuff() : String {
     return "Payment completed"
 }
 
-fun signBlindedKey() : String {
-    //placeholder function where Crypto.kt will be called to perform the server side signature
-    return "signedKey"
+//the blinded key from the client
+fun signBlindedKey(clientMessage: String) : String {
+    val rsaSigner = RSASigner()
+    RSASigner.FreenetKey.initialize()
+    return rsaSigner.RSASign(clientMessage)
 }
 
 private fun Component.step3() {
@@ -163,5 +186,34 @@ private fun Component.step3() {
         }
 
 
+    }
+}
+
+fun ElementCreator<*>.renderCheckout(confirmationText : String) {
+    browser.callJsFunction("initialize()")
+    lateinit var paymentForm : FormElement
+    div(fomantic.ui.segment.center.aligned) {
+        p().text(confirmationText)
+    }
+    div(fomantic.ui.grid.center.aligned) {
+        paymentForm = form(mapOf("id" to JsonPrimitive("payment-form"))) {
+            div(mapOf("id" to JsonPrimitive("payment-element")))
+            button(mapOf("id" to JsonPrimitive("submit"))) {
+                div(mapOf("id" to JsonPrimitive("spinner"))).classes("spinner hidden")
+                span(mapOf("id" to JsonPrimitive("button-text"))).text("Pay Now")
+            }
+            div(mapOf("id" to JsonPrimitive("payment-message"))).classes("hidden")
+        }
+    }
+    div(fomantic.ui.container.center.aligned) {
+        val secureTransactionNoticeString = "Some text explaining that this is a secure transaction through stripe and not to worry about their credit card details"
+        p().text(secureTransactionNoticeString)
+    }
+    div(fomantic.ui.actions) {
+        val cancelButton = button(fomantic.ui.button).text("cancel").on.click {
+            browser.callJsFunction("$(\'.ui.modal\').modal(\'close\');")
+            paymentForm.deleteIfExists()
+        }
+        cancelButton.classes("ui cancel button")
     }
 }
