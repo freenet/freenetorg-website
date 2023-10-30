@@ -18,7 +18,7 @@ import org.freenet.website.pages.developers.PivotalTracker
 import org.freenet.website.pages.developers.developersPage
 import org.freenet.website.pages.homePage
 import org.freenet.website.pages.faq.faqPage
-import org.freenet.website.util.BlogRssPlugin
+import org.freenet.website.pages.blog.BlogRssPlugin
 import org.freenet.website.util.HealthCheckPlugin
 import org.freenet.website.util.UrlToPathSegmentsRF
 import org.freenet.website.util.recordVisit
