@@ -48,7 +48,7 @@ class BlogRssPlugin : KwebPlugin() {
                     """
         <item>
             <title>${blog.title}</title>
-            <link>https://freenet.org/${blog.freenetUrlPath}</link>
+            <link>https://freenet.org${blog.freenetUrlPath}</link>
             <pubDate>${blog.createdAt}</pubDate>
             <description>${firstParagraph}</description>
         </item> """.trimIndent()
