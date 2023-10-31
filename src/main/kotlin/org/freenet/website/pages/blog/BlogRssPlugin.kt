@@ -53,7 +53,6 @@ class BlogRssPlugin : KwebPlugin() {
             <description>${firstParagraph}</description>
         </item> """.trimIndent()
                 )
-
             }
         }
         rss.append("""
