@@ -20,26 +20,24 @@
 ///This key can be publicly-accessible and does not need to be hidden.
 const stripe = Stripe("pk_test_51KVKDLAIWUhNLMbdcgFrq0f8t5Rm07SEt6ZqXn46fZ7AQbz3mxoMF2cFvW7qRfI3kZN6NyPG95nzN7CrcHBHRWGD00VAifbJEy");
 
-// The items the customer wants to buy
-const items = [{ id: "xl-tshirt" }];
 
 let elements;
-
-
 
 document
     .querySelector("#payment-form")
     .addEventListener("submit", handleSubmit);
 
-let emailAddress = '';
+//let emailAddress = '';
 // Fetches a payment intent and captures the client secret
 async function initialize() {
     console.log("init() run")
-    console.log(items);
+    const items = {};
+    items["id"] = "Donation";
+    console.log("items" + items);
     const response = await fetch("/create-payment-intent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ items }),
+        body: JSON.stringify(items),
     });
 
     const { clientSecret } = await response.json();
@@ -57,6 +55,7 @@ async function initialize() {
 
     const paymentElement = elements.create("payment", paymentElementOptions);
     paymentElement.mount("#payment-element");
+
 }
 
 async function handleSubmit(e) {
