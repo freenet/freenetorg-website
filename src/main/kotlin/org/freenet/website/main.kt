@@ -1,46 +1,64 @@
 package org.freenet.website
 
-import com.stripe.Stripe
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kweb.*
+import kweb.components.Component
+import kweb.config.KwebDefaultConfiguration
 import kweb.html.HeadElement
 import kweb.plugins.staticFiles.ResourceFolder
 import kweb.plugins.staticFiles.StaticFilesPlugin
+import kweb.state.KVal
+import kweb.state.render
 import mu.two.KotlinLogging
+import org.freenet.website.pages.blog.GitHubDiscussions
+import org.freenet.website.pages.blog.blogPage
 import org.freenet.website.pages.developers.PivotalTracker
-import org.freenet.website.pages.renderNavBarAndPage
+import org.freenet.website.pages.developers.developersPage
+import org.freenet.website.pages.homePage
+import org.freenet.website.pages.faq.faqPage
+import org.freenet.website.util.BlogRssPlugin
 import org.freenet.website.util.HealthCheckPlugin
-import org.freenet.website.util.StripeRoutePlugin
 import org.freenet.website.util.UrlToPathSegmentsRF
 import org.freenet.website.util.recordVisit
+import java.time.Duration
 
 private val logger = KotlinLogging.logger { }
 
 val isLocalTestingMode: Boolean = System.getenv("FREENET_SITE_LOCAL_TESTING").equals("true", true)
 
-fun main() {
+suspend fun main() {
+
+    // Initialize singletons to avoid a delay the first time they are used
+    PivotalTracker.releases
+    GitHubDiscussions.getDiscussions()
 
     val scope = CoroutineScope(Dispatchers.IO)
 
-    // Initial retrieval of PT releases to avoid a delay the first time it's used
-    PivotalTracker.releases
-
     logger.info("Starting Freenet Site, isLocalTestingMode: $isLocalTestingMode")
+
+    // TODO: Remove
+    val cfg = object : KwebDefaultConfiguration() {
+        override val clientStateTimeout: Duration
+            get() = Duration.ofHours(1)
+    }
 
     Kweb(
         port = 8080,
         debug = isLocalTestingMode,
         plugins = listOf(
+            BlogRssPlugin(),
             HealthCheckPlugin,
-            StaticFilesPlugin(ResourceFolder("static"), "/static"),
-            StripeRoutePlugin()
-        )
+            StaticFilesPlugin(ResourceFolder("static"), "/static",)
+        ),
+        kwebConfig = cfg,
     ) {
+        val nav = pathToNavItem()
+
         doc.head {
 
-            configureHead()
+            configureHead(nav.map { it.title ?: "Freenet" })
         }
         doc.body {
 
@@ -50,8 +68,17 @@ fun main() {
                 div { div ->
                     div.classes("container")
 
-                    renderNavBarAndPage(url.map(UrlToPathSegmentsRF))
+                    navComponent(nav)
 
+                    render(nav) { activeNavItem ->
+                        when (activeNavItem) {
+                            is NavItem.Home -> homePage()
+                            is NavItem.Developers -> developersPage()
+                            is NavItem.Faq -> faqPage()
+                            is NavItem.Blog -> blogPage(activeNavItem.number)
+                            else -> error("Unknown Item: $activeNavItem")
+                        }
+                    }
                 }
             }
         }
@@ -60,50 +87,72 @@ fun main() {
             recordVisit(this@Kweb.httpRequestInfo)
         }
     }
-
 }
+
+private fun WebBrowser.pathToNavItem() = url.map(UrlToPathSegmentsRF)
+    .map { pathSegments ->
+        if (pathSegments.isEmpty()) {
+            NavItem.Home
+        } else {
+            when (pathSegments[0]) {
+                "dev" -> NavItem.Developers
+                "faq" -> NavItem.Faq
+                "blog" -> NavItem.Blog(if (pathSegments.size > 1) pathSegments[1].toIntOrNull() else null)
+                else -> NavItem.Home
+            }
+        }
+    }
 
 typealias HeadComponent = ElementCreator<HeadElement>
 
-private fun HeadComponent.configureHead() {
-    title().text("Freenet")
+private fun HeadComponent.configureHead(title : KVal<String>) {
+    title().text(title)
 
-    // Order matters, dependencies come first
-    addScript("/static/jquery.min.js")
-    addScript("/static/qrcode.min.js")
+    element("link") {
+        it["rel"] = "stylesheet"
+        it["href"] = "/static/fontawesome/css/fontawesome.min.css"
+    }
 
-    // TODO: This was compiled with --with-all, but it should only include
-    // TODO: features we're using2
-    addScript("/static/sjcl.min.js")
+    element("link") {
+        it["rel"] = "stylesheet"
+        it["href"] = "/static/fontawesome/css/solid.min.css"
+    }
 
-    addScript("/static/id.js")
-    addScript("/static/forge.all.min.js")
-    addScript("https://js.stripe.com/v3/")
-    addScript("/static/checkout.js")
+    element("link") {
+        it["rel"] = "stylesheet"
+        it["href"] = "/static/fontawesome/css/brands.min.css"
+    }
 
-    listOf(
-        "/static/fontawesome/css/fontawesome.min.css",
-        "/static/fontawesome/css/solid.min.css",
-        "/static/fontawesome/css/brands.min.css",
-        "/static/bulma.min.css",
-        "/static/freenetorg.css"
-    ).forEach { addStylesheet(it) }
+    element("link") {
+        it["rel"] = "stylesheet"
+        it["href"] = "/static/bulma.min.css"
+    }
+
+    element("link") {
+        it["rel"] = "stylesheet"
+        it["href"] = "/static/freenetorg.css"
+    }
 
     element("meta") { meta ->
         meta["content"] = "width=device-width, initial-scale=1"
         meta["name"] = "viewport"
     }
-}
 
-private fun HeadComponent.addScript(src: String) {
-    element("script") {
-        it["src"] = src
-    }
-}
-
-private fun HeadComponent.addStylesheet(href: String) {
     element("link") {
-        it["rel"] = "stylesheet"
-        it["href"] = href
+        it["rel"] = "alternate"
+        it["type"] = "application/rss+xml"
+        it["title"] = "Freenet Blog RSS Feed"
+        it["href"] = "https://freenet.org/blog.rss"
+    }
+
+    //  element("script")["src"] = "https://js.stripe.com/v3/"
+  //  element("script")["src"] = "/static/checkout.js"
+}
+
+fun Component.rabbitLogoComponent() {
+    element("link").new { link ->
+        link["rel"] = "icon"
+        link["href"] = "/static/rabbit-logo.svg"
+        link["type"] = "image/svg+xml"
     }
 }

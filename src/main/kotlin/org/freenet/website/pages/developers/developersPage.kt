@@ -3,6 +3,7 @@ package org.freenet.website.pages.developers
 import kweb.components.Component
 import kweb.div
 import kweb.h2
+import kweb.h3
 import kweb.p
 import org.freenet.website.util.iconButton
 
@@ -28,9 +29,8 @@ fun Component.developersPage() {
 private fun Component.devLinks() {
     div { div ->
         div.classes("buttons")
-        iconButton("Architecture", "https://docs.freenet.org/components.html", arrayOf("fas", "fa-sitemap"))
-        iconButton("Tutorial", "https://docs.freenet.org/tutorial.html", arrayOf("fab", "fa-readme"))
-        iconButton("Github", "https://github.com/freenet/locutus", arrayOf("fab", "fa-github"))
+        iconButton("User Manual", "https://docs.freenet.org/", arrayOf("fas", "fa-book"))
+        iconButton("Github", "https://github.com/freenet/freenet-core", arrayOf("fab", "fa-github"))
         iconButton("Crates.io", "https://crates.io/crates/locutus", arrayOf("fa-brands", "fa-rust"))
     }
 }

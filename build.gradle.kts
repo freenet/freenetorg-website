@@ -5,16 +5,17 @@ import org.gradle.api.tasks.Copy
 
 plugins {
     id("maven-publish")
-    id("org.jetbrains.kotlin.jvm") version "1.8.0"
     id("application")
     id("com.github.johnrengelman.shadow") version "7.1.2"
-    kotlin("plugin.serialization") version "1.8.0"
+    kotlin("plugin.serialization") version "1.9.0-Beta"
+    kotlin("jvm") version "1.9.10"
 }
 
 group = "org.freenet.website"
 version = "1.2-SNAPSHOT"
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
@@ -56,9 +57,12 @@ dependencies {
     implementation("io.ktor:ktor-client-content-negotiation:2.3.0")
     implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.0")
 
-    implementation("com.stripe:stripe-java:22.13.0")
+    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.11")
 
     implementation("org.commonmark:commonmark:0.21.0")
+
+    // TODO: Remove
+    testImplementation("org.seleniumhq.selenium:selenium-java:4.9.1")
 
     testImplementation(platform("org.junit:junit-bom:5.9.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
