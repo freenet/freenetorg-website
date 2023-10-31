@@ -30,37 +30,12 @@ fun Component.claimIdPage() {
 
     h1().text("Claim your Freenet ID")
 
-    step1(blindedHash)
-
-    button(fomantic.ui.primary.button).text("Hola").on.click {
-        //step2(blindedHash)
-        renderCheckout("hola")
-
-
-        //TODO JS code needs to add is-active to this modal to display it.
-        /*div { div ->
-            div.classes("modal")
-            div { divContent ->
-                divContent.classes("modal-content")
-                    renderCheckout("Hola")
-            }
-        }*/
-
-    }
-
-    //step2()
-
-    //step3()
-
-}
-
-private fun Component.step1(blindedHash : KVar<String>) {
     section { section ->
         section.classes("section")
 
         h1 { h1 ->
             h1.classes("title")
-            h1.innerHTML("Step 1")
+            h1.innerHTML("Claim your Freenet ID")
         }
         h2 { h2 ->
             h2.classes("subtitle")
@@ -68,11 +43,16 @@ private fun Component.step1(blindedHash : KVar<String>) {
         }
         p().innerHTML(
             """
-                First, let's create your unique cryptographic key pair. This stays with you, secure in your 
-                browser, and never touches our servers. Click the 'Generate' button when you're ready. 
-                We will provide a secure way to store this key pair in a later step.
+                Secure a Freenet Patron Certificate to support Freenet's mission of enabling free and open communication on the internet. This certificate reflects your early support and belief in our network's potential. In the future, it could also serve as a hallmark of trust and authenticity within the Freenet community, similar to a proof of membership.
         """.trimIndent()
         )
+        p().innerHTML(
+            """
+                The process is straightforward and designed with your anonymity in mind. When you click the button below, a unique digital key pair will be generated in your browser. Following a blind signature protocol, this key pair will be securely signed by Freenet in such a way that our servers cannot tie the payment transaction to your public/private keypair, ensuring your anonymity. After a simple payment to help sustain Freenet, you'll receive your Freenet Patron Certificate, which you can download or copy directly.
+            """.trimIndent()
+        )
+
+        p().text(blindedHash)
 
         button { button ->
             button.classes("button", "is-medium-green", "generate-button")
@@ -84,54 +64,37 @@ private fun Component.step1(blindedHash : KVar<String>) {
                 i().classes("fas", "fa-key")
             }
             span().innerHTML("&nbsp;")
-            span().text("Generate Key")
+            span().text("Create Certificate")
         }
 
 
         //sample line to display blinded hash when received from client
-        p().text(blindedHash)
     }
-}
 
-private fun Component.step2(blindedHash : KVar<String>) {
-    section { section ->
-        section.classes("section")
+    //step1(blindedHash)
 
-        h1 { h1 ->
-            h1.classes("title")
-            h1.innerHTML("Step 2")
+    button { button ->
+        button.classes("button", "is-medium-green", "generate-button")
+        button.on.click {
+            button.creator!!.parentCreator!!.renderCheckout("You have started the donation process")
+            //TODO JS code needs to add is-active to this modal to display it.
+            /*div { div ->
+                div.classes("modal")
+                div { divContent ->
+                    divContent.classes("modal-content")
+                        renderCheckout("Hola")
+                }
+            }*/
         }
-        h2 { h2 ->
-            h2.classes("subtitle")
-            h2.innerHTML("Contribute via Stripe")
+        span { span ->
+            span.classes("icon")
+            i().classes("fas", "fa-key")
         }
-        p().innerHTML(
-            """
-                Now that you have your keys, it's time to give your voice some weight in our ecosystem. This is done through a meaningful contribution.
-                This donation not only supports our mission, but it also lends credibility to your anonymous identity.
-                Your contribution is a signal of your commitment to good behavior on our platform.
-                The next step will unlock upon completion of your donation.
-        """.trimIndent()
-        )
-
-        val stripeButton = button { button ->
-            button.classes("button", "is-medium-green", "generate-button")
-            span { span ->
-                span.classes("icon")
-                i().classes("fas", "fa-key")
-            }
-            span().innerHTML("&nbsp;")
-            span().text("Generate Key")
-        }
-        stripeButton.on.click {
-            p().text(signBlindedKey(blindedHash.value))
-            /*renderCheckout("Hola")
-            p().text(stripeStuff())
-            step3()*/
-        }
+        span().innerHTML("&nbsp;")
+        span().text("Pay via Stripe")
     }
-}
 
+}
 
 private fun stripeStuff() : String {
     //TODO implement Stripe checkout form
@@ -143,50 +106,6 @@ fun signBlindedKey(clientMessage: String) : String {
     val rsaSigner = RSASigner()
     RSASigner.FreenetKey.initialize()
     return rsaSigner.RSASign(clientMessage)
-}
-
-private fun Component.step3() {
-    section { section ->
-        section.classes("section")
-
-        h1 { h1 ->
-            h1.classes("title")
-            h1.innerHTML("Step 2")
-        }
-        h2 { h2 ->
-            h2.classes("subtitle")
-            h2.innerHTML("Certify your Master Key")
-        }
-        p().innerHTML(
-            """
-                First, let's create your unique cryptographic key pair. This stays with you, secure in your 
-                browser, and never touches our servers. Click the 'Generate' button when you're ready. 
-                We will provide a secure way to store this key pair in a later step.
-        """.trimIndent()
-        )
-
-        button { button ->
-            button.classes("button", "is-medium-green", "generate-button")
-            button.on.click {
-                browser.callJsFunction("beginGeneration();")
-            }
-            span { span ->
-                span.classes("icon")
-                i().classes("fas", "fa-key")
-            }
-            span().innerHTML("&nbsp;")
-            span().text("Generate Key")
-
-
-        }
-
-
-        browser.onMessage {
-            p().text("Hola")
-        }
-
-
-    }
 }
 
 fun ElementCreator<*>.renderCheckout(confirmationText : String) {
