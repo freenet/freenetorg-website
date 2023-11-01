@@ -18,7 +18,10 @@ import org.freenet.website.pages.developers.PivotalTracker
 import org.freenet.website.pages.developers.developersPage
 import org.freenet.website.pages.homePage
 import org.freenet.website.pages.faq.faqPage
-import org.freenet.website.util.*
+import org.freenet.website.pages.blog.BlogRssPlugin
+import org.freenet.website.util.HealthCheckPlugin
+import org.freenet.website.util.UrlToPathSegmentsRF
+import org.freenet.website.util.recordVisit
 import java.time.Duration
 
 private val logger = KotlinLogging.logger { }
@@ -47,8 +50,7 @@ suspend fun main() {
         plugins = listOf(
             BlogRssPlugin(),
             HealthCheckPlugin,
-            StaticFilesPlugin(ResourceFolder("static"), "/static"),
-            StripeRoutePlugin()
+            StaticFilesPlugin(ResourceFolder("static"), "/static",)
         ),
         kwebConfig = cfg,
     ) {
@@ -120,12 +122,6 @@ private fun HeadComponent.configureHead(title : KVal<String>) {
         it["rel"] = "stylesheet"
         it["href"] = "/static/fontawesome/css/brands.min.css"
     }
-
-    element("script")["src"] = "/static/id.js"
-    element("script")["src"] = "/static/forge.all.min.js"
-    element("script")["src"] = "https://js.stripe.com/v3/"
-    element("script")["src"] = "/static/checkout.js"
-
 
     element("link") {
         it["rel"] = "stylesheet"

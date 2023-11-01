@@ -62,6 +62,28 @@ fun Component.blogPage(number: Int? = null) {
                         it.classes("content")
                         it.innerHTML(discussion.bodyHTML)
                     }
+                    element("hr")
+                    div {
+                        it.classes("has-text-centered", "my-4") // Center the link and add some vertical spacing
+                        a {
+                            it.classes("button", "is-light") // Style the link as a light button which is a neutral shade
+                            it["href"] = "https://github.com/freenet/freenet-core/discussions/${discussion.number}#discussion-comment-count" // Point it to the comments section
+
+                            // Adding the Font Awesome GitHub logo
+                            span {
+                                it.classes("icon")
+                                i {
+                                    it.classes("fab", "fa-github") // This is the Font Awesome class for the GitHub logo
+                                }
+                            }
+
+                            // Text for the button
+                            span {
+                                it.text("Discuss on GitHub")
+                            }// Added a space before the text to give some spacing between the icon and text
+                        }
+                    }
+
                 }
             }
         }

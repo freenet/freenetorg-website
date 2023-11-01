@@ -1,4 +1,4 @@
-package org.freenet.website.util
+package org.freenet.website.pages.blog
 
 import io.ktor.http.*
 import io.ktor.http.HttpStatusCode.Companion.OK
@@ -6,7 +6,7 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kweb.plugins.KwebPlugin
-import org.freenet.website.pages.blog.GitHubDiscussions
+import org.jsoup.Jsoup
 import java.time.Instant
 
 class BlogRssPlugin : KwebPlugin() {
@@ -28,23 +28,29 @@ class BlogRssPlugin : KwebPlugin() {
         val rss = StringBuilder()
         rss.append("""
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
+<rss version="2.0" xmlns:sy="http://purl.org/rss/1.0/modules/syndication/">
     <channel>
         <title>Freenet Blog</title>
         <link>https://freenet.org/blog</link>
         <description>News and updates from the Freenet Project</description>
         <language>en-us</language>
         <ttl>1440</ttl>
+        <sy:updatePeriod>daily</sy:updatePeriod>
+        <sy:updateFrequency>1</sy:updateFrequency>
         """.trimIndent())
         val discussions = GitHubDiscussions.discussions
         if (discussions != null) {
             for (blog in discussions.discussions.take(20)) {
+                val html = Jsoup.parse(blog.bodyHTML)
+                // Get text of first <p> from html
+                val firstParagraph = html.select("p").first()?.text() ?: ""
                 rss.append(
                     """
         <item>
             <title>${blog.title}</title>
-            <link>https://freenet.org/blog/${blog.number}/${blog.title}</link>
+            <link>https://freenet.org${blog.freenetUrlPath}</link>
             <pubDate>${blog.createdAt}</pubDate>
+            <description>${firstParagraph}</description>
         </item> """.trimIndent()
                 )
             }
