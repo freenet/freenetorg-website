@@ -77,6 +77,7 @@ fun Component.claimIdPage() {
         button.classes("button", "is-medium-green", "generate-button")
         button.on.click {
             button.creator!!.parentCreator!!.renderCheckout("You have started the donation process")
+            //renderCheckout("You have started the donation process")
             //TODO JS code needs to add is-active to this modal to display it.
             /*div { div ->
                 div.classes("modal")

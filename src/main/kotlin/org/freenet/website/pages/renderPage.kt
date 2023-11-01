@@ -7,8 +7,6 @@ import kweb.state.render
 import org.freenet.website.pages.about.aboutPage
 import org.freenet.website.pages.claimId.claimIdPage
 import org.freenet.website.pages.developers.developersPage
-import org.freenet.website.pages.home.homePage
-import org.freenet.website.pages.joinUs.joinUsPage
 
 data class Page(
     val urlPath: String,
@@ -23,7 +21,6 @@ val pages = mapOf(
     "" to Page(urlPath = "", tabHtml = "<b>Freenet</b>", link = "/", icon = "home", renderer = Component::homePage),
     "about" to Page(urlPath = "about", tabHtml = "About", link = "/about", icon = "info-circle", renderer = Component::aboutPage),
     "dev" to Page(urlPath = "dev", tabHtml = "Developers", link = "/dev", icon = "code", renderer = Component::developersPage),
-    "join" to Page(urlPath = "join", tabHtml = "Join Us", link = "/join", icon = "user-plus", renderer = Component::joinUsPage),
     "claim" to Page(urlPath = "claim", tabHtml = null, link = "/claim", icon = "id-card", renderer = Component::claimIdPage),
 )
 
