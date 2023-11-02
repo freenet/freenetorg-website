@@ -59,6 +59,8 @@ dependencies {
 
     implementation("com.stripe:stripe-java:22.13.0")
 
+    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.11")
+
     implementation("org.commonmark:commonmark:0.21.0")
 
     // TODO: Remove
