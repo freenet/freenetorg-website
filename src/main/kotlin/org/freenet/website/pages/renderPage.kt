@@ -6,6 +6,7 @@ import kweb.state.KVal
 import kweb.state.render
 import org.freenet.website.pages.about.aboutPage
 import org.freenet.website.pages.claimId.claimIdPage
+import org.freenet.website.pages.claimId.contributionPage
 import org.freenet.website.pages.developers.developersPage
 import org.freenet.website.pages.home.homePage
 import org.freenet.website.pages.joinUs.joinUsPage
@@ -25,6 +26,7 @@ val pages = mapOf(
     "dev" to Page(urlPath = "dev", tabHtml = "Developers", link = "/dev", icon = "code", renderer = Component::developersPage),
     "join" to Page(urlPath = "join", tabHtml = "Join Us", link = "/join", icon = "user-plus", renderer = Component::joinUsPage),
     "claim" to Page(urlPath = "claim", tabHtml = null, link = "/claim", icon = "id-card", renderer = Component::claimIdPage),
+    "contribution" to Page(urlPath = "contribution", tabHtml = null, link ="/contribution", icon = "id-card", renderer = Component::contributionPage)
 )
 
 fun Component.renderNavBarAndPage(urlPath: KVal<List<String>>) {
