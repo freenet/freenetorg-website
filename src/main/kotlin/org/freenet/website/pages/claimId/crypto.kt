@@ -31,7 +31,8 @@ class RSASigner {
         fun initialize() {
             // Generate a key pair
             val keyPairGenerator = KeyPairGenerator.getInstance("RSA")
-            keyPairGenerator.initialize(2048)
+            //TODO consume 4096 bit RSA key from environment variable
+            keyPairGenerator.initialize(4096)
             freenetRSAKeyPair = keyPairGenerator.genKeyPair()
 
             freenetRSAPublicKeyPEM = (freenetRSAKeyPair.public as RSAPublicKey).encodeToPem()

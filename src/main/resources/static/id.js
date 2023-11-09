@@ -1,6 +1,6 @@
 // Called when user presses "Generate Key" button
 function generateUserKey() {//this should be renamed something like beginGeneration
-    let kp = generateUserECCKeyPair();
+    let kp = generateUserECCKeyPair(); //todo find out what bit length Forge uses for ECC keypairs
     //let kpBase64 = publicKeyToBase64(kp.userECPublicKey);
     localStorage.setItem("userECPublicKey", kp.userECPublicKey);
     localStorage.setItem("userECPrivateKey", kp.userECPrivateKey);
