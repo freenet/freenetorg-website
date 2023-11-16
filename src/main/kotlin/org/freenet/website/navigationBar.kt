@@ -3,7 +3,7 @@ package org.freenet.website
 import kweb.*
 import kweb.components.Component
 import kweb.state.KVal
-import org.freenet.website.pages.blog.GitHubDiscussions
+import org.freenet.website.util.Github
 
 fun Component.navComponent(activeItem: KVal<NavItem>) {
     nav { nav ->
@@ -44,7 +44,7 @@ sealed class NavItem(val html: String, val link: String, val icon: String? = nul
         override val title = if (number == null) {
             "Freenet Blog"
         } else {
-            "Freenet Blog: ${GitHubDiscussions?.discussions?.discussionsByNumber?.get(number)?.title ?: "Not Found"}"
+            "Freenet Blog: ${Github?.discussions?.discussionsByNumber?.get(number)?.title ?: "Not Found"}"
         }
     }
 }

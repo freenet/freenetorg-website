@@ -12,7 +12,7 @@ import kweb.plugins.staticFiles.StaticFilesPlugin
 import kweb.state.KVal
 import kweb.state.render
 import mu.two.KotlinLogging
-import org.freenet.website.pages.blog.GitHubDiscussions
+import org.freenet.website.util.Github
 import org.freenet.website.pages.blog.blogPage
 import org.freenet.website.pages.developers.PivotalTracker
 import org.freenet.website.pages.developers.developersPage
@@ -32,7 +32,7 @@ suspend fun main() {
 
     // Initialize singletons to avoid a delay the first time they are used
     PivotalTracker.releases
-    GitHubDiscussions.getDiscussions()
+    Github.getDiscussions()
 
     val scope = CoroutineScope(Dispatchers.IO)
 

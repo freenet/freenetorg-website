@@ -23,6 +23,8 @@ fun Component.developersPage() {
 
     devLinks()
 
+    recentlyCompleted()
+
     roadmap()
 }
 

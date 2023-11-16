@@ -1,6 +1,6 @@
 @file:UseSerializers(InstantSerializer::class)
 
-package org.freenet.website.pages.blog
+package org.freenet.website.util
 
 import InstantSerializer
 import io.ktor.client.*
@@ -16,16 +16,19 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 import kotlinx.serialization.json.Json
 import mu.two.KotlinLogging
+import org.freenet.website.pages.blog.formatForUrl
 import java.time.Duration
 import java.time.Instant
 
 private val logger = KotlinLogging.logger { }
 
-object GitHubDiscussions {
+object Github {
 
     private val scope = CoroutineScope(Dispatchers.IO)
 
     @Volatile var discussions: DiscussionStore? = null
+
+    @Volatile var pullRequests: List<PullRequest>? = null
 
     data class DiscussionStore(val discussions : List<Discussion>, val generated : Instant = Instant.now()) {
         val discussionsByNumber = discussions.associateBy { it.number }
@@ -44,10 +47,93 @@ object GitHubDiscussions {
                     discussions = DiscussionStore(newDiscussions)
                 }
                 logger.info { "Github discussions retrieved" }
+
+                logger.info { "Retrieve recently merged pull requests from Github" }
+                pullRequests = getPullRequests(5)
+
                 delay(Duration.ofHours(1))
             }
         }
     }
+
+    suspend fun getPullRequests(howMany: Int): List<PullRequest> {
+        val client = HttpClient(CIO) {
+            install(ContentNegotiation) {
+                json(Json {
+                    prettyPrint = true
+                    ignoreUnknownKeys = true
+                })
+            }
+        }
+
+        val token: String = System.getenv("GITHUB_TOKEN") ?: error("GITHUB_TOKEN not set")
+
+        val query = """
+            {
+              repository(owner: "freenet", name: "freenet-core") {
+                pullRequests(
+                  first: $howMany
+                  states: MERGED
+                  orderBy: {field: UPDATED_AT, direction: DESC}
+                ) {
+                  nodes {
+                    title
+                    url
+                    mergedAt
+                    author {
+                      login
+                      url
+                    }
+                  }
+                }
+              }
+            }
+        """.trimIndent()
+
+        val response: GitHubPullRequestsResponse =
+            client.post("https://api.github.com/graphql") {
+                headers["Authorization"] = "Bearer $token"
+                contentType(ContentType.Application.Json)
+                setBody(GraphQLRequest(query))
+            }.body()
+
+        return response.data.repository.pullRequests.nodes
+    }
+
+    // Data classes for pull requests with author
+    @Serializable
+    data class GitHubPullRequestsResponse(
+        val data: PullRequestData
+    )
+
+    @Serializable
+    data class PullRequestData(
+        val repository: PullRequestRepository
+    )
+
+    @Serializable
+    data class PullRequestRepository(
+        val pullRequests: PullRequests,
+    )
+
+    @Serializable
+    data class PullRequests(
+        val nodes: List<PullRequest>,
+    )
+
+    @Serializable
+    data class PullRequest(
+        val title: String,
+        val url: String,
+        val mergedAt: Instant,
+        val author: Author,
+    )
+
+    @Serializable
+    data class Author(
+        val login: String,
+        val url: String,
+    )
 
     suspend fun getDiscussions(): List<Discussion> {
         val client = HttpClient(CIO) {
@@ -156,7 +242,7 @@ object GitHubDiscussions {
 }
 
 fun main() = runBlocking {
-    val discussions = GitHubDiscussions.getDiscussions()
+    val discussions = Github.getDiscussions()
     for (discussion in discussions) {
         println(discussion)
     }

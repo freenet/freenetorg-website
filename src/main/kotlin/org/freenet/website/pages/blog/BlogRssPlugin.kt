@@ -6,6 +6,7 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kweb.plugins.KwebPlugin
+import org.freenet.website.util.Github
 import org.jsoup.Jsoup
 import java.time.Instant
 
@@ -15,7 +16,7 @@ class BlogRssPlugin : KwebPlugin() {
     @Volatile var cachedRss: CachedRSS? = null
 
     private fun getRss(): CachedRSS {
-        val discussionsGenerated = GitHubDiscussions.discussions?.generated ?: Instant.now()
+        val discussionsGenerated = Github.discussions?.generated ?: Instant.now()
         val cached = cachedRss
         if (cached == null || cached.generated.isBefore(discussionsGenerated)) {
             val generatedRss = generateRss()
@@ -38,7 +39,7 @@ class BlogRssPlugin : KwebPlugin() {
         <sy:updatePeriod>daily</sy:updatePeriod>
         <sy:updateFrequency>1</sy:updateFrequency>
         """.trimIndent())
-        val discussions = GitHubDiscussions.discussions
+        val discussions = Github.discussions
         if (discussions != null) {
             for (blog in discussions.discussions.take(20)) {
                 val html = Jsoup.parse(blog.bodyHTML)
