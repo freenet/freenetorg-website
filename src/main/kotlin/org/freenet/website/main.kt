@@ -73,7 +73,7 @@ suspend fun main() {
                     render(nav) { activeNavItem ->
                         when (activeNavItem) {
                             is NavItem.Home -> homePage()
-                            is NavItem.Developers -> developersPage()
+                            is NavItem.Development -> developersPage()
                             is NavItem.Faq -> faqPage()
                             is NavItem.Blog -> blogPage(activeNavItem.number)
                             else -> error("Unknown Item: $activeNavItem")
@@ -95,7 +95,7 @@ private fun WebBrowser.pathToNavItem() = url.map(UrlToPathSegmentsRF)
             NavItem.Home
         } else {
             when (pathSegments[0]) {
-                "dev" -> NavItem.Developers
+                "dev" -> NavItem.Development
                 "faq" -> NavItem.Faq
                 "blog" -> NavItem.Blog(if (pathSegments.size > 1) pathSegments[1].toIntOrNull() else null)
                 else -> NavItem.Home
