@@ -13,7 +13,7 @@ fun Component.navComponent(activeItem: KVal<NavItem>) {
 
         div { div ->
             div.classes("navbar-brand")
-            for (ni in listOf(NavItem.Home, NavItem.Developers, NavItem.Faq, NavItem.Blog(null))) {
+            for (ni in listOf(NavItem.Home, NavItem.Developers, NavItem.Faq, NavItem.Claim, NavItem.Blog(null))) {
                 a { a ->
                     a.classes(activeItem.map { if (it == ni) "navbar-item is-active" else "navbar-item" })
                     if (ni.icon != null) {
@@ -40,6 +40,7 @@ sealed class NavItem(val html: String, val link: String, val icon: String? = nul
     data object Home : NavItem("<b>Freenet</b>", "/", "home", "Freenet")
     data object Developers : NavItem("Dev", "/dev", "code", "Freenet: Developers")
     data object Faq : NavItem("FAQ", "/faq", "book", "Freenet: FAQ")
+    data object Claim : NavItem("Claim", "/claim", "code", "Claim")
     class Blog(val number: Int?) : NavItem("Blog", "/blog", "blog") {
         override val title = if (number == null) {
             "Freenet Blog"

@@ -19,6 +19,7 @@ import org.freenet.website.pages.developers.developersPage
 import org.freenet.website.pages.homePage
 import org.freenet.website.pages.faq.faqPage
 import org.freenet.website.pages.blog.BlogRssPlugin
+import org.freenet.website.pages.claimId.claimIdPage
 import org.freenet.website.util.HealthCheckPlugin
 import org.freenet.website.util.UrlToPathSegmentsRF
 import org.freenet.website.util.recordVisit
@@ -75,6 +76,7 @@ suspend fun main() {
                             is NavItem.Home -> homePage()
                             is NavItem.Developers -> developersPage()
                             is NavItem.Faq -> faqPage()
+                            is NavItem.Claim -> claimIdPage()
                             is NavItem.Blog -> blogPage(activeNavItem.number)
                             else -> error("Unknown Item: $activeNavItem")
                         }
@@ -97,6 +99,7 @@ private fun WebBrowser.pathToNavItem() = url.map(UrlToPathSegmentsRF)
             when (pathSegments[0]) {
                 "dev" -> NavItem.Developers
                 "faq" -> NavItem.Faq
+                "claim" -> NavItem.Claim
                 "blog" -> NavItem.Blog(if (pathSegments.size > 1) pathSegments[1].toIntOrNull() else null)
                 else -> NavItem.Home
             }

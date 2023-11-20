@@ -21,7 +21,7 @@ val pages = mapOf(
     "" to Page(urlPath = "", tabHtml = "<b>Freenet</b>", link = "/", icon = "home", renderer = Component::homePage),
     "about" to Page(urlPath = "about", tabHtml = "About", link = "/about", icon = "info-circle", renderer = Component::aboutPage),
     "dev" to Page(urlPath = "dev", tabHtml = "Developers", link = "/dev", icon = "code", renderer = Component::developersPage),
-    "claim" to Page(urlPath = "claim", tabHtml = null, link = "/claim", icon = "id-card", renderer = Component::claimIdPage),
+    "claim" to Page(urlPath = "claim", tabHtml = "Claim", link = "/claim", icon = "code", renderer = Component::claimIdPage),
 )
 
 fun Component.renderNavBarAndPage(urlPath: KVal<List<String>>) {
