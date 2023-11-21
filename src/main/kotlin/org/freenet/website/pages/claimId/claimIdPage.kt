@@ -12,7 +12,6 @@ fun Component.claimIdPage() {
 
 
     val blindedHash = KVar("")
-    val unblinded = KVar("") // <--- Not right, the server can never see the unblinded key (ian)
     val finalCertificate = KVar("")
 
 
@@ -21,7 +20,6 @@ fun Component.claimIdPage() {
         when (message["messageKey"].toString()) {
             "\"publicKey\"" -> {
                 blindedHash.value = message["blindedKey"].toString()
-                unblinded.value = message["unblindedKey"].toString()
                 finalCertificate.value = message["certificate"].toString()
 
             }
@@ -66,9 +64,6 @@ fun Component.claimIdPage() {
             span().innerHTML("&nbsp;")
             span().text("Create Certificate")
         }
-
-
-        //sample line to display blinded hash when received from client
     }
 
     //step1(blindedHash)
@@ -76,6 +71,7 @@ fun Component.claimIdPage() {
     button { button ->
         button.classes("button", "is-medium-green", "generate-button")
         button.on.click {
+            //TODO renderCheckout form and display it when necessary using a Kvar
             button.creator!!.parentCreator!!.renderCheckout("You have started the donation process")
             //renderCheckout("You have started the donation process")
             //TODO JS code needs to add is-active to this modal to display it.
