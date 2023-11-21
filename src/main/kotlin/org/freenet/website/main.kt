@@ -12,7 +12,6 @@ import kweb.plugins.staticFiles.StaticFilesPlugin
 import kweb.state.KVal
 import kweb.state.render
 import mu.two.KotlinLogging
-import org.freenet.website.util.Github
 import org.freenet.website.pages.blog.blogPage
 import org.freenet.website.pages.developers.PivotalTracker
 import org.freenet.website.pages.developers.developersPage
@@ -20,9 +19,7 @@ import org.freenet.website.pages.homePage
 import org.freenet.website.pages.faq.faqPage
 import org.freenet.website.pages.blog.BlogRssPlugin
 import org.freenet.website.pages.claimId.claimIdPage
-import org.freenet.website.util.HealthCheckPlugin
-import org.freenet.website.util.UrlToPathSegmentsRF
-import org.freenet.website.util.recordVisit
+import org.freenet.website.util.*
 import java.time.Duration
 
 private val logger = KotlinLogging.logger { }
@@ -51,7 +48,8 @@ suspend fun main() {
         plugins = listOf(
             BlogRssPlugin(),
             HealthCheckPlugin,
-            StaticFilesPlugin(ResourceFolder("static"), "/static",)
+            StripeRoutePlugin(),
+            StaticFilesPlugin(ResourceFolder("static"), "/static")
         ),
         kwebConfig = cfg,
     ) {
