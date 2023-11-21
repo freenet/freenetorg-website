@@ -3,7 +3,6 @@ package org.freenet.website.pages.developers
 import kweb.components.Component
 import kweb.div
 import kweb.h2
-import kweb.h3
 import kweb.p
 import org.freenet.website.util.iconButton
 
@@ -17,11 +16,13 @@ import org.freenet.website.util.iconButton
  *  public/private keypairs and the future decentralized reputation system.
  */
 fun Component.developersPage() {
-    h2().classes("title", "is-small").text("Developers")
+    h2().classes("title", "is-small").text("Development")
 
     p().text("Learn about Freenet's architecture and how to develop decentralized apps for Freenet.")
 
     devLinks()
+
+    recentlyCompleted()
 
     roadmap()
 }

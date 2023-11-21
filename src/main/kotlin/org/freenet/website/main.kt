@@ -12,7 +12,7 @@ import kweb.plugins.staticFiles.StaticFilesPlugin
 import kweb.state.KVal
 import kweb.state.render
 import mu.two.KotlinLogging
-import org.freenet.website.pages.blog.GitHubDiscussions
+import org.freenet.website.util.Github
 import org.freenet.website.pages.blog.blogPage
 import org.freenet.website.pages.developers.PivotalTracker
 import org.freenet.website.pages.developers.developersPage
@@ -33,7 +33,7 @@ suspend fun main() {
 
     // Initialize singletons to avoid a delay the first time they are used
     PivotalTracker.releases
-    GitHubDiscussions.getDiscussions()
+    Github.getDiscussions()
 
     val scope = CoroutineScope(Dispatchers.IO)
 
@@ -74,7 +74,7 @@ suspend fun main() {
                     render(nav) { activeNavItem ->
                         when (activeNavItem) {
                             is NavItem.Home -> homePage()
-                            is NavItem.Developers -> developersPage()
+                            is NavItem.Development -> developersPage()
                             is NavItem.Faq -> faqPage()
                             is NavItem.Claim -> claimIdPage()
                             is NavItem.Blog -> blogPage(activeNavItem.number)
@@ -97,7 +97,7 @@ private fun WebBrowser.pathToNavItem() = url.map(UrlToPathSegmentsRF)
             NavItem.Home
         } else {
             when (pathSegments[0]) {
-                "dev" -> NavItem.Developers
+                "dev" -> NavItem.Development
                 "faq" -> NavItem.Faq
                 "claim" -> NavItem.Claim
                 "blog" -> NavItem.Blog(if (pathSegments.size > 1) pathSegments[1].toIntOrNull() else null)

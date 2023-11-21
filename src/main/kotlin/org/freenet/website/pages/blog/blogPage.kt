@@ -2,11 +2,10 @@ package org.freenet.website.pages.blog
 
 import kweb.*
 import kweb.components.Component
+import org.freenet.website.util.Github
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.ZoneId
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 import java.time.format.TextStyle
 import java.util.Locale
 
@@ -21,7 +20,7 @@ fun Component.blogPage(number: Int? = null) {
 
             div { div ->
                 div.classes("container")
-                val discussions = GitHubDiscussions.discussions
+                val discussions = Github.discussions
                 if (discussions == null) {
                     h3 { it.text("Loading, please refresh page.") }
                 } else {
@@ -44,7 +43,7 @@ fun Component.blogPage(number: Int? = null) {
                 }
             }
         } else {
-            val discussion = GitHubDiscussions.discussions?.discussionsByNumber?.get(number)
+            val discussion = Github.discussions?.discussionsByNumber?.get(number)
             if (discussion == null) {
                 h3 { it.text("Discussion $number not found") }
             } else {
