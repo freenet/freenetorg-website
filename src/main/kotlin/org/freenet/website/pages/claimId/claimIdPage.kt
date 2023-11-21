@@ -72,7 +72,8 @@ fun Component.claimIdPage() {
         button.classes("button", "is-medium-green", "generate-button")
         button.on.click {
             //TODO renderCheckout form and display it when necessary using a Kvar
-            button.creator!!.parentCreator!!.renderCheckout("You have started the donation process")
+            //button.creator!!.parentCreator!!.renderCheckout("You have started the donation process")
+            renderCheckout("You have started the donation process")
             //TODO JS code needs to add is-active to this modal to display it.
             /*div { div ->
                 div.classes("modal")
@@ -105,7 +106,6 @@ fun signBlindedKey(clientMessage: String) : String {
 }
 
 fun ElementCreator<*>.renderCheckout(confirmationText : String) {
-    browser.callJsFunction("initialize()")
     lateinit var paymentForm : FormElement
     div(fomantic.ui.segment.center.aligned) {
         p().text(confirmationText)
@@ -131,4 +131,5 @@ fun ElementCreator<*>.renderCheckout(confirmationText : String) {
         }
         cancelButton.classes("ui cancel button")
     }
+    browser.callJsFunction("initialize()")
 }
