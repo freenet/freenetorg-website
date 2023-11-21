@@ -13,7 +13,7 @@ fun Component.navComponent(activeItem: KVal<NavItem>) {
 
         div { div ->
             div.classes("navbar-brand")
-            for (ni in listOf(NavItem.Home, NavItem.Development, NavItem.Faq, NavItem.Blog(null))) {
+            for (ni in listOf(NavItem.Home, NavItem.Development, NavItem.Claim, NavItem.Faq, NavItem.Blog(null))) {
                 a { a ->
                     a.classes(activeItem.map { if (it == ni) "navbar-item is-active" else "navbar-item" })
                     if (ni.icon != null) {
