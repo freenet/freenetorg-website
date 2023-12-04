@@ -51,7 +51,7 @@ object Github {
                 logger.info { "Retrieve recently merged pull requests from Github" }
                 pullRequests = getPullRequests(5)
 
-                delay(Duration.ofHours(1))
+                delay(Duration.ofMinutes(30))
             }
         }
     }
