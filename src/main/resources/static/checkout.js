@@ -24,7 +24,11 @@ const stripe = Stripe("pk_test_51KVKDLAIWUhNLMbdcgFrq0f8t5Rm07SEt6ZqXn46fZ7AQbz3
 let elements;
 
 
-
+const paymentElement = elements.create("payment", paymentElementOptions);
+paymentElement.mount("#payment-element");
+document
+    .querySelector("#payment-form")
+    .addEventListener("submit", handleSubmit);
 //let emailAddress = '';
 // Fetches a payment intent and captures the client secret
 async function initialize() {
@@ -51,11 +55,7 @@ async function initialize() {
         layout: "tabs",
     };
 
-    const paymentElement = elements.create("payment", paymentElementOptions);
-    paymentElement.mount("#payment-element");
-    document
-        .querySelector("#payment-form")
-        .addEventListener("submit", handleSubmit);
+
 
 }
 
@@ -68,7 +68,7 @@ async function handleSubmit(e) {
         elements,
         confirmParams: {
             // Make sure to change this to your payment completion page
-            return_url: "http://localhost:8080/contribution",
+            return_url: "http://localhost:8080/success",
             //receipt_email: emailAddress,
         },
     });

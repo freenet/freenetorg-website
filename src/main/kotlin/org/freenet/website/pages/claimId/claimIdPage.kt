@@ -68,13 +68,14 @@ fun Component.claimIdPage() {
 
     //step1(blindedHash)
 
+    val displayCheckout = kvar(false)
+
     button { button ->
         button.classes("button", "is-medium-green", "generate-button")
         button.on.click {
+            displayCheckout.value = true
             //TODO renderCheckout form and display it when necessary using a Kvar
             //button.creator!!.parentCreator!!.renderCheckout("You have started the donation process")
-            renderCheckout("You have started the donation process")
-            //renderCheckout("You have started the donation process")
             //TODO JS code needs to add is-active to this modal to display it.
             /*div { div ->
                 div.classes("modal")
@@ -90,6 +91,12 @@ fun Component.claimIdPage() {
         }
         span().innerHTML("&nbsp;")
         span().text("Pay via Stripe")
+    }
+
+    render(displayCheckout) { displayCheckout ->
+        if (displayCheckout) {
+            renderCheckout("You have started the donation process")
+        }
     }
 
 }
