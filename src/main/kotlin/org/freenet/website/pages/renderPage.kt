@@ -7,9 +7,8 @@ import kweb.state.render
 import org.freenet.website.pages.about.aboutPage
 import org.freenet.website.pages.claimId.claimIdPage
 import org.freenet.website.pages.claimId.contributionPage
+import org.freenet.website.pages.claimId.successfulPayPage
 import org.freenet.website.pages.developers.developersPage
-import org.freenet.website.pages.home.homePage
-import org.freenet.website.pages.joinUs.joinUsPage
 
 data class Page(
     val urlPath: String,
