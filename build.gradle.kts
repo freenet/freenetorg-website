@@ -57,7 +57,7 @@ dependencies {
     implementation("io.ktor:ktor-client-content-negotiation:2.3.0")
     implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.0")
 
-    implementation("com.stripe:stripe-java:22.13.0")
+    implementation("com.stripe:stripe-java:24.0.0")
 
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.11")
 
