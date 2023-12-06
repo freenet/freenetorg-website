@@ -28,10 +28,8 @@ let elements;
 //let emailAddress = '';
 // Fetches a payment intent and captures the client secret
 async function initialize() {
-    console.log("init() run")
     const items = {};
     items["id"] = "Donation";
-    console.log("items" + items);
     const response = await fetch("/create-payment-intent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -54,21 +52,20 @@ async function initialize() {
     const paymentElement = elements.create("payment", paymentElementOptions);
     paymentElement.mount("#payment-element");
     document
-        .querySelector("#payment-form")
-        .addEventListener("submit", handleSubmit);
+        .querySelector("#submit")
+        .addEventListener("click", handleSubmit);
 
 }
 
 async function handleSubmit(e) {
     console.log("handleSubmit")
     e.preventDefault();
-    setLoading(true);
 
     const { error } = await stripe.confirmPayment({
         elements,
         confirmParams: {
             // Make sure to change this to your payment completion page
-            return_url: "http://localhost:8080/success",
+            return_url: "http://localhost:8080/success/",
             //receipt_email: emailAddress,
         },
     });
@@ -83,8 +80,6 @@ async function handleSubmit(e) {
     } else {
         showMessage("An unexpected error occurred.");
     }
-
-    setLoading(false);
 }
 
 // Fetches the payment intent status after payment submission
@@ -115,7 +110,6 @@ async function checkStatus() {
     }
 }
 
-initialize();
 checkStatus();
 
 // ------- UI helpers -------
@@ -131,18 +125,3 @@ function showMessage(messageText) {
         messageContainer.textContent = "";
     }, 4000);
 }
-
-// Show a spinner on payment submission
-/*
-function setLoading(isLoading) {
-    if (isLoading) {
-        // Disable the button and show a spinner
-        document.querySelector("#submit").disabled = true;
-        document.querySelector("#spinner").classList.remove("hidden");
-        document.querySelector("#button-text").classList.add("hidden");
-    } else {
-        document.querySelector("#submit").disabled = false;
-        document.querySelector("#spinner").classList.add("hidden");
-        document.querySelector("#button-text").classList.remove("hidden");
-    }
-}*/
