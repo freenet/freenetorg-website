@@ -75,6 +75,7 @@ fun Component.claimIdPage() {
         button.on.click {
             displayCheckout.value = true
             //TODO renderCheckout form and display it when necessary using a Kvar
+            //renderCheckout("Hola Mundo")
             //button.creator!!.parentCreator!!.renderCheckout("You have started the donation process")
             //TODO JS code needs to add is-active to this modal to display it.
             /*div { div ->
@@ -115,29 +116,34 @@ fun signBlindedKey(clientMessage: String) : String {
 
 fun ElementCreator<*>.renderCheckout(confirmationText : String) {
     lateinit var paymentForm : FormElement
-    div(fomantic.ui.segment.center.aligned) {
-        p().text(confirmationText)
-    }
-    div(fomantic.ui.grid.center.aligned) {
-        paymentForm = form(mapOf("id" to JsonPrimitive("payment-form"))) {
-            div(mapOf("id" to JsonPrimitive("payment-element")))
-            button(mapOf("id" to JsonPrimitive("submit"))) {
-                div(mapOf("id" to JsonPrimitive("spinner"))).classes("spinner hidden")
-                span(mapOf("id" to JsonPrimitive("button-text"))).text("Pay Now")
+    div() {
+        div() {
+            div(fomantic.ui.segment.center.aligned) {
+                p().text(confirmationText)
             }
-            div(mapOf("id" to JsonPrimitive("payment-message"))).classes("hidden")
-        }
-    }
-    div(fomantic.ui.container.center.aligned) {
-        val secureTransactionNoticeString = "Some text explaining that this is a secure transaction through stripe and not to worry about their credit card details"
-        p().text(secureTransactionNoticeString)
-    }
-    div(fomantic.ui.actions) {
-        val cancelButton = button(fomantic.ui.button).text("cancel").on.click {
-            browser.callJsFunction("$(\'.ui.modal\').modal(\'close\');")
-            paymentForm.deleteIfExists()
-        }
-        cancelButton.classes("ui cancel button")
-    }
-    browser.callJsFunction("initialize()")
+            div(fomantic.ui.grid.center.aligned) {
+                paymentForm = form(mapOf("id" to JsonPrimitive("payment-form"))) {
+                    div(mapOf("id" to JsonPrimitive("payment-element")))
+                    button(mapOf("id" to JsonPrimitive("submit"))) {
+                        div(mapOf("id" to JsonPrimitive("spinner"))).classes("spinner hidden")
+                        span(mapOf("id" to JsonPrimitive("button-text"))).text("Pay Now")
+                    }
+                    div(mapOf("id" to JsonPrimitive("payment-message"))).classes("hidden")
+                }
+            }
+            div(fomantic.ui.container.center.aligned) {
+                val secureTransactionNoticeString = "Some text explaining that this is a secure transaction through stripe and not to worry about their credit card details"
+                p().text(secureTransactionNoticeString)
+            }
+            div(fomantic.ui.actions) {
+                val cancelButton = button(fomantic.ui.button).text("cancel").on.click {
+                    browser.callJsFunction("$(\'.ui.modal\').modal(\'close\');")
+                    paymentForm.deleteIfExists()
+                }
+                cancelButton.classes("ui cancel button")
+            }
+            browser.callJsFunction("initialize()")
+        }.classes("modal-content")
+    }.classes("modal is-active")
+
 }
