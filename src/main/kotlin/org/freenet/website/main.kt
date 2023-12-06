@@ -109,10 +109,7 @@ typealias HeadComponent = ElementCreator<HeadElement>
 private fun HeadComponent.configureHead(title : KVal<String>) {
     title().text(title)
 
-    element("script")["src"] = "/static/id.js"
-    element("script")["src"] = "/static/forge.all.min.js"
-    element("script")["src"] = "https://js.stripe.com/v3/"
-    element("script")["src"] = "/static/checkout.js"
+
 
 
     element("link") {
@@ -136,6 +133,12 @@ private fun HeadComponent.configureHead(title : KVal<String>) {
         it["rel"] = "stylesheet"
         it["href"] = "/static/bulma.min.css"
     }
+
+    element("script")["src"] = "/static/jquery.min.js"
+    element("script")["src"] = "/static/id.js"
+    element("script")["src"] = "/static/forge.all.min.js"
+    element("script")["src"] = "https://js.stripe.com/v3/"
+    element("script")["src"] = "/static/checkout.js"
 
     element("link") {
         it["rel"] = "stylesheet"
