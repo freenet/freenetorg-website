@@ -1,5 +1,8 @@
 package org.freenet.website.pages.claimId
 
+import com.stripe.model.PaymentIntent
+import io.mola.galimatias.URL
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonObject
 import kweb.*
