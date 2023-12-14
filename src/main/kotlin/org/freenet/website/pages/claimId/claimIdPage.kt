@@ -7,12 +7,36 @@ import kweb.components.Component
 import kweb.plugins.fomanticUI.fomantic
 import kweb.state.KVar
 import kweb.state.render
+import kweb.util.pathQueryFragment
 
 fun Component.claimIdPage() {
 
 
+    /*fun extractStripeQuery(url: URL) {
+        println(browser.gurl.value)
+    }
+
+    val stripeData = browser.gurl.map {
+        extractStripeQuery(it)
+        null
+    }*/
+
     val blindedHash = KVar("")
     val finalCertificate = KVar("")
+
+    browser.gurl.value.query()?.let {
+        println(it)
+        println(it.length)
+        val params = it.split("&")
+        val map = params.associate {
+            val (key, value) = it.split("=")
+            key to value
+        }
+        //println("key = ${map["payment_intent"]}")
+        //println(PaymentIntent.retrieve(map.get("payment_intent")))
+    }
+
+    //val paymentIntent = PaymentIntent.retrieve(browser.gurl.value)
 
 
     browser.onMessage { msg ->
@@ -74,17 +98,6 @@ fun Component.claimIdPage() {
         button.classes("button", "is-medium-green", "generate-button")
         button.on.click {
             displayCheckout.value = true
-            //TODO renderCheckout form and display it when necessary using a Kvar
-            //renderCheckout("Hola Mundo")
-            //button.creator!!.parentCreator!!.renderCheckout("You have started the donation process")
-            //TODO JS code needs to add is-active to this modal to display it.
-            /*div { div ->
-                div.classes("modal")
-                div { divContent ->
-                    divContent.classes("modal-content")
-                        renderCheckout("Hola")
-                }
-            }*/
         }
         span { span ->
             span.classes("icon")
@@ -96,10 +109,9 @@ fun Component.claimIdPage() {
 
     render(displayCheckout) { displayCheckout ->
         if (displayCheckout) {
-            renderCheckout("You have started the donation process")
+            renderCheckout("You have started the donation process", "Silver", 20)
         }
     }
-
 }
 
 private fun stripeStuff() : String {
@@ -114,8 +126,8 @@ fun signBlindedKey(clientMessage: String) : String {
     return rsaSigner.RSASign(clientMessage)
 }
 
-fun ElementCreator<*>.renderCheckout(confirmationText : String) {
-    browser.callJsFunction("initialize()")
+fun ElementCreator<*>.renderCheckout(confirmationText : String, donationTier: String, donationAmount: Int) {
+    browser.callJsFunction("initialize({},{})", JsonPrimitive(donationTier), JsonPrimitive(donationAmount))
     lateinit var paymentForm : FormElement
     div() {
         div() {

@@ -27,9 +27,10 @@ let elements;
 
 //let emailAddress = '';
 // Fetches a payment intent and captures the client secret
-async function initialize() {
+async function initialize(donationTier, donationAmount) {
     const items = {};
-    items["id"] = "Donation";
+    items["donationLevel"] = donationTier;
+    items["donationAmount"] = donationAmount;
     const response = await fetch("/create-payment-intent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -65,7 +66,7 @@ async function handleSubmit(e) {
         elements,
         confirmParams: {
             // Make sure to change this to your payment completion page
-            return_url: "http://localhost:8080/success/",
+            return_url: "http://0.0.0.0:8080/claim",
             //receipt_email: emailAddress,
         },
     });

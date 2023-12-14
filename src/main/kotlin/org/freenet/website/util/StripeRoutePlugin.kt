@@ -15,7 +15,8 @@ import kweb.plugins.KwebPlugin
 class StripeRoutePlugin : KwebPlugin() {
 
     data class UserInfo (
-        val donation : String
+        val donationLevel : String,
+        val donationAmount : Int
     )
 
     internal class CreatePaymentResponse(private val clientSecret: String)
@@ -25,8 +26,10 @@ class StripeRoutePlugin : KwebPlugin() {
             Stripe.apiKey = System.getenv("STRIPE_SECRET_KEY")
             val gson = Gson()
             val requestBody = call.receiveText()
+            println(requestBody)
             val postBody : UserInfo = gson.fromJson(requestBody, UserInfo::class.java)
-            println(postBody)
+            println("post body $postBody")
+
             val params : PaymentIntentCreateParams = PaymentIntentCreateParams.builder()
                 .setAmount(100)
                 .setCurrency("USD")
