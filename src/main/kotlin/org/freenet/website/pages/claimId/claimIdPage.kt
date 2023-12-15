@@ -12,6 +12,12 @@ import kweb.state.KVar
 import kweb.state.render
 import kweb.util.pathQueryFragment
 
+enum class TierLevel(val tierName: String, val contributionAmount: Int) {
+    BRONZE("Bronze", 10),
+    SILVER("Silver", 20),
+    Gold("Gold", 50)
+}
+
 fun Component.claimIdPage() {
 
 
@@ -96,23 +102,33 @@ fun Component.claimIdPage() {
     //step1(blindedHash)
 
     val displayCheckout = kvar(false)
+    var tierLevel = TierLevel.BRONZE
 
-    button { button ->
-        button.classes("button", "is-medium-green", "generate-button")
-        button.on.click {
-            displayCheckout.value = true
+    div() {
+        enumValues<TierLevel>().forEach { currentTier ->
+                div() {
+                    button { button ->
+                        button.classes("button", "is-medium-green", "generate-button")
+                        button.on.click {
+                            tierLevel = currentTier
+                            displayCheckout.value = true
+                        }
+                        span { span ->
+                            span.classes("icon")
+                            i().classes("fas", "fa-key")
+                        }
+                        span().innerHTML("&nbsp;")
+                        span().text("${currentTier.tierName}: $${currentTier.contributionAmount}")
+                    }
+            }.classes("column")
         }
-        span { span ->
-            span.classes("icon")
-            i().classes("fas", "fa-key")
-        }
-        span().innerHTML("&nbsp;")
-        span().text("Pay via Stripe")
-    }
+
+    }.classes("columns")
 
     render(displayCheckout) { displayCheckout ->
         if (displayCheckout) {
-            renderCheckout("You have started the donation process", "Silver", 20)
+            renderCheckout("You have started the donation process",
+                tierLevel.tierName, tierLevel.contributionAmount)
         }
     }
 }
