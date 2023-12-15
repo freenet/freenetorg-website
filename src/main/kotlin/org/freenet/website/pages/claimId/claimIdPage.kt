@@ -104,26 +104,43 @@ fun Component.claimIdPage() {
     val displayCheckout = kvar(false)
     var tierLevel = TierLevel.BRONZE
 
+    /*div(mapOf("id" to JsonPrimitive("qrCodeBox"))) {
+
+    }*/
+
+    /*button { button ->
+        button.classes("button", "is-medium-green", "generate-button")
+        button.on.click {
+            browser.callJsFunction("createQRCode();")
+        }
+        span { span ->
+            span.classes("icon")
+            i().classes("fas", "fa-key")
+        }
+        span().innerHTML("&nbsp;")
+        span().text("QR Code")
+    }*/
+
     div() {
         enumValues<TierLevel>().forEach { currentTier ->
-                div() {
-                    button { button ->
-                        button.classes("button", "is-medium-green", "generate-button")
-                        button.on.click {
-                            tierLevel = currentTier
-                            displayCheckout.value = true
-                        }
-                        span { span ->
-                            span.classes("icon")
-                            i().classes("fas", "fa-key")
-                        }
-                        span().innerHTML("&nbsp;")
-                        span().text("${currentTier.tierName}: $${currentTier.contributionAmount}")
+            p() {
+                button { button ->
+                    button.classes("button", "is-medium-green", "generate-button")
+                    button.on.click {
+                        tierLevel = currentTier
+                        displayCheckout.value = true
                     }
-            }.classes("column")
+                    span { span ->
+                        span.classes("icon")
+                        i().classes("fas", "fa-key")
+                    }
+                    span().innerHTML("&nbsp;")
+                    span().text("${currentTier.tierName}: $${currentTier.contributionAmount}")
+                }
+            }.classes("control")
         }
 
-    }.classes("columns")
+    }.classes("field is-grouped")
 
     render(displayCheckout) { displayCheckout ->
         if (displayCheckout) {
