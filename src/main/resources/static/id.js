@@ -75,6 +75,9 @@ function unblind(blindedValue) {
     return unblindedValue.toString(16); // Return as hexadecimal string
 }
 
+function createQRCode() {
+    var qrCode = new QRCode(document.getElementById("qrCodeBox"), "Hola");
+}
 
 
 //TODO

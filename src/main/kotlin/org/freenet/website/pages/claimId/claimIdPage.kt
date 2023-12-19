@@ -20,33 +20,8 @@ enum class TierLevel(val tierName: String, val contributionAmount: Int) {
 
 fun Component.claimIdPage() {
 
-
-    /*fun extractStripeQuery(url: URL) {
-        println(browser.gurl.value)
-    }
-
-    val stripeData = browser.gurl.map {
-        extractStripeQuery(it)
-        null
-    }*/
-
     val blindedHash = KVar("")
     val finalCertificate = KVar("")
-
-    browser.gurl.value.query()?.let {
-        println(it)
-        println(it.length)
-        val params = it.split("&")
-        val map = params.associate {
-            val (key, value) = it.split("=")
-            key to value
-        }
-        //println("key = ${map["payment_intent"]}")
-        //println(PaymentIntent.retrieve(map.get("payment_intent")))
-    }
-
-    //val paymentIntent = PaymentIntent.retrieve(browser.gurl.value)
-
 
     browser.onMessage { msg ->
         val message = msg!!.jsonObject
@@ -59,95 +34,96 @@ fun Component.claimIdPage() {
         }
     }
 
-    h1().text("Claim your Freenet ID")
-
-    section { section ->
-        section.classes("section")
-
-        h1 { h1 ->
-            h1.classes("title")
-            h1.innerHTML("Claim your Freenet ID")
+    val stripeData = browser.gurl.value.query()?.let {
+        val params = it.split("&")
+        val map = params.associate {
+            val (key, value) = it.split("=")
+            key to value
         }
-        h2 { h2 ->
-            h2.classes("subtitle")
-            h2.innerHTML("Generate your Master Key")
-        }
-        p().innerHTML(
-            """
+        map
+
+    }
+
+    if (stripeData != null) {
+        val paymentIntent = PaymentIntent.retrieve(stripeData["payment_intent"])
+        div(mapOf("id" to JsonPrimitive("qrCodeBox")))
+        browser.callJsFunction("createQRCode();")
+        h1().text(stripeData["payment_intent"]!!)
+    } else {
+        h1().text("Claim your Freenet ID")
+
+        section { section ->
+            section.classes("section")
+
+            h1 { h1 ->
+                h1.classes("title")
+                h1.innerHTML("Claim your Freenet ID")
+            }
+            h2 { h2 ->
+                h2.classes("subtitle")
+                h2.innerHTML("Generate your Master Key")
+            }
+            p().innerHTML(
+                """
                 Secure a Freenet Patron Certificate to support Freenet's mission of enabling free and open communication on the internet. This certificate reflects your early support and belief in our network's potential. In the future, it could also serve as a hallmark of trust and authenticity within the Freenet community, similar to a proof of membership.
         """.trimIndent()
-        )
-        p().innerHTML(
-            """
+            )
+            p().innerHTML(
+                """
                 The process is straightforward and designed with your anonymity in mind. When you click the button below, a unique digital key pair will be generated in your browser. Following a blind signature protocol, this key pair will be securely signed by Freenet in such a way that our servers cannot tie the payment transaction to your public/private keypair, ensuring your anonymity. After a simple payment to help sustain Freenet, you'll receive your Freenet Patron Certificate, which you can download or copy directly.
             """.trimIndent()
-        )
+            )
 
-        p().text(blindedHash)
+            p().text(blindedHash)
 
-        button { button ->
-            button.classes("button", "is-medium-green", "generate-button")
-            button.on.click {
-                browser.callJsFunction("generateUserKey();")
-            }
-            span { span ->
-                span.classes("icon")
-                i().classes("fas", "fa-key")
-            }
-            span().innerHTML("&nbsp;")
-            span().text("Create Certificate")
-        }
-    }
-
-    //step1(blindedHash)
-
-    val displayCheckout = kvar(false)
-    var tierLevel = TierLevel.BRONZE
-
-    /*div(mapOf("id" to JsonPrimitive("qrCodeBox"))) {
-
-    }*/
-
-    /*button { button ->
-        button.classes("button", "is-medium-green", "generate-button")
-        button.on.click {
-            browser.callJsFunction("createQRCode();")
-        }
-        span { span ->
-            span.classes("icon")
-            i().classes("fas", "fa-key")
-        }
-        span().innerHTML("&nbsp;")
-        span().text("QR Code")
-    }*/
-
-    div() {
-        enumValues<TierLevel>().forEach { currentTier ->
-            p() {
-                button { button ->
-                    button.classes("button", "is-medium-green", "generate-button")
-                    button.on.click {
-                        tierLevel = currentTier
-                        displayCheckout.value = true
-                    }
-                    span { span ->
-                        span.classes("icon")
-                        i().classes("fas", "fa-key")
-                    }
-                    span().innerHTML("&nbsp;")
-                    span().text("${currentTier.tierName}: $${currentTier.contributionAmount}")
+            button { button ->
+                button.classes("button", "is-medium-green", "generate-button")
+                button.on.click {
+                    browser.callJsFunction("generateUserKey();")
                 }
-            }.classes("control")
+                span { span ->
+                    span.classes("icon")
+                    i().classes("fas", "fa-key")
+                }
+                span().innerHTML("&nbsp;")
+                span().text("Create Certificate")
+            }
         }
 
-    }.classes("field is-grouped")
+        //step1(blindedHash)
 
-    render(displayCheckout) { displayCheckout ->
-        if (displayCheckout) {
-            renderCheckout("You have started the donation process",
-                tierLevel.tierName, tierLevel.contributionAmount)
+        val displayCheckout = kvar(false)
+        var tierLevel = TierLevel.BRONZE
+
+        div() {
+            enumValues<TierLevel>().forEach { currentTier ->
+                p() {
+                    button { button ->
+                        button.classes("button", "is-medium-green", "generate-button")
+                        button.on.click {
+                            tierLevel = currentTier
+                            displayCheckout.value = true
+                        }
+                        span { span ->
+                            span.classes("icon")
+                            i().classes("fas", "fa-key")
+                        }
+                        span().innerHTML("&nbsp;")
+                        span().text("${currentTier.tierName}: $${currentTier.contributionAmount}")
+                    }
+                }.classes("control")
+            }
+
+        }.classes("field is-grouped")
+
+        render(displayCheckout) { displayCheckout ->
+            if (displayCheckout) {
+                renderCheckout("You have started the donation process",
+                    tierLevel.tierName, tierLevel.contributionAmount)
+            }
         }
     }
+
 }
 
 private fun stripeStuff() : String {
