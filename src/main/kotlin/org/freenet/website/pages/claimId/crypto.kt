@@ -34,7 +34,7 @@ class RSASigner {
         lateinit var rsaKey: RSAKeyPair
 
         fun initialize() {
-            // Generate a key pair
+            // Load the json with the RSA keys from an environment variable
             val jsonContent = String(Files.readAllBytes(Paths.get("src/main/resources/rsa_sample_key.json")))
 
             val keys = Gson().fromJson(jsonContent, RSAKeyPair::class.java)
