@@ -134,6 +134,7 @@ private fun HeadComponent.configureHead(title : KVal<String>) {
         it["href"] = "/static/bulma.min.css"
     }
 
+    element("script")["src"] = "/static/qrcode.min.js"
     element("script")["src"] = "/static/jquery.min.js"
     element("script")["src"] = "/static/id.js"
     element("script")["src"] = "/static/forge.all.min.js"
