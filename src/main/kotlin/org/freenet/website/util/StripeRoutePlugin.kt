@@ -26,9 +26,7 @@ class StripeRoutePlugin : KwebPlugin() {
             Stripe.apiKey = System.getenv("STRIPE_SECRET_KEY")
             val gson = Gson()
             val requestBody = call.receiveText()
-            println(requestBody)
             val postBody : UserInfo = gson.fromJson(requestBody, UserInfo::class.java)
-            println("post body $postBody")
 
             val params : PaymentIntentCreateParams = PaymentIntentCreateParams.builder()
                 .setAmount(100)
@@ -41,7 +39,6 @@ class StripeRoutePlugin : KwebPlugin() {
                 ).build()
 
             val paymentIntent = PaymentIntent.create(params)
-            println("paymentIntent created")
 
             val paymentResponse = CreatePaymentResponse(paymentIntent.clientSecret)
             call.respond(gson.toJson(paymentResponse))
