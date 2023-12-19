@@ -1,5 +1,10 @@
 package org.freenet.website.pages.claimId
 
+
+import com.google.gson.Gson
+import com.google.gson.JsonObject
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.security.KeyFactory
 import java.security.KeyPair
 import java.util.Base64
@@ -24,19 +29,23 @@ fun RSAPublicKey.encodeToPem(): String {
 
 class RSASigner {
 
+    data class RSAKeyPair(val public: String, val private: String)
     object FreenetKey {
-        lateinit var freenetRSAKeyPair: KeyPair
-        lateinit var freenetRSAPublicKeyPEM: String
+        lateinit var rsaKey: RSAKeyPair
 
         fun initialize() {
             // Generate a key pair
-            val keyPairGenerator = KeyPairGenerator.getInstance("RSA")
-            //TODO consume 4096 bit RSA key from environment variable
-            keyPairGenerator.initialize(4096)
-            freenetRSAKeyPair = keyPairGenerator.genKeyPair()
+            val jsonContent = String(Files.readAllBytes(Paths.get("src/main/resources/rsa_sample_key.json")))
 
-            freenetRSAPublicKeyPEM = (freenetRSAKeyPair.public as RSAPublicKey).encodeToPem()
-            println(freenetRSAPublicKeyPEM)
+            val keys = Gson().fromJson(jsonContent, RSAKeyPair::class.java)
+
+            val rsaKeyPair = RSAKeyPair(keys.public, keys.private)
+
+            rsaKey = rsaKeyPair
+
+            println(rsaKey.public)
+            println(rsaKey.private)
+
         }
     }
 
@@ -87,7 +96,8 @@ class RSASigner {
     //Performs an RSA blind signature on the client's blinded key
     fun RSASign(message: String): String {
         val privateSignature = Signature.getInstance("SHA256withRSA")
-        privateSignature.initSign(FreenetKey.freenetRSAKeyPair.private)
+        val privateKey = toFreenetRSAPrivateKey(FreenetKey.rsaKey.private)
+        privateSignature.initSign(privateKey)
 
         privateSignature.update(message.toByteArray())
 
