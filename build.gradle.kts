@@ -25,9 +25,9 @@ dependencies {
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
 
-    implementation("com.google.guava:guava:31.1-jre")
+    implementation("com.google.guava:guava:33.0.0-jre")
 
-    implementation("io.kweb:kweb-core:1.4.8")
+    implementation("io.kweb:kweb-core:1.4.9")
 
     implementation("org.slf4j:slf4j-simple:2.0.5")
 
