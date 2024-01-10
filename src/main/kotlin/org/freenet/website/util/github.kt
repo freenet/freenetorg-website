@@ -100,7 +100,6 @@ object Github {
         return response.data.repository.pullRequests.nodes
     }
 
-    // Data classes for pull requests with author
     @Serializable
     data class GitHubPullRequestsResponse(
         val data: PullRequestData
