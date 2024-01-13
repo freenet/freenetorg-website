@@ -27,7 +27,7 @@ fun RSAPublicKey.encodeToPem(): String {
     return publicKeyPEM.toString()
 }
 
-class RSASigner {
+object RSASigner {
 
     data class RSAKeyPair(val public: String, val private: String)
     object FreenetKey {
