@@ -46,7 +46,7 @@ object Github {
                     logger.info { "Discussions updated" }
                     discussions = DiscussionStore(newDiscussions)
                 }
-                logger.info { "Github discussions retrieved" }
+                logger.info { "Retrieved Github discussions" }
 
                 logger.info { "Retrieve recently merged pull requests from Github" }
                 pullRequests = getPullRequests(5)
