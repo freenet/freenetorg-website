@@ -133,9 +133,10 @@ private fun stripeStuff() : String {
 
 //the blinded key from the client
 fun signBlindedKey(clientMessage: String) : String {
-    val rsaSigner = RSASigner()
-    RSASigner.FreenetKey.initialize()
-    return rsaSigner.RSASign(clientMessage)
+    //val rsaSigner = RSASigner()
+    //RSASigner.FreenetKey.initialize()
+    //return rsaSigner.RSASign(clientMessage)
+    return ""
 }
 
 fun ElementCreator<*>.renderCheckout(confirmationText : String, donationTier: String, donationAmount: Int) {

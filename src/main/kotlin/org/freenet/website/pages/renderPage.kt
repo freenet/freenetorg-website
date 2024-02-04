@@ -6,8 +6,6 @@ import kweb.state.KVal
 import kweb.state.render
 import org.freenet.website.pages.about.aboutPage
 import org.freenet.website.pages.claimId.claimIdPage
-import org.freenet.website.pages.claimId.contributionPage
-import org.freenet.website.pages.claimId.successfulPayPage
 import org.freenet.website.pages.developers.developersPage
 
 data class Page(
@@ -24,8 +22,6 @@ val pages = mapOf(
     "about" to Page(urlPath = "about", tabHtml = "About", link = "/about", icon = "info-circle", renderer = Component::aboutPage),
     "dev" to Page(urlPath = "dev", tabHtml = "Developers", link = "/dev", icon = "code", renderer = Component::developersPage),
     "claim" to Page(urlPath = "claim", tabHtml = "Claim", link = "/claim", icon = "code", renderer = Component::claimIdPage),
-    "success" to Page(urlPath = "success", tabHtml = null, link = "/success", icon = "id-card", renderer = Component::successfulPayPage),
-    "contribution" to Page(urlPath = "contribution", tabHtml = null, link ="/contribution", icon = "id-card", renderer = Component::contributionPage)
 )
 
 
