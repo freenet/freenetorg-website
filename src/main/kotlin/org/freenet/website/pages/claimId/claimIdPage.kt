@@ -26,7 +26,7 @@ fun Component.claimIdPage() {
     browser.onMessage { msg ->
         val message = msg!!.jsonObject
         when (message["messageKey"].toString()) {
-            "\"publicKey\"" -> {
+            "\"publicKey\"" -> {//TODO this string is probably being parsed twice adding an extra set of quote marks. Probably in the onMessage code somewhere in Kweb.
                 blindedHash.value = message["blindedKey"].toString()
                 finalCertificate.value = message["certificate"].toString()
 
@@ -44,12 +44,15 @@ fun Component.claimIdPage() {
 
     }
 
-    if (stripeData != null) {
+    if (stripeData != null) {//this branch means there were extra query parameters meaning we are actually on a succesful payment page
+        //TODO this branch should be split into two, one for success, and one for stripe failure.
         val paymentIntent = PaymentIntent.retrieve(stripeData["payment_intent"])
+        //Stripes paymentIntent class should allow storing and loading any necessary data about our user.
         div(mapOf("id" to JsonPrimitive("qrCodeBox")))
         browser.callJsFunction("createQRCode();")
-        h1().text(stripeData["payment_intent"]!!)
-    } else {
+        //TODO this is possibly the best place to call the client side function blindUserKey(), and do the server side sign
+        //todo pull the necessary parameters from the paymentIntent, or wherever else, and supply them to createQRCode().
+    } else {//this branch means we are loading the initial claim id page.
         h1().text("Claim your Freenet ID")
 
         section { section ->
@@ -90,8 +93,6 @@ fun Component.claimIdPage() {
             }
         }
 
-        //step1(blindedHash)
-
         val displayCheckout = kvar(false)
         var tierLevel = TierLevel.BRONZE
 
@@ -124,11 +125,6 @@ fun Component.claimIdPage() {
         }
     }
 
-}
-
-private fun stripeStuff() : String {
-    //TODO implement Stripe checkout form
-    return "Payment completed"
 }
 
 //the blinded key from the client
