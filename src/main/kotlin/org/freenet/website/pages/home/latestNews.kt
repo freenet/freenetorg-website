@@ -1,4 +1,4 @@
-package org.freenet.website.pages
+package org.freenet.website.pages.home
 
 import kweb.components.Component
 import kweb.div

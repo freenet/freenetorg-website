@@ -20,27 +20,23 @@
 ///This key can be publicly-accessible and does not need to be hidden.
 const stripe = Stripe("pk_test_51KVKDLAIWUhNLMbdcgFrq0f8t5Rm07SEt6ZqXn46fZ7AQbz3mxoMF2cFvW7qRfI3kZN6NyPG95nzN7CrcHBHRWGD00VAifbJEy");
 
+
 let elements;
 
-checkStatus();
 
 
+//let emailAddress = '';
 // Fetches a payment intent and captures the client secret
-async function initialize() {
-    const userInfo = {};
-    userInfo["username"] = document.querySelector("#usernameInput").value;
-    userInfo["email"] = document.querySelector("#emailInput").value;
-    let selectedDonationRadioButton = document.querySelector('input[name="donationPresetRadio"]:checked').id;
-    if (selectedDonationRadioButton === "donationRadioCustomField") {
-        userInfo["donationAmount"] = document.querySelector("#donationInput").value;
-    } else {
-        userInfo["donationAmount"] = document.querySelector('input[name="donationPresetRadio"]:checked').value;
-    }
+async function initialize(donationTier, donationAmount) {
+    const items = {};
+    items["donationLevel"] = donationTier;
+    items["donationAmount"] = donationAmount;
     const response = await fetch("/create-payment-intent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify( userInfo ),
+        body: JSON.stringify(items),
     });
+
     const { clientSecret } = await response.json();
 
     const appearance = {
@@ -48,24 +44,30 @@ async function initialize() {
     };
     elements = stripe.elements({ appearance, clientSecret });
 
-    const paymentElement = elements.create("payment");
-    console.log("Attempting to mount paymentElement")
+
+
+    const paymentElementOptions = {
+        layout: "tabs",
+    };
+
+    const paymentElement = elements.create("payment", paymentElementOptions);
     paymentElement.mount("#payment-element");
     document
         .querySelector("#submit")
         .addEventListener("click", handleSubmit);
+
 }
 
 async function handleSubmit(e) {
-    console.log("Handle Submit")
+    console.log("handleSubmit")
     e.preventDefault();
-    setLoading(true);
 
     const { error } = await stripe.confirmPayment({
         elements,
         confirmParams: {
             // Make sure to change this to your payment completion page
-            return_url: "https://34.74.186.232/success",
+            return_url: "http://0.0.0.0:8080/claim",
+            //receipt_email: emailAddress,
         },
     });
 
@@ -77,10 +79,8 @@ async function handleSubmit(e) {
     if (error.type === "card_error" || error.type === "validation_error") {
         showMessage(error.message);
     } else {
-        showMessage("An unexpected error occured.");
+        showMessage("An unexpected error occurred.");
     }
-
-    setLoading(false);
 }
 
 // Fetches the payment intent status after payment submission
@@ -111,6 +111,8 @@ async function checkStatus() {
     }
 }
 
+checkStatus();
+
 // ------- UI helpers -------
 
 function showMessage(messageText) {
@@ -121,21 +123,6 @@ function showMessage(messageText) {
 
     setTimeout(function () {
         messageContainer.classList.add("hidden");
-        messageText.textContent = "";
+        messageContainer.textContent = "";
     }, 4000);
-}
-
-// Show a spinner on payment submission
-function setLoading(isLoading) {
-    if (isLoading) {
-        console.log("setLoading")
-        // Disable the button and show a spinner
-        document.querySelector("#submit").disabled = true;
-        document.querySelector("#spinner").classList.remove("hidden");
-        document.querySelector("#button-text").classList.add("hidden");
-    } else {
-        document.querySelector("#submit").disabled = false;
-        document.querySelector("#spinner").classList.add("hidden");
-        document.querySelector("#button-text").classList.remove("hidden");
-    }
 }

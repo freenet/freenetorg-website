@@ -12,16 +12,14 @@ import kweb.plugins.staticFiles.StaticFilesPlugin
 import kweb.state.KVal
 import kweb.state.render
 import mu.two.KotlinLogging
-import org.freenet.website.util.Github
 import org.freenet.website.pages.blog.blogPage
 import org.freenet.website.pages.developers.PivotalTracker
 import org.freenet.website.pages.developers.developersPage
 import org.freenet.website.pages.homePage
 import org.freenet.website.pages.faq.faqPage
 import org.freenet.website.pages.blog.BlogRssPlugin
-import org.freenet.website.util.HealthCheckPlugin
-import org.freenet.website.util.UrlToPathSegmentsRF
-import org.freenet.website.util.recordVisit
+import org.freenet.website.pages.claimId.claimIdPage
+import org.freenet.website.util.*
 import java.time.Duration
 
 private val logger = KotlinLogging.logger { }
@@ -50,7 +48,8 @@ suspend fun main() {
         plugins = listOf(
             BlogRssPlugin(),
             HealthCheckPlugin,
-            StaticFilesPlugin(ResourceFolder("static"), "/static",)
+            StripeRoutePlugin(),
+            StaticFilesPlugin(ResourceFolder("static"), "/static")
         ),
         kwebConfig = cfg,
     ) {
@@ -75,6 +74,7 @@ suspend fun main() {
                             is NavItem.Home -> homePage()
                             is NavItem.Development -> developersPage()
                             is NavItem.Faq -> faqPage()
+                            is NavItem.Claim -> claimIdPage()
                             is NavItem.Blog -> blogPage(activeNavItem.number)
                             else -> error("Unknown Item: $activeNavItem")
                         }
@@ -97,6 +97,7 @@ private fun WebBrowser.pathToNavItem() = url.map(UrlToPathSegmentsRF)
             when (pathSegments[0]) {
                 "dev" -> NavItem.Development
                 "faq" -> NavItem.Faq
+                "claim" -> NavItem.Claim
                 "blog" -> NavItem.Blog(if (pathSegments.size > 1) pathSegments[1].toIntOrNull() else null)
                 else -> NavItem.Home
             }
@@ -107,6 +108,9 @@ typealias HeadComponent = ElementCreator<HeadElement>
 
 private fun HeadComponent.configureHead(title : KVal<String>) {
     title().text(title)
+
+
+
 
     element("link") {
         it["rel"] = "stylesheet"
@@ -123,10 +127,19 @@ private fun HeadComponent.configureHead(title : KVal<String>) {
         it["href"] = "/static/fontawesome/css/brands.min.css"
     }
 
+
+
     element("link") {
         it["rel"] = "stylesheet"
         it["href"] = "/static/bulma.min.css"
     }
+
+    element("script")["src"] = "/static/qrcode.min.js"
+    element("script")["src"] = "/static/jquery.min.js"
+    element("script")["src"] = "/static/id.js"
+    element("script")["src"] = "/static/forge.all.min.js"
+    element("script")["src"] = "https://js.stripe.com/v3/"
+    element("script")["src"] = "/static/checkout.js"
 
     element("link") {
         it["rel"] = "stylesheet"

@@ -4,6 +4,7 @@ import kweb.*
 import kweb.components.Component
 import org.freenet.website.util.iconButton
 import java.util.*
+import org.freenet.website.pages.home.latestNews
 
 /**
  * The main landing page, which provides an overview of Freenet, its mission,
