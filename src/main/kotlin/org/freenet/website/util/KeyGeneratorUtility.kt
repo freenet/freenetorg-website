@@ -7,11 +7,19 @@ import java.security.*
 fun main() {
     val eccKeyPair = generateECCKeyPair()
 
+    println("ECC Master KeyPair")
+    println("public: ${eccKeyPair.public}")
+    println("private: ${eccKeyPair.private}\n")//TODO get eccKePair.private into a human readable format. Or one that can be stored in JSON
+
     enumValues<TierLevel>().forEach { currentTier ->
         //TODO write this signed rsaKeypair to json bronze, silver, gold.
         val rsaKeyPair = generateRSAKeyPair()
 
         val signature = signWithECCPrivateKey(rsaKeyPair.public, eccKeyPair.private)
+
+        println("$currentTier keypair:")
+        println("public: ${rsaKeyPair.public}")
+        println("private: ${rsaKeyPair.private}\n")
 
         val isSignatureValid = verifySignature(rsaKeyPair.public, eccKeyPair.public, signature)
     }
