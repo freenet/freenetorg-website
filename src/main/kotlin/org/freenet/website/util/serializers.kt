@@ -37,4 +37,5 @@ object InstantSerializer : KSerializer<Instant> {
         val string = decoder.decodeString()
         return Instant.from(formatter.parse(string))
     }
+
 }
