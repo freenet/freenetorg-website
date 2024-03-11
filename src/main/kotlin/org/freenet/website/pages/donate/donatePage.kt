@@ -27,55 +27,6 @@ fun Component.donatePage() {
             img["alt"] = "Donate with PayPal"
         }
     }
-
-    h2().classes("title", "is-small").text("Donate via Cryptocurrency")
-    p().innerHTML(
-        """
-            Freenet is <b>not</b> a cryptocurrency, but we do accept cryptocurrency donations. For large donations (over $5,000) please contact us before sending. For smaller donations, please use the following wallets:
-        """.trimIndent()
-    )
-
-    table {
-        thead {
-            tr {
-                th().text("Cryptocurrency")
-                th().text("Address")
-            }
-        }
-        tbody {
-            tr {
-                td().text("Bitcoin")
-                td {
-                    input { input ->
-                        input.setAttributes("readonly" to true.json)
-                        input.setAttributes("value" to "3M3fbA7RDYdvYeaoR69cDCtVJqEodo9vth".json)
-                        input.setAttributes("onclick" to "this.select();".json)
-                    }
-                }
-            }
-            tr {
-                td().text("Zcash")
-                td {
-                    input { input ->
-                        input.setAttributes("readonly" to true.json)
-                        input.setAttributes("value" to "t1VHw1PHgzvMqEEd31ZBt3Vyy2UrG4J8utB".json)
-                        input.setAttributes("onclick" to "this.select();".json)
-                    }
-                }
-            }
-            tr {
-                td().text("Ethereum")
-                td {
-                    input { input ->
-                        input.setAttributes("readonly" to true.json)
-                        input.setAttributes("value" to "0x79158A5Dbd9C0737CB27411817BD2759f5b9a9Ae".json)
-                        input.setAttributes("onclick" to "this.select();".json)
-                    }
-                }
-            }
-
-        }
-    }
 }
 
 private fun Component.renderPage(html: KVar<String?>) {
