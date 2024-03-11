@@ -13,7 +13,7 @@ fun Component.navComponent(activeItem: KVal<NavItem>) {
 
         div { div ->
             div.classes("navbar-brand")
-            for (ni in listOf(NavItem.Home, NavItem.Development, NavItem.Faq, NavItem.Blog(null))) {
+            for (ni in listOf(NavItem.Home, NavItem.Development, NavItem.Faq, NavItem.Blog(null), NavItem.Donate)) {
                 a { a ->
                     a.classes(activeItem.map { if (it == ni) "navbar-item is-active" else "navbar-item" })
                     if (ni.icon != null) {
@@ -47,4 +47,5 @@ sealed class NavItem(val html: String, val link: String, val icon: String? = nul
             "Freenet Blog: ${Github?.discussions?.discussionsByNumber?.get(number)?.title ?: "Not Found"}"
         }
     }
+    data object Donate : NavItem("Donate", "/donate", "donate", "Freenet: Donate")
 }
